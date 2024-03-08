@@ -1,6 +1,6 @@
 {
   "name": "@mediakular/svelte-data-grid",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
@@ -160,7 +160,7 @@
   "author": "Stefan Lessle",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mediakular/svelte-data-grid/issues"
+    "url": "https://github.com/st3v3y/svelte-data-grid/issues"
   },
-  "homepage": "https://github.com/mediakular/svelte-data-grid#readme"
+  "homepage": "https://github.com/st3v3y/svelte-data-grid#readme"
 }

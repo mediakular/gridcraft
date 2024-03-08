@@ -1,58 +1,184 @@
-# create-svelte
+# @mediakular/svelte-data-grid
 
-Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+[![npm version](https://badge.fury.io/js/%40mediakular%2Fsvelte-data-grid.svg)](https://badge.fury.io/js/%40mediakular%2Fsvelte-data-grid)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Read more about creating a library [in the docs](https://kit.svelte.dev/docs/packaging).
+## Svelte Data Grid Table 📊
 
-## Creating a project
+`@mediakular/svelte-data-grid` is a powerful data grid package tailored for Sveltekit applications. It offers an array of features to elevate the presentation and interaction with tabular data.
 
-If you're seeing this, you've probably already done this step. Congrats!
+### Demo
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+Coming soon
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+### Exciting Features ✨
 
-## Developing
+- **Paging**: Navigate through large datasets effortlessly.
+- **Sorting**: Arrange data in ascending or descending order with ease.
+- **Custom Filtering**: Tailor data views to your specific needs.
+- **Grouping**: Organize related data into logical groups.
+- **Row Selection**: Select and manipulate individual or multiple rows.
+- **Customizable Output**: Personalize grid appearance to match your style guide.
+- **Tailwind CSS ready**: Completely compatible with tailwind CSS.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### Example Column Definition
 
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
-
-## Building
-
-To build your library:
+## Installation
 
 ```bash
-npm run package
+npm install @mediakular/svelte-data-grid
 ```
 
-To create a production version of your showcase app:
+or 
 
 ```bash
-npm run build
+yarn add @mediakular/svelte-data-grid
 ```
 
-You can preview the production build with `npm run preview`.
+## Usage
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+Most basic usage: 
 
-## Publishing
+```typescript
+import { Grid, GridColumn } from '@mediakular/svelte-data-grid';
 
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
+// Define your data and columns
+let clients = getClientsFromDb();
+let columns = [...];
 
-To publish your library to [npm](https://www.npmjs.com):
-
-```bash
-npm publish
+<Grid 
+    bind:data={clients} 
+    bind:columns={columns}>
+</Grid>
 ```
+
+### Example With Column Definition
+
+Here a more advanced usage with column definition. 
+
+```typescript
+interface Client {
+    id: string;
+    firstname: string;
+    lastname: string;
+    avatar: string;
+    email: string;
+    age: number;
+    birthdate: Date;
+    amount: number;
+    quantity: number;
+}
+
+let clients: Client[] = getClientsFromDb();
+
+let columns: GridColumn<Client>[] = [
+    { 
+        key: 'name', 
+        title: 'Name',
+        accessor: (row: Client) => {
+            return {
+                avatar: row.avatar,
+                firstname: row.firstname,
+                lastname: row.lastname,
+                email: row.email
+            }
+        }, 
+        sortValue: (row: Client) => {
+            return `${row.firstname} ${row.lastname}`
+        },
+        renderComponent: ClientCell,
+    },
+    { 
+        key: 'age', 
+        title: 'Age',
+        accessor: (row: Client) => { return row.age },
+    },
+    { 
+        key: 'birthdate', 
+        title: 'Birthday',
+        renderComponent: DateCell,
+        sortValue: (row: Client) => {
+            return row.birthdate;
+        },
+        accessor: (row: Client) => { return { value : row.birthdate } },
+    },
+    { 
+        key: 'total', 
+        title: 'Total',
+        accessor: (row: Client) => { return row.amount * row.quantity },
+        renderComponent: CurrencyCell,
+    },
+];
+
+<Grid 
+    bind:data={clients} 
+    bind:columns={columns}>
+</Grid>
+```
+
+### Example With Footer & Paging
+
+```typescript
+let itemsPerPage = 10;
+let currentPage = 1;
+let totalPages = 1;
+let totalResults = 0;
+
+let columns: GridColumn<Client>[] = [];
+let clients: Client[] = getClientsFromDB() //replace getClientsFromDB with your DB function
+
+<Grid 
+    bind:data={clients} 
+    bind:columns={columns}
+    bind:currentPage 
+    bind:itemsPerPage 
+    bind:totalPages 
+    bind:totalResults>
+</Grid>
+<GridFooter bind:currentPage bind:totalPages bind:totalResults bind:itemsPerPage />
+```
+
+### Example With Grouping
+
+Coming soon
+
+### Example With Selecting Rows
+
+Coming soon
+
+### Example With Different Filters
+
+Coming soon
+
+### Example With Group By
+
+Coming soon
+
+### Example With Customized Appearance 
+
+Coming soon
+
+
+## API Documentation
+
+### Grid Properties
+
+Coming soon
+
+### Columns
+
+- `key`: needs to be the name of the property
+- `title`: Title of the column
+- `accessor` (optional): returns custom objects or manipulated values
+- `sortValue` (optional): returned value will be used for sorting
+- `renderComponent` (optional): Reference to a SvelteKit component. Will be used to render the column-cell
+- `cellRender` (optional): Can be used to render a sveltekit component AND provide custum properties for the component. Those will be automatically injected. { component: MyFancyCellComponent, props: {myVal: 123, other: "abc"} }
+- `visible` (optional): Can be set to true/false to show/hide the column
+- `sortable` (optional): Can be set to true/false to activate/deactivate sorting of the column
+- `width` (optional): Width of the column. Either as number (px) or string value "123px" or "1rem" or "33%"
+
+
+## License
+
+This package is licensed under the MIT License.
+
