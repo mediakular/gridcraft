@@ -21,8 +21,6 @@ Coming soon
 - **Customizable Output**: Personalize grid appearance to match your style guide.
 - **Tailwind CSS ready**: Completely compatible with tailwind CSS.
 
-### Example Column Definition
-
 ## Installation
 
 ```bash

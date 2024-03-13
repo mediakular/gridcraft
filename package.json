@@ -1,6 +1,6 @@
 {
   "name": "@mediakular/svelte-data-grid",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
@@ -9,7 +9,8 @@
     "prepublishOnly": "npm run package",
     "test": "playwright test",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "publish": "npm publish --access public"
   },
   "exports": {
     ".": {
