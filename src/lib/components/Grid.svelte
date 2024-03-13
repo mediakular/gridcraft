@@ -154,8 +154,9 @@
             {/if}
             {#each columns.filter(x => x.visible != false) as col (col.key)}
                 {#if groupBy != col.key}
-                    <svelte:component this={th} title={col.title} sortable={col.sortable} onClick={() => (col.sortable == undefined || col.sortable) && handleSort(col.key)}>
-                        {#if col.sortable === undefined || col.sortable === true}
+                    {@const sortable = col.sortable === undefined || col.sortable === true}
+                    <svelte:component this={th} title={col.title} sortable={sortable} onClick={() => sortable && handleSort(col.key)}>
+                        {#if sortable}
                             <svelte:component this={thSortIndicator} isSorted={sortByColumn == col.key} isDescending={(groupBy && sortOrderSecondary == 1) || (!groupBy && sortOrder == 1)} />
                         {/if}
                     </svelte:component>
