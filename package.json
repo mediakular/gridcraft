@@ -151,7 +151,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mediakular/svelte-data-grid.git"
+    "url": "git+https://github.com/st3v3y/svelte-data-grid.git"
   },
   "keywords": [
     "datagrid",
