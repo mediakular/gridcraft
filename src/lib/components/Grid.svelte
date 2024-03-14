@@ -187,7 +187,7 @@
                                 {:else if col.renderComponent}
                                     <svelte:component this={col.renderComponent} {...{value: header.titleData}} />
                                 {:else}
-                                    <svelte:component this={groupByDefaultTitle} content={header.titleData} />
+                                    <svelte:component this={groupByDefaultTitle} value={header.titleData} />
                                 {/if}
                                 
                                 {@const unpaged = groupHeadersUnpaged.find(x => x.groupKey == header.groupKey)}
@@ -218,7 +218,7 @@
                                             <svelte:component this={col.renderComponent} {...{value: row[col.key]}} />
                                         {:else}
                                             {@const value = col.accessor ? col.accessor(row) : row[col.key]}
-                                            <svelte:component this={rowDefaultTitle} content={value} />
+                                            <svelte:component this={rowDefaultTitle} value={value} />
                                         {/if}
                                     </svelte:component>
                                 {/if}
@@ -249,7 +249,7 @@
                                     <svelte:component this={col.renderComponent} {...{value: row[col.key]}} />
                                 {:else}
                                     {@const value = col.accessor ? col.accessor(row) : row[col.key]}
-                                    <svelte:component this={rowDefaultTitle} content={value} />
+                                    <svelte:component this={rowDefaultTitle} value={value} />
                                 {/if}
                             </svelte:component>
                         {/if}
