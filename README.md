@@ -49,7 +49,7 @@ bun add @mediakular/gridcraft
 
 ## Usage
 
-Most basic usage: 
+Most basic usage. In this example GridCraft will automatically detect the properties of type `Client` and generate a column for each property.
 
 ```typescript
 <script lang="ts">
