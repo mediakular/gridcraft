@@ -1,7 +1,6 @@
 import { hash } from "./helpers/hash-helper.js";
 import type { ComponentType } from "svelte";
 
-export type GridColumnRenderArgs = { component: ComponentType, props: unknown }
 export type GridColumn<T> = {
     key: string,
     title: string,
@@ -9,7 +8,6 @@ export type GridColumn<T> = {
     sortable?: boolean,
     width?: number | string,
     renderComponent?: ComponentType,
-    cellRender?: (row: T) => GridColumnRenderArgs,
     accessor?: (row: T) => unknown,
     sortValue?: (row: T) => string | number | Date | undefined
 }

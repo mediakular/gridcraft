@@ -542,7 +542,6 @@ Coming soon
 - `accessor` (optional): returns custom objects or manipulated values
 - `sortValue` (optional): returned value will be used for sorting
 - `renderComponent` (optional): Reference to a SvelteKit component. Will be used to render the column-cell
-- `cellRender` (optional): Can be used to render a sveltekit component AND provide custum properties for the component. Those will be automatically injected. { component: MyFancyCellComponent, props: {myVal: 123, other: "abc"} }
 - `visible` (optional): Can be set to true/false to show/hide the column
 - `sortable` (optional): Can be set to true/false to activate/deactivate sorting of the column
 - `width` (optional): Width of the column. Either as number (px) or string value "123px" or "1rem" or "33%"

@@ -173,10 +173,7 @@
                     <svelte:component this={tdGroupBy} colspan={columns.length-1} onToggle={() => toggleGroup(header)} isExpanded={header.expanded}>
                         {#each columns.filter(x => x.visible != false) as col (col.key)}
                             {#if groupBy == col.key}
-                                {#if col.cellRender}
-                                    {@const comp=col.cellRender(header.titleData)}
-                                    <svelte:component this={comp.component} {...comp.props} />
-                                {:else if col.renderComponent && col.accessor }
+                                {#if col.renderComponent && col.accessor }
                                     {#if typeof header.titleData === 'object'}
                                         <svelte:component this={col.renderComponent} {...header.titleData} />
                                     {:else}
@@ -203,10 +200,7 @@
                             {#each columns.filter(x => x.visible != false) as col (col.key)}
                                 {#if groupBy != col.key}
                                     <svelte:component this={tdRow}>
-                                        {#if col.cellRender}
-                                            {@const comp=col.cellRender(row)}
-                                            <svelte:component this={comp.component} {...comp.props} />
-                                        {:else if col.renderComponent && col.accessor}
+                                        {#if col.renderComponent && col.accessor}
                                             {#if typeof col.accessor(row) === 'object'}
                                                 <svelte:component this={col.renderComponent} {...col.accessor(row)} />
                                             {:else}
@@ -234,10 +228,7 @@
                     {#each columns.filter(x => x.visible != false) as col (col.key)}
                         {#if groupBy != col.key}
                             <svelte:component this={tdRow}>
-                                {#if col.cellRender}
-                                    {@const comp=col.cellRender(row)}
-                                    <svelte:component this={comp.component} {...comp.props} />
-                                {:else if col.renderComponent && col.accessor}
+                                {#if col.renderComponent && col.accessor}
                                     {#if typeof col.accessor(row) === 'object'}
                                         <svelte:component this={col.renderComponent} {...col.accessor(row)} />
                                     {:else}
