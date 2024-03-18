@@ -7,9 +7,12 @@
 
 `@mediakular/gridcraft` is a powerful data grid package tailored for Sveltekit applications. It offers an array of features to elevate the presentation and interaction with tabular data.
 
+<img width="1148" alt="image" src="https://github.com/mediakular/gridcraft/assets/23722678/03a806a2-76bc-4513-86a8-05d0ff7bb5df">
+
 ### Demo
 
 Coming soon
+
 
 ### Exciting Features ✨
 
