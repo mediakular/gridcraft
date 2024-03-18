@@ -112,8 +112,8 @@ export class GridFunctions<T> {
         const sortCol = columns.find(x => x.key == column);
 
         this.data.sort((a, b) => {
-            const aValue = sortCol?.sortValue ? sortCol.sortValue(a) : sortCol?.accessor ? sortCol.accessor(a) : a[groupby as keyof T];
-            const bValue = sortCol?.sortValue ? sortCol.sortValue(b) : sortCol?.accessor ? sortCol.accessor(b) : b[groupby as keyof T];
+            const aValue = sortCol?.sortValue ? sortCol.sortValue(a) : sortCol?.accessor ? sortCol.accessor(a) : a[column as keyof T];
+            const bValue = sortCol?.sortValue ? sortCol.sortValue(b) : sortCol?.accessor ? sortCol.accessor(b) : b[column as keyof T];
 
             return sortOrder * (aValue == bValue ? a.index - b.index : (aValue > bValue ? 1 : -1));
         });
@@ -140,7 +140,6 @@ export class GridFunctions<T> {
         const newGroupHeaders:GroupHeader<T>[] = [];
 
         for (const groupHeader of this.groupHeaders) {
-            // console.log("---- Groupheader", this.groupHeaders.indexOf(groupHeader))
             if (rest == 0) {
                 break;
             }
@@ -149,11 +148,8 @@ export class GridFunctions<T> {
                 if (groupHeader.expanded) {
                     skippedCount += groupHeader.data.length;
                 }
-                // console.log("___ skipped")
                 continue;
             } else if (!groupHeader.expanded) {
-                // console.log("___ skipped collapsed")
-
                 newGroupHeaders.push(groupHeader);
                 groupHeader.data = [];
 
@@ -163,31 +159,21 @@ export class GridFunctions<T> {
                 const end = Math.min(start + itemsPerPage, groupHeader.data.length);
                 const initialLength = groupHeader.data.length;
 
-                // console.log("___ first group header")
                 newGroupHeaders.push(groupHeader);
                
-                // console.log("had", initialLength, "items")
-                
                 groupHeader.data = groupHeader.data.slice(start, end);
-                // console.log("sliced from", start, "to", end, "(", groupHeader.data.length, "items)")
 
                 rest = Math.max(0, start + itemsPerPage - initialLength);
-                // console.log("rest is ", rest, " = ", start, "+", itemsPerPage, "-", initialLength)
                 
                 skippedCount += initialLength;
             } else  { // this for the rest of the group headers we need to display (all after the first one)
-                // console.log("___ next group header to show")
                 newGroupHeaders.push(groupHeader);
                 const initialLength = groupHeader.data.length;
 
-                // console.log("had", groupHeader.data.length, "items")
                 const end = Math.min(rest, groupHeader.data.length);
                 groupHeader.data = groupHeader.data.slice(0, end);
-                // console.log("sliced from", 0, "to", end, "(", groupHeader.data.length, "items)")
 
                 rest -= groupHeader.data.length;
-
-                // console.log("rest is ", rest, " = ", rest + groupHeader.data.length , "-", groupHeader.data.length);
 
                 skippedCount += initialLength;
             }

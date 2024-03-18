@@ -2,6 +2,8 @@
     export let currentPage = 1;
     export let totalPages = 1;
 
+    $: currentPage = Math.max(1, Math.min(currentPage, totalPages));
+
     function nextPage() {
         if (currentPage < totalPages) {
             currentPage += 1;

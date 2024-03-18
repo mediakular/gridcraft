@@ -19,6 +19,7 @@
 	import { GridFunctions, type GridFilter, type GridColumn, type GroupHeader } from "../GridFunctions.js";
 
     type T = $$Generic<any>;
+    type ExpandedGroups = { [value:string] : boolean };
 
     export let data: Iterable<T> | ArrayLike<T> = [];
     export let dataUnpaged: Iterable<T> | ArrayLike<T> = []; // same as data, but nut cut for paging. Used for exports
@@ -51,21 +52,18 @@
     export let tdRow = TdRow;
     export let tdCheckbox = TdCheckbox;
     export let rowDefaultTitle = RowDefaultTitle;
-
-    type ExpandedGroups = { [value:string] : boolean };
-
-    $: fulldata = Array.from(data);
-    let sortOrderSecondary = 1; // 1 for ascending, -1 for descending
-    let expandedGroups:ExpandedGroups = {};
-
     export let selectedRows: T[] = [];
 
+
+    let sortOrderSecondary = 1; // 1 for ascending, -1 for descending
+    let expandedGroups: ExpandedGroups = {};
+
+    $: fulldata = Array.from(data);
     $: columns.forEach((col) => {
         if (col.visible === undefined) {
             col.visible = true;
         }
     })
-    
     $: grid = new GridFunctions<T>()
         .init(fulldata)
         .applyFilters(gridFilters, columns)
@@ -94,7 +92,7 @@
                 sortOrderSecondary = 1; // Default to ascending
             }
             return;
-        } 
+        }
         
         if (column === sortByColumn) {
             sortOrder *= -1; // Toggle sorting order
