@@ -1,4 +1,4 @@
-# @mediakular/svelte-data-grid
+# GridCraft - Comprehensive Data Grid for SvelteKit
 
 [![npm version](https://badge.fury.io/js/%40mediakular%2Fsvelte-data-grid.svg)](https://badge.fury.io/js/%40mediakular%2Fsvelte-data-grid)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
