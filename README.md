@@ -1,11 +1,11 @@
 # GridCraft: Svelte Data Grid
 
-[![npm version](https://badge.fury.io/js/%40mediakular%2Fsvelte-data-grid.svg)](https://badge.fury.io/js/%40mediakular%2Fsvelte-data-grid)
+[![npm version](https://badge.fury.io/js/%40mediakular%2Fgridcraft.svg)](https://badge.fury.io/js/%40mediakular%2Fgridcraft)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Comprehensive Data Grid for SvelteKit Apps 📊
 
-`@mediakular/svelte-data-grid` is a powerful data grid package tailored for Sveltekit applications. It offers an array of features to elevate the presentation and interaction with tabular data.
+`@mediakular/gridcraft` is a powerful data grid package tailored for Sveltekit applications. It offers an array of features to elevate the presentation and interaction with tabular data.
 
 ### Demo
 
@@ -24,13 +24,13 @@ Coming soon
 ## Installation
 
 ```bash
-npm install @mediakular/svelte-data-grid
+npm install @mediakular/gridcraft
 ```
 
 or 
 
 ```bash
-yarn add @mediakular/svelte-data-grid
+yarn add @mediakular/gridcraft
 ```
 
 ## Usage
@@ -38,7 +38,7 @@ yarn add @mediakular/svelte-data-grid
 Most basic usage: 
 
 ```typescript
-import { Grid, GridColumn } from '@mediakular/svelte-data-grid';
+import { Grid, GridColumn } from '@mediakular/gridcraft';
 
 // Define your data and columns
 let clients = getClientsFromDb();
