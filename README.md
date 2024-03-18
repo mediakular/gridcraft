@@ -54,7 +54,7 @@ bun add @mediakular/gridcraft
 
 Most basic usage. In this example GridCraft will automatically detect the properties of type `Client` and generate a column for each property.
 
-```typescript
+```svelte
 <script lang="ts">
 import { Grid } from '@mediakular/gridcraft';
 
@@ -78,7 +78,7 @@ $: ({ clients } = data);
 
 Here an example with a simple custom column definition.
 
-```typescript
+```svelte
 <script lang="ts">
 import { Grid, type GridColumn } from "@mediakular/svelte-data-grid";
 
@@ -126,7 +126,7 @@ GridCraft allows you to simply define your own custom svelte components to rende
 The following example shows you how to define a custom `renderComponent`:
 
 
-```typescript
+```svelte
 <script lang="ts">
 import { Grid, type GridColumn } from "@mediakular/svelte-data-grid";
 
@@ -196,7 +196,7 @@ let columns: GridColumn<Client>[] = [
 Here are the custom cell components used in the example above:
 
 ClientCell.svelte
-```typescript
+```svelte
 <script lang="ts">
     export let avatar: string;
     export let firstname: string;
@@ -218,7 +218,7 @@ ClientCell.svelte
 ```
 
 DateCell.svelte
-```typescript
+```svelte
 <script lang="ts">
   export let value: Date;
   let dateStr: string;
@@ -230,7 +230,7 @@ DateCell.svelte
 ```
 
 CurrencyCell.svelte
-```typescript
+```svelte
 <script lang="ts">
 	export let value: number;
 	let currency: string;
@@ -253,7 +253,7 @@ CurrencyCell.svelte
 
 Here an example on how to integrate a column with custom row actions. This could be used for example to display links or buttons to delete or edit a row, or to show row details.
 
-```typescript
+```svelte
 <script lang="ts">
 import { Grid, type GridColumn } from "@mediakular/svelte-data-grid";
 import ActionsCell from "$lib/components/grid/cells/ActionsCell.svelte";
@@ -305,7 +305,7 @@ let columns: GridColumn<Client>[] = [
 ```
 
 ActionsCell.svelte
-```typescript
+```svelte
 <script lang="ts">
     type T = $$Generic<any>;
 
@@ -340,7 +340,7 @@ ActionsCell.svelte
 
 Here a simple example with paging. Simply define and bind the necessary variables to the `Grid` component and to the `GridFooter` component. 
 
-```typescript
+```svelte
 <script lang="ts">
 import { Grid, GridFooter, type GridColumn } from "@mediakular/svelte-data-grid";
 
@@ -370,7 +370,7 @@ let totalResults = 0;
 
 ### Example With Grouping
 
-```typescript
+```svelte
 <script lang="ts">
 import { Grid, type GridColumn } from "@mediakular/svelte-data-grid";
 
@@ -419,7 +419,7 @@ let columns: GridColumn<Client>[] = [
 
 ### Example With Rows Selection
 
-```typescript
+```svelte
 <script lang="ts">
 import { Grid, type GridColumn } from "@mediakular/svelte-data-grid";
 
@@ -475,7 +475,7 @@ let columns: GridColumn<Client>[] = [
 
 ### Example With Text Filter
 
-```typescript
+```svelte
 <script lang="ts">
 import { Grid, type GridColumn, type GridFilter } from "@mediakular/svelte-data-grid";
 
