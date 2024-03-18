@@ -1,4 +1,4 @@
-# GridCraft
+# GridCraft: Svelte Data Grid
 
 [![npm version](https://badge.fury.io/js/%40mediakular%2Fsvelte-data-grid.svg)](https://badge.fury.io/js/%40mediakular%2Fsvelte-data-grid)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
