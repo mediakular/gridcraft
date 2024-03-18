@@ -38,11 +38,18 @@ yarn add @mediakular/gridcraft
 Most basic usage: 
 
 ```typescript
+<script lang="ts">
 import { Grid, GridColumn } from '@mediakular/gridcraft';
 
-// Define your data and columns
-let clients = getClientsFromDb();
+export let data: PageData;
+
+// Get your data
+let clients: Client[];
+$: ({ clients } = data);
+
+// Define your columns
 let columns = [...];
+</script>
 
 <Grid 
     bind:data={clients} 
@@ -55,6 +62,7 @@ let columns = [...];
 Here a more advanced usage with column definition. 
 
 ```typescript
+<script lang="ts">
 interface Client {
     id: string;
     firstname: string;
@@ -67,7 +75,10 @@ interface Client {
     quantity: number;
 }
 
-let clients: Client[] = getClientsFromDb();
+export let data: PageData;
+
+let clients: Client[];
+$: ({ clients } = data);
 
 let columns: GridColumn<Client>[] = [
     { 
@@ -84,29 +95,25 @@ let columns: GridColumn<Client>[] = [
         sortValue: (row: Client) => {
             return `${row.firstname} ${row.lastname}`
         },
-        renderComponent: ClientCell,
+        renderComponent: ClientCell
     },
     { 
         key: 'age', 
-        title: 'Age',
-        accessor: (row: Client) => { return row.age },
+        title: 'Age'
     },
     { 
         key: 'birthdate', 
         title: 'Birthday',
-        renderComponent: DateCell,
-        sortValue: (row: Client) => {
-            return row.birthdate;
-        },
-        accessor: (row: Client) => { return { value : row.birthdate } },
+        renderComponent: DateCell
     },
     { 
         key: 'total', 
         title: 'Total',
         accessor: (row: Client) => { return row.amount * row.quantity },
-        renderComponent: CurrencyCell,
+        renderComponent: CurrencyCell
     },
 ];
+</script>
 
 <Grid 
     bind:data={clients} 
@@ -117,13 +124,20 @@ let columns: GridColumn<Client>[] = [
 ### Example With Footer & Paging
 
 ```typescript
+<script lang="ts">
+export let data: PageData;
+
+let clients: Client[];
+$: ({ clients } = data);
+
+let columns: GridColumn<Client>[] = [];
+
+// Define paging variables
 let itemsPerPage = 10;
 let currentPage = 1;
 let totalPages = 1;
 let totalResults = 0;
-
-let columns: GridColumn<Client>[] = [];
-let clients: Client[] = getClientsFromDB() //replace getClientsFromDB with your DB function
+</script>
 
 <Grid 
     bind:data={clients} 
@@ -138,19 +152,152 @@ let clients: Client[] = getClientsFromDB() //replace getClientsFromDB with your 
 
 ### Example With Grouping
 
-Coming soon
+```typescript
+<script lang="ts">
+interface Client {
+    id: string;
+    firstname: string;
+    lastname: string;
+    age: number;
+}
+
+export let data: PageData;
+let clients: Client[];
+$: ({ clients } = data);
+
+let groupBy = "";
+
+let columns: GridColumn<Client>[] = [
+    { 
+        key: 'firstname', 
+        title: 'First Name',
+    },
+    { 
+        key: 'lastname', 
+        title: 'First Name',
+    },
+    { 
+        key: 'age', 
+        title: 'Age'
+    }
+];
+</script>
+
+<!-- this select box is just for demonstration purposes ->
+<select bind:value={groupBy} >
+    <option value="">Select Column to Group By</option>
+    {#each columns as col (col.key)}
+        <option value={col.key}>{col.title}</option>
+    {/each}
+</select> 
+
+<Grid 
+    bind:data={clients} 
+    bind:columns={columns}
+    bind:groupby>
+</Grid>
+```
 
 ### Example With Selecting Rows
 
-Coming soon
+```typescript
+<script lang="ts">
+interface Client {
+    id: string;
+    firstname: string;
+    lastname: string;
+    age: number;
+}
 
-### Example With Different Filters
+export let data: PageData;
+let clients: Client[];
+$: ({ clients } = data);
 
-Coming soon
+let showCheckboxes = true;
+let selectedRows:Client[] = [];
 
-### Example With Group By
+let columns: GridColumn<Client>[] = [
+    { 
+        key: 'firstname', 
+        title: 'First Name',
+    },
+    { 
+        key: 'lastname', 
+        title: 'First Name',
+    },
+    { 
+        key: 'age', 
+        title: 'Age'
+    },
+];
+</script>
 
-Coming soon
+<pre>
+    {JSON.stringify(selectedRows)}
+</pre>
+
+<Grid 
+    bind:data={clients} 
+    bind:columns={columns}
+    bind:selectedRows
+    bind:showCheckboxes>
+</Grid>
+```
+
+### Example With Text Filter
+
+```typescript
+<script lang="ts">
+interface Client {
+    id: string;
+    firstname: string;
+    lastname: string;
+    age: number;
+}
+
+export let data: PageData;
+let clients: Client[];
+$: ({ clients } = data);
+
+let textSearch = "";
+
+let gridFilters: GridFilter[];
+$: gridFilters = [
+    {   
+        key: "text-search", //can be chosen freely
+        columns: ["firstname", "lastname", "age"], // Define which columns you would like to use the filter for
+        filter: (row: any, colKey: string) => { // Actual filter function which will be called for each of the above defined columns. We return true for displaying the column and false for hiding it
+            const search = (val: string | null) => val != undefined && val.toString().toLocaleLowerCase().includes(textSearch.toLocaleLowerCase());
+            return search(row)
+        }, 
+        active: (textSearch && textSearch.length > 0) ? true : false // Here we return true when the filter should be active, when false the filter will be ignored
+    }
+];
+
+let columns: GridColumn<Client>[] = [
+    { 
+        key: 'firstname', 
+        title: 'Firstname',
+    },
+    { 
+        key: 'lastname', 
+        title: 'Lastname',
+    },
+    { 
+        key: 'age', 
+        title: 'Age'
+    },
+];
+</script>
+
+ <input type="text" placeholder="Enter Filter Term (Firstname, Lastname or Age)" bind:value={textSearch} />
+
+<Grid 
+    bind:data={clients} 
+    bind:columns={columns}
+    bind:gridFilters>
+</Grid>
+```
 
 ### Example With Customized Appearance 
 
@@ -165,7 +312,7 @@ Coming soon
 
 ### Columns
 
-- `key`: needs to be the name of the property
+- `key`: needs to be the name of the property when no accessor is defined
 - `title`: Title of the column
 - `accessor` (optional): returns custom objects or manipulated values
 - `sortValue` (optional): returned value will be used for sorting
