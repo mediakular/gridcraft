@@ -18,8 +18,10 @@ Coming soon
 - **Custom Filtering**: Tailor data views to your specific needs.
 - **Grouping**: Organize related data into logical groups.
 - **Row Selection**: Select and manipulate individual or multiple rows.
+- **Custom Row edit**: Integrate any custom or third-party components to edit your data.
 - **Customizable Output**: Personalize grid appearance to match your style guide.
-- **Tailwind CSS ready**: Completely compatible with tailwind CSS.
+- **Typesafe**: Stay typesafe and use the types from your own business model.
+- **Tailwind CSS ready**: Completely compatible with tailwind CSS and any other framework.
 
 ## Installation
 
@@ -31,6 +33,18 @@ or
 
 ```bash
 yarn add @mediakular/gridcraft
+```
+
+or 
+
+```bash
+pnpm add @mediakular/gridcraft
+```
+
+or 
+
+```bash
+bun add @mediakular/gridcraft
 ```
 
 ## Usage
@@ -59,10 +73,65 @@ let columns = [...];
 
 ### Example With Column Definition
 
-Here a more advanced usage with column definition. 
+Here an example with a simple column definition.
 
 ```typescript
 <script lang="ts">
+import { Grid, type GridColumn } from "@mediakular/svelte-data-grid";
+
+interface Client {
+    id: string;
+    firstname: string;
+    lastname: string;
+    age: number;
+    birthdate: Date;
+}
+
+export let data: PageData;
+
+let clients: Client[];
+$: ({ clients } = data);
+
+let columns: GridColumn<Client>[] = [
+    { 
+        key: 'firstname', 
+        title: 'First Name'
+    },
+    { 
+        key: 'lastname', 
+        title: 'Last Name'
+    },
+    { 
+        key: 'age', 
+        title: 'Age'
+    },
+    { 
+        key: 'birthdate', 
+        title: 'Birthday'
+    }
+];
+</script>
+
+<Grid 
+    bind:data={clients} 
+    bind:columns={columns}>
+</Grid>
+```
+
+#### Use custom components to render column cells
+
+GridCraft allows you to simply define your own custom svelte components to render column cells. 
+The following example shows you how to define a custom `renderComponent`:
+
+
+```typescript
+<script lang="ts">
+import { Grid, type GridColumn } from "@mediakular/svelte-data-grid";
+
+import ClientCell from "$lib/components/grid/cells/ClientCell.svelte";
+import CurrencyCell from "$lib/components/grid/cells/CurrencyCell.svelte";
+import DateCell from "$lib/components/grid/cells/DateCell.svelte";
+
 interface Client {
     id: string;
     firstname: string;
@@ -84,18 +153,20 @@ let columns: GridColumn<Client>[] = [
     { 
         key: 'name', 
         title: 'Name',
-        accessor: (row: Client) => {
+        // Use an accessor to transform row data, which can be used in your custom renderComponent
+        accessor: (row: Client) => { 
             return {
                 avatar: row.avatar,
                 firstname: row.firstname,
                 lastname: row.lastname,
                 email: row.email
             }
-        }, 
+        },
+        // as the default search will not work with our accessor data, we have to provide a sortValue which will be used for sorting
         sortValue: (row: Client) => {
             return `${row.firstname} ${row.lastname}`
         },
-        renderComponent: ClientCell
+        renderComponent: ClientCell // Our custom column cell component to render a column with avatar, full name and email
     },
     { 
         key: 'age', 
@@ -104,13 +175,13 @@ let columns: GridColumn<Client>[] = [
     { 
         key: 'birthdate', 
         title: 'Birthday',
-        renderComponent: DateCell
+        renderComponent: DateCell // Our custom column cell component to render a formatted date
     },
     { 
         key: 'total', 
         title: 'Total',
         accessor: (row: Client) => { return row.amount * row.quantity },
-        renderComponent: CurrencyCell
+        renderComponent: CurrencyCell // Our custom column cell component to render a calculated cell and formatted currency 
     },
 ];
 </script>
@@ -121,10 +192,158 @@ let columns: GridColumn<Client>[] = [
 </Grid>
 ```
 
-### Example With Footer & Paging
+Here are the custom cell components used in the example above:
+
+ClientCell.svelte
+```typescript
+<script lang="ts">
+    export let avatar: string;
+    export let firstname: string;
+    export let lastname: string;
+    export let email: string;
+
+    $: fullname = `${firstname} ${lastname}`;
+</script>
+
+<div class="my-client-cell">
+    <img src="{avatar}" alt="{fullname}" />
+    <div>
+        <span>{fullname}</span>
+        {#if email}
+            <span>{email}</span>
+        {/if}
+    </div>
+</div>
+```
+
+DateCell.svelte
+```typescript
+<script lang="ts">
+  export let value: Date;
+  let dateStr: string;
+
+  $: dateStr = value ? (new Date(value)).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : "-";
+</script>
+
+<div>{dateStr}</div>
+```
+
+CurrencyCell.svelte
+```typescript
+<script lang="ts">
+	export let value: number;
+	let currency: string;
+
+	$: value, updateValue()
+
+	async function updateValue() {
+		const formatCurrency = (value: number, locale: string, currency: string, maximumFractionDigits: number) =>
+                new Intl.NumberFormat(locale, { currency: currency, style: 'currency',2,0
+        }).format(value);
+
+		currency = formatCurrency(value ? value : 0, "en-US", "USD", 2);
+	}
+</script>
+
+<div>{currency ? currency : '-'}</div>
+```
+
+### Example With Row Action Column
+
+Here an example on how to integrate a column with custom row actions. This could be used for example to display links or buttons to delete or edit a row, or to show row details.
 
 ```typescript
 <script lang="ts">
+import { Grid, type GridColumn } from "@mediakular/svelte-data-grid";
+import ActionsCell from "$lib/components/grid/cells/ActionsCell.svelte";
+
+export let data: PageData;
+
+let clients: Client[];
+$: ({ clients } = data);
+
+let columns: GridColumn<Client>[] = [
+    { 
+        key: 'firstname', 
+        title: 'First Name',
+    },
+    {
+        key: 'lastname', 
+        title: 'Last Name',
+    },
+    {
+        key: 'email', 
+        title: 'E-Mail',
+    },
+    {
+        key: 'actions', // you can call it however you like
+        title: 'Row Actions',
+        sortable: false,
+        accessor: (row: Client) => { 
+            return {
+                row: row, 
+                editClicked: (row: Client) => {  
+                   // Implement your edit function here. You can for example open a modal window which shows the edit form for the row
+                },
+                deleteClicked: (row: Client) => {  
+                   // Implement your delete function here. You can for example open a dialoge window here to confirm that the user wants to delete the row
+                },
+                somethingElseClicked: () => {
+                    // ...
+                }
+            }
+        },
+        renderComponent: ActionsCell
+    }
+];
+</script>
+
+<Grid 
+    bind:data={clients} 
+    bind:columns={columns}>
+</Grid>
+```
+
+ActionsCell.svelte
+```typescript
+<script lang="ts">
+    type T = $$Generic<any>;
+
+    export let row: T;
+    export let editClicked: (row: T) => void;
+    export let deleteClicked: (row: T) => void;
+    export let somethingElseClicked: (row: T) => void;
+
+    function handleEditClick() {
+        editClicked(row);
+    }
+    function handleDeleteClick() {
+        deleteClicked(row);
+    }
+    function handleSomethingElseClick() {
+        somethingElseClicked(row);
+    }
+</script>
+
+<button on:click|preventDefault={handleEditClick}>
+    Edit
+</button>
+<button on:click|preventDefault={handleDeleteClick}>
+    Delete
+</button>
+<a href="#" on:click|preventDefault={handleSomethingElseClick}>
+    Something Else
+</a>
+```
+
+### Example With Paging
+
+Here a simple example with paging. Simply define and bind the necessary variables to the `Grid` component and to the `GridFooter` component. 
+
+```typescript
+<script lang="ts">
+import { Grid, GridFooter, type GridColumn } from "@mediakular/svelte-data-grid";
+
 export let data: PageData;
 
 let clients: Client[];
@@ -154,6 +373,8 @@ let totalResults = 0;
 
 ```typescript
 <script lang="ts">
+import { Grid, type GridColumn } from "@mediakular/svelte-data-grid";
+
 interface Client {
     id: string;
     firstname: string;
@@ -202,6 +423,8 @@ let columns: GridColumn<Client>[] = [
 
 ```typescript
 <script lang="ts">
+import { Grid, type GridColumn } from "@mediakular/svelte-data-grid";
+
 interface Client {
     id: string;
     firstname: string;
@@ -248,6 +471,8 @@ let columns: GridColumn<Client>[] = [
 
 ```typescript
 <script lang="ts">
+import { Grid, type GridColumn, type GridFilter } from "@mediakular/svelte-data-grid";
+
 interface Client {
     id: string;
     firstname: string;
