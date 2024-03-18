@@ -60,15 +60,9 @@ export let data: PageData;
 // Get your data
 let clients: Client[];
 $: ({ clients } = data);
-
-// Define your columns
-let columns = [...];
 </script>
 
-<Grid 
-    bind:data={clients} 
-    bind:columns={columns}>
-</Grid>
+<Grid bind:data={clients} />
 ```
 
 ### Example With Column Definition
@@ -114,8 +108,7 @@ let columns: GridColumn<Client>[] = [
 
 <Grid 
     bind:data={clients} 
-    bind:columns={columns}>
-</Grid>
+    bind:columns={columns} />
 ```
 
 #### Use custom components to render column cells
@@ -188,8 +181,7 @@ let columns: GridColumn<Client>[] = [
 
 <Grid 
     bind:data={clients} 
-    bind:columns={columns}>
-</Grid>
+    bind:columns={columns} />
 ```
 
 Here are the custom cell components used in the example above:
@@ -300,8 +292,7 @@ let columns: GridColumn<Client>[] = [
 
 <Grid 
     bind:data={clients} 
-    bind:columns={columns}>
-</Grid>
+    bind:columns={columns} />
 ```
 
 ActionsCell.svelte
@@ -364,8 +355,7 @@ let totalResults = 0;
     bind:currentPage 
     bind:itemsPerPage 
     bind:totalPages 
-    bind:totalResults>
-</Grid>
+    bind:totalResults />
 <GridFooter bind:currentPage bind:totalPages bind:totalResults bind:itemsPerPage />
 ```
 
@@ -415,8 +405,7 @@ let columns: GridColumn<Client>[] = [
 <Grid 
     bind:data={clients} 
     bind:columns={columns}
-    bind:groupby>
-</Grid>
+    bind:groupby />
 ```
 
 ### Example With Selecting Rows
@@ -463,8 +452,7 @@ let columns: GridColumn<Client>[] = [
     bind:data={clients} 
     bind:columns={columns}
     bind:selectedRows
-    bind:showCheckboxes>
-</Grid>
+    bind:showCheckboxes />
 ```
 
 ### Example With Text Filter
@@ -520,8 +508,7 @@ let columns: GridColumn<Client>[] = [
 <Grid 
     bind:data={clients} 
     bind:columns={columns}
-    bind:gridFilters>
-</Grid>
+    bind:gridFilters />
 ```
 
 ### Example With Customized Appearance 
@@ -545,7 +532,6 @@ Coming soon
 - `visible` (optional): Can be set to true/false to show/hide the column
 - `sortable` (optional): Can be set to true/false to activate/deactivate sorting of the column
 - `width` (optional): Width of the column. Either as number (px) or string value "123px" or "1rem" or "33%"
-
 
 ## License
 
