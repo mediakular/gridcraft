@@ -56,11 +56,17 @@ Most basic usage. In this example GridCraft will automatically detect the proper
 
 ```typescript
 <script lang="ts">
-import { Grid, GridColumn } from '@mediakular/gridcraft';
+import { Grid } from '@mediakular/gridcraft';
+
+interface Client {
+    id: string;
+    firstname: string;
+    lastname: string;
+    age: number;
+    birthdate: Date;
+}
 
 export let data: PageData;
-
-// Get your data
 let clients: Client[];
 $: ({ clients } = data);
 </script>
@@ -70,7 +76,7 @@ $: ({ clients } = data);
 
 ### Example With Column Definition
 
-Here an example with a simple column definition.
+Here an example with a simple custom column definition.
 
 ```typescript
 <script lang="ts">
