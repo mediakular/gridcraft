@@ -1,6 +1,6 @@
 {
-  "name": "@mediakular/svelte-data-grid",
-  "version": "0.0.9",
+  "name": "@mediakular/gridcraft",
+  "version": "0.0.10",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
@@ -41,7 +41,7 @@
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
-  "description": "Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).",
+  "description": "GridCraft: Svelte Data Grid. Comprehensive Data Grid for SvelteKit Apps.",
   "main": "svelte.config.js",
   "directories": {
     "test": "tests"
@@ -151,7 +151,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/st3v3y/svelte-data-grid.git"
+    "url": "git+https://github.com/mediakular/gridcraft.git"
   },
   "keywords": [
     "datagrid",
@@ -161,7 +161,7 @@
   "author": "Stefan Lessle",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/st3v3y/svelte-data-grid/issues"
+    "url": "https://github.com/mediakular/gridcraft/issues"
   },
-  "homepage": "https://github.com/st3v3y/svelte-data-grid#readme"
+  "homepage": "https://github.com/mediakular/gridcraft#readme"
 }
