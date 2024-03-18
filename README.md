@@ -1,6 +1,6 @@
 # GridCraft: Svelte Data Grid
 
-[![npm version](https://badge.fury.io/js/%40mediakular%2Fgridcraft.svg)](https://badge.fury.io/js/%40mediakular%2Fgridcraft)
+[![npm version](https://badge.fury.io/js/@mediakular%2Fgridcraft.svg)](https://badge.fury.io/js/@mediakular%2Fgridcraft)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Comprehensive Data Grid for SvelteKit Apps 📊
