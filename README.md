@@ -117,7 +117,7 @@ let columns: GridColumn<Client>[] = [
 
 <Grid 
     bind:data={clients} 
-    bind:columns={columns} />
+    bind:columns />
 ```
 
 #### Use custom components to render column cells
@@ -190,7 +190,7 @@ let columns: GridColumn<Client>[] = [
 
 <Grid 
     bind:data={clients} 
-    bind:columns={columns} />
+    bind:columns />
 ```
 
 Here are the custom cell components used in the example above:
@@ -301,7 +301,7 @@ let columns: GridColumn<Client>[] = [
 
 <Grid 
     bind:data={clients} 
-    bind:columns={columns} />
+    bind:columns />
 ```
 
 ActionsCell.svelte
@@ -360,7 +360,7 @@ let totalResults = 0;
 
 <Grid 
     bind:data={clients} 
-    bind:columns={columns}
+    bind:columns
     bind:currentPage 
     bind:itemsPerPage 
     bind:totalPages 
@@ -413,11 +413,11 @@ let columns: GridColumn<Client>[] = [
 
 <Grid 
     bind:data={clients} 
-    bind:columns={columns}
+    bind:columns
     bind:groupby />
 ```
 
-### Example With Selecting Rows
+### Example With Rows Selection
 
 ```typescript
 <script lang="ts">
@@ -453,13 +453,22 @@ let columns: GridColumn<Client>[] = [
 ];
 </script>
 
-<pre>
-    {JSON.stringify(selectedRows)}
-</pre>
+<!-- Just for demonstration purposes -->
+<label for="showCheckboxes">
+    <input type="checkbox" checked={showCheckboxes == true} on:change={() => showCheckboxes = !showCheckboxes} id="showCheckboxes">
+    &nbsp;Show checkboxes
+</label>
+{#if showCheckboxes}
+    Selected Rows:
+    <pre>
+        {JSON.stringify(selectedRows, null, 2)}
+    </pre>
+{/if}
+<!-- End: Just for demonstration purposes -->
 
 <Grid 
     bind:data={clients} 
-    bind:columns={columns}
+    bind:columns
     bind:selectedRows
     bind:showCheckboxes />
 ```
@@ -512,11 +521,11 @@ let columns: GridColumn<Client>[] = [
 ];
 </script>
 
- <input type="text" placeholder="Enter Filter Term (Firstname, Lastname or Age)" bind:value={textSearch} />
+<input type="text" placeholder="Enter Filter Term (Firstname, Lastname or Age)" bind:value={textSearch} />
 
 <Grid 
     bind:data={clients} 
-    bind:columns={columns}
+    bind:columns
     bind:gridFilters />
 ```
 
