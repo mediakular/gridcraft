@@ -1,29 +1,5 @@
 import { hash } from "./helpers/hash-helper.js";
-import type { ComponentType } from "svelte";
-
-export type GridColumn<T> = {
-    key: string,
-    title: string,
-    visible?: boolean,
-    sortable?: boolean,
-    width?: number | string,
-    renderComponent?: ComponentType,
-    accessor?: (row: T) => unknown,
-    sortValue?: (row: T) => string | number | Date | undefined
-}
-export type GridFilter = {
-    key: string;
-    columns: "all" | string | string[];
-    filter: (columnValue: unknown, columnKey: string) => boolean;
-    active: boolean;
-}
-export type GroupHeader<T> = {
-    selected: boolean;
-    groupKey: string;
-    titleData: any;
-    expanded: boolean;
-    data: T[];
-};
+import type { GridColumn, GridFilter, GroupHeader } from "./types/index.js";
 
 export class GridFunctions<T> {
     public data: T[] = [];
@@ -32,13 +8,13 @@ export class GridFunctions<T> {
     public groupHeaders: GroupHeader<T>[] = [];
     public groupHeadersUnpaged: GroupHeader<T>[] = [];
 
-    init(data: T[]) {
+    init(data: T[]) : GridFunctions<T> {
         this.data = data;
         this.dataLength = this.data.length;
         return this;
     }
 
-    applyFilters(gridFilters: GridFilter[], columns: GridColumn<T>[]) {
+    applyFilters(gridFilters: GridFilter[], columns: GridColumn<T>[]) : GridFunctions<T> {
         if (gridFilters.length == 0) {
             return this;
         }
@@ -78,17 +54,17 @@ export class GridFunctions<T> {
         return this;
     }
 
-    sortBy(column: string, sortOrder: number, groupby: string, sortOrderSecondary: number, columns: GridColumn<T>[]) {
+    sortBy(column: string, sortOrder: number, groupby: string, sortOrderSecondary: number, columns: GridColumn<T>[]): GridFunctions<T> {
         if (groupby) { // always order by the groupBy column here, if the sortbyColumn is != groupby the sort will be done later
             this.data = this.data.sort((a, b) => {
                 
                 const groupByCol = columns.find(x => x.key == groupby);
 
-                const aValue = groupByCol?.sortValue ? groupByCol.sortValue(a) : groupByCol?.accessor ? groupByCol.accessor(a) : a[groupby as keyof T];
-                const bValue = groupByCol?.sortValue ? groupByCol.sortValue(b) : groupByCol?.accessor ? groupByCol.accessor(b) : b[groupby as keyof T];
+                const aValue: any = groupByCol?.sortValue ? groupByCol.sortValue(a) : groupByCol?.accessor ? groupByCol.accessor(a) : a[groupby as keyof T];
+                const bValue: any = groupByCol?.sortValue ? groupByCol.sortValue(b) : groupByCol?.accessor ? groupByCol.accessor(b) : b[groupby as keyof T];
 
                 if (groupby == column) {
-                    return sortOrder * (aValue == bValue ? a.index - b.index : (aValue > bValue ? 1 : -1));
+                    return sortOrder * (aValue === bValue ? a.index - b.index : (aValue > bValue ? 1 : -1));
                 }
 
                 // run secundary sorting if groupBy != sortByColumn
@@ -96,12 +72,12 @@ export class GridFunctions<T> {
                     return sortOrder * (aValue > bValue ? 1 : -1);
                 }
 
-                const sortCol = columns.find(x => x.key == column);
+                const sortCol = columns.find(x => x.key === column);
 
-                const aValueSecundary = sortCol?.sortValue ? sortCol.sortValue(a) : sortCol?.accessor ? sortCol.accessor(a) : a[column as keyof T];
-                const bValueSecundary = sortCol?.sortValue ? sortCol.sortValue(b) : sortCol?.accessor ? sortCol.accessor(b) : b[column as keyof T];
+                const aValueSecundary: any = sortCol?.sortValue ? sortCol.sortValue(a) : sortCol?.accessor ? sortCol.accessor(a) : a[column as keyof T];
+                const bValueSecundary: any = sortCol?.sortValue ? sortCol.sortValue(b) : sortCol?.accessor ? sortCol.accessor(b) : b[column as keyof T];
 
-                return sortOrderSecondary * (aValueSecundary == bValueSecundary ? a.index - b.index : (aValueSecundary > bValueSecundary ? 1 : -1));
+                return sortOrderSecondary * (aValueSecundary === bValueSecundary ? a.index - b.index : (aValueSecundary > bValueSecundary ? 1 : -1));
             })
 
             return this;
@@ -110,8 +86,8 @@ export class GridFunctions<T> {
         const sortCol = columns.find(x => x.key == column);
 
         this.data.sort((a, b) => {
-            const aValue = sortCol?.sortValue ? sortCol.sortValue(a) : sortCol?.accessor ? sortCol.accessor(a) : a[column as keyof T];
-            const bValue = sortCol?.sortValue ? sortCol.sortValue(b) : sortCol?.accessor ? sortCol.accessor(b) : b[column as keyof T];
+            const aValue: any = sortCol?.sortValue ? sortCol.sortValue(a) : sortCol?.accessor ? sortCol.accessor(a) : a[column as keyof T];
+            const bValue: any = sortCol?.sortValue ? sortCol.sortValue(b) : sortCol?.accessor ? sortCol.accessor(b) : b[column as keyof T];
 
             return sortOrder * (aValue == bValue ? a.index - b.index : (aValue > bValue ? 1 : -1));
         });
@@ -119,8 +95,10 @@ export class GridFunctions<T> {
         return this;
     }
 
-    processPaging(currentPage: number, itemsPerPage: number, groupBy: string, columns: GridColumn<T>[]) {
+    processPaging(currentPage: number, itemsPerPage: number, groupBy: string, columns: GridColumn<T>[]): GridFunctions<T> {
         this.dataUnpaged = [...this.data];
+
+        console.log("paging", currentPage, itemsPerPage);
 
         if (!groupBy) {
             const startIndex = (currentPage - 1) * itemsPerPage;
@@ -182,7 +160,7 @@ export class GridFunctions<T> {
         return this;
     }
 
-    groupBy(groupBy: string, expandedGroups: { [x: string]: boolean; }, groupsExpandedDefault: boolean, columns: GridColumn<T>[]) {
+    groupBy(groupBy: string, expandedGroups: { [x: string]: boolean; }, groupsExpandedDefault: boolean, columns: GridColumn<T>[]): GridFunctions<T> {
         if (!groupBy) {
             return this;
         }

@@ -1,16 +1,22 @@
 // Reexport your entry components here
 
 import Grid from './components/Grid.svelte';
-import GridFooter from './components/GridFooter.svelte';
-import GridPaging from './components/GridFooter.svelte';
+import GridFooter from './components/Footer.svelte';
+import GridPaging from './components/Paging.svelte';
 
-import type { GridColumn, GridColumnRenderArgs, GridFilter, GroupHeader } from './GridFunctions.js';
+import PlainTableTheme from './themes/plain-table/index.js';
+import PrelineTheme from './themes/preline/index.js';
+
+import type { GridColumn, GridFilter, GridTheme, GroupHeader } from './types/index.js';
+
 export { 
     Grid,
-    GridFooter, 
-    GridPaging, 
-    GridColumn, 
-    GridColumnRenderArgs, 
+    GridFooter,
+    GridPaging,
+    GridColumn,
     GridFilter, 
-    GroupHeader 
+    GroupHeader,
+    GridTheme,
+    PlainTableTheme,
+    PrelineTheme
 };

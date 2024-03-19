@@ -80,7 +80,7 @@ Here an example with a simple custom column definition.
 
 ```svelte
 <script lang="ts">
-import { Grid, type GridColumn } from "@mediakular/svelte-data-grid";
+import { Grid, type GridColumn } from "@mediakular/gridcraft";
 
 interface Client {
     id: string;
@@ -128,7 +128,7 @@ The following example shows you how to define a custom `renderComponent`:
 
 ```svelte
 <script lang="ts">
-import { Grid, type GridColumn } from "@mediakular/svelte-data-grid";
+import { Grid, type GridColumn } from "@mediakular/gridcraft";
 
 import ClientCell from "$lib/components/grid/cells/ClientCell.svelte";
 import CurrencyCell from "$lib/components/grid/cells/CurrencyCell.svelte";
@@ -255,7 +255,7 @@ Here an example on how to integrate a column with custom row actions. This could
 
 ```svelte
 <script lang="ts">
-import { Grid, type GridColumn } from "@mediakular/svelte-data-grid";
+import { Grid, type GridColumn } from "@mediakular/gridcraft";
 import ActionsCell from "$lib/components/grid/cells/ActionsCell.svelte";
 
 export let data: PageData;
@@ -342,7 +342,7 @@ Here a simple example with paging. Simply define and bind the necessary variable
 
 ```svelte
 <script lang="ts">
-import { Grid, GridFooter, type GridColumn } from "@mediakular/svelte-data-grid";
+import { Grid, GridFooter, type GridColumn } from "@mediakular/gridcraft";
 
 export let data: PageData;
 
@@ -372,7 +372,7 @@ let totalResults = 0;
 
 ```svelte
 <script lang="ts">
-import { Grid, type GridColumn } from "@mediakular/svelte-data-grid";
+import { Grid, type GridColumn } from "@mediakular/gridcraft";
 
 interface Client {
     id: string;
@@ -421,7 +421,7 @@ let columns: GridColumn<Client>[] = [
 
 ```svelte
 <script lang="ts">
-import { Grid, type GridColumn } from "@mediakular/svelte-data-grid";
+import { Grid, type GridColumn } from "@mediakular/gridcraft";
 
 interface Client {
     id: string;
@@ -477,7 +477,7 @@ let columns: GridColumn<Client>[] = [
 
 ```svelte
 <script lang="ts">
-import { Grid, type GridColumn, type GridFilter } from "@mediakular/svelte-data-grid";
+import { Grid, type GridColumn, type GridFilter } from "@mediakular/gridcraft";
 
 interface Client {
     id: string;
@@ -531,7 +531,95 @@ let columns: GridColumn<Client>[] = [
 
 ### Example With Customized Appearance 
 
-Coming soon
+Currently, gridcraft comes with two pre-defined themes: `PlainTableTheme` and `PrelineTheme`.
+By default gridcraft uses `PlainTableTheme`. This theme is a very basic table, without any styles. 
+`PrelineTheme` is inspired by [preline tables](https://preline.co/docs/tables.html).
+
+There are currently three components that can be themed: `Grid`, `GridFooter` and `GridPaging`. 
+On these components the `theme` property can be set.
+
+```svelte
+<script lang="ts">
+import { Grid, type GridColumn, GridFooter, PrelineTheme, PlainTableTheme } from "@mediakular/gridcraft";
+
+export let data: PageData;
+let clients: Client[];
+$: ({ clients } = data);
+
+let theme = PlainTableTheme;
+
+let columns: GridColumn<Client>[] = [
+    ...
+];
+</script>
+
+<!-- Only for demonstration purposes -->
+<button on:click={() => theme = PlainTableTheme}>Plain Theme</button>
+<button on:click={() => theme = PrelineTheme}>Preline Theme</button>
+<!-- End: Only for demonstration purposes -->
+
+<Grid 
+    bind:data={clients} 
+    bind:columns
+    {theme} />
+
+<GridFooter ... {theme} />
+```
+
+When using `PrelineTheme` you need to install [tailwindcss](https://tailwindcss.com/docs/guides/sveltekit) and make sure to add this in your `tailwind.config.js`:
+
+```typescript
+export default {
+  content: [
+    ...
+    './node_modules/@mediakular/gridcraft/dist/themes/preline/*.svelte'
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [
+    ...
+  ],
+}
+```
+
+#### Overwriting an existing theme
+
+This can be usefull if you are satisfied with a certain theme, but you want to make only a few changes instead of creating a new custom theme.
+
+```svelte
+<script lang="ts">
+import { Grid, type GridColumn, GridFooter, PrelineTheme, PlainTableTheme } from "@mediakular/gridcraft";
+import MyTableContainer from "$lib/components/grid/theme/MyTableContainer.svelte"
+
+export let data: PageData;
+let clients: Client[];
+$: ({ clients } = data);
+
+let theme = PlainTableTheme;
+theme.grid.container = MyTableContainer;
+
+let columns: GridColumn<Client>[] = [
+    ...
+];
+</script>
+
+<Grid 
+    bind:data={clients} 
+    bind:columns
+    {theme} />
+
+<GridFooter ... {theme} />
+```
+
+MyTableContainer.svelte
+```svelte
+<div class="my-custom-wrapper">
+    <table class="my-custom-table-class" id="custom-table-id">
+        <slot />
+    </table>
+</div>
+```
 
 ### Example With Data Export
 
