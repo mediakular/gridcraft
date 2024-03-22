@@ -10,7 +10,7 @@
     export let data: Iterable<T> | ArrayLike<T> = [];
     export let dataUnpaged: Iterable<T> | ArrayLike<T> = []; // same as data, but nut cut for paging. Used for exports
     export let columns: GridColumn<T>[] = [];
-    export let gridFilters: GridFilter[] = [];
+    export let filters: GridFilter[] = [];
 
     export let groupBy = ""; // Default grouping column
     export let sortByColumn = "";
@@ -56,7 +56,7 @@
     })
     $: grid = new GridFunctions<T>()
         .init(fulldata)
-        .applyFilters(gridFilters, columns)
+        .applyFilters(filters, columns)
         .sortBy(sortByColumn, sortOrder, groupBy, sortOrderSecondary, columns)
         .groupBy(groupBy, expandedGroups, groupsExpandedDefault, columns)
         .processPaging(currentPage, itemsPerPage, groupBy, columns);

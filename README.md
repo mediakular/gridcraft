@@ -403,13 +403,14 @@ let columns: GridColumn<Client>[] = [
 ];
 </script>
 
-<!-- this select box is just for demonstration purposes ->
+<!-- Just for demonstration purposes -->
 <select bind:value={groupBy} >
     <option value="">Select Column to Group By</option>
     {#each columns as col (col.key)}
         <option value={col.key}>{col.title}</option>
     {/each}
 </select> 
+<!-- End: Just for demonstration purposes -->
 
 <Grid 
     bind:data={clients} 
@@ -492,8 +493,8 @@ $: ({ clients } = data);
 
 let textSearch = "";
 
-let gridFilters: GridFilter[];
-$: gridFilters = [
+let filters: GridFilter[];
+$: filters = [
     {   
         key: "text-search", //can be chosen freely
         columns: ["firstname", "lastname", "age"], // Define which columns you would like to use the filter for
@@ -526,7 +527,7 @@ let columns: GridColumn<Client>[] = [
 <Grid 
     bind:data={clients} 
     bind:columns
-    bind:gridFilters />
+    bind:filters />
 ```
 
 ### Example With Customized Appearance 

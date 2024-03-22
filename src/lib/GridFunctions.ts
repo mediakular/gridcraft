@@ -14,12 +14,12 @@ export class GridFunctions<T> {
         return this;
     }
 
-    applyFilters(gridFilters: GridFilter[], columns: GridColumn<T>[]) : GridFunctions<T> {
-        if (gridFilters.length == 0) {
+    applyFilters(filters: GridFilter[], columns: GridColumn<T>[]) : GridFunctions<T> {
+        if (filters.length == 0) {
             return this;
         }
 
-        const activeFilters = gridFilters.filter(x => x.active);
+        const activeFilters = filters.filter(x => x.active);
 
         this.data = this.data.filter((row: T) => {
             if (activeFilters.length == 0) {
