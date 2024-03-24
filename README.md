@@ -11,7 +11,7 @@
 
 ### Demo
 
-Coming soon
+[DEMOS](https://gridcraft.mediakular.com/)
 
 
 ### Exciting Features ✨
@@ -622,26 +622,11 @@ MyTableContainer.svelte
 </div>
 ```
 
-### Example With Data Export
-
-Coming soon
-
 ## API Documentation
 
-### Grid Properties
-
-Coming soon
-
-### Columns
-
-- `key`: needs to be the name of the property when no accessor is defined
-- `title`: Title of the column
-- `accessor` (optional): returns custom objects or manipulated values
-- `sortValue` (optional): returned value will be used for sorting
-- `renderComponent` (optional): Reference to a SvelteKit component. Will be used to render the column-cell
-- `visible` (optional): Can be set to true/false to show/hide the column
-- `sortable` (optional): Can be set to true/false to activate/deactivate sorting of the column
-- `width` (optional): Width of the column. Either as number (px) or string value "123px" or "1rem" or "33%"
+[Grid API](https://gridcraft.mediakular.com/docs/api-grid)
+[Column API](https://gridcraft.mediakular.com/docs/api-column)
+[Filter API](https://gridcraft.mediakular.com/docs/api-filter)
 
 ## License
 

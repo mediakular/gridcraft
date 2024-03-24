@@ -1,6 +1,6 @@
 {
   "name": "@mediakular/gridcraft",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
@@ -163,5 +163,5 @@
   "bugs": {
     "url": "https://github.com/mediakular/gridcraft/issues"
   },
-  "homepage": "https://github.com/mediakular/gridcraft#readme"
+  "homepage": "https://gridcraft.mediakular.com"
 }
