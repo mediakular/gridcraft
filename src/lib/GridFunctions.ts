@@ -98,8 +98,6 @@ export class GridFunctions<T> {
     processPaging(currentPage: number, itemsPerPage: number, groupBy: string, columns: GridColumn<T>[]): GridFunctions<T> {
         this.dataUnpaged = [...this.data];
 
-        console.log("paging", currentPage, itemsPerPage);
-
         if (!groupBy) {
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
