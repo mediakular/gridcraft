@@ -44,14 +44,13 @@
     .gc-paging button {
         display: flex;
         align-items: center;
-        background-color: var(--gc-footer-button-bg-color, #e2e8f0);
-        border: var(--gc-footer-button-border, 1px solid #cbd5e1);
+        background-color: var(--gc-footer-button-bg-color, var(--gc-secondary-color));
+        border: var(--gc-footer-button-border, 1px solid var(--gc-secondary-color));
         border-radius: var(--gc-footer-button-border-radius, 0.25rem);
         padding: var(--gc-footer-button-padding, 0.5rem 0.75rem);
     }
     .gc-paging button:hover:not(:disabled) {
-        background-color: var(--gc-footer-button-hover-bg-color, #c6d0dd);
-        border: var(--gc-footer-button-border-hover, 1px solid #cbd5e1);
+        filter:brightness(90%);
     }
     .gc-paging button:disabled {
         opacity: 0.5;

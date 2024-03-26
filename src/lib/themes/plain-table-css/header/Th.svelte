@@ -24,16 +24,17 @@
     }
 
     .gc-th-col-title {
-        color: var(--gc-th-color, #2a2a2a);
+        color: var(--gc-th-color, var(--gc-text-color));
         text-transform: var(--gc-th-text-transform, uppercase);
         font-size:  var(--gc-th-font-size, small);
     }
 
     .gc-th--sortable {
         cursor: pointer;
+        background-color: var(--gc-table-header-bg-color, var(--gc-secondary-color));
     }
 
     .gc-th--sortable:hover {
-        background-color: var(--gc-th-sortable-bg-hover, #f3f4f6);
+        filter: brightness(95%);
     }
 </style>

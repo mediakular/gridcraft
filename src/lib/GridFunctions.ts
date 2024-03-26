@@ -67,17 +67,17 @@ export class GridFunctions<T> {
                     return sortOrder * (aValue === bValue ? a.index - b.index : (aValue > bValue ? 1 : -1));
                 }
 
-                // run secundary sorting if groupBy != sortByColumn
+                // run secondary sorting if groupBy != sortByColumn
                 if (aValue != bValue) {
                     return sortOrder * (aValue > bValue ? 1 : -1);
                 }
 
                 const sortCol = columns.find(x => x.key === column);
 
-                const aValueSecundary: any = sortCol?.sortValue ? sortCol.sortValue(a) : sortCol?.accessor ? sortCol.accessor(a) : a[column as keyof T];
-                const bValueSecundary: any = sortCol?.sortValue ? sortCol.sortValue(b) : sortCol?.accessor ? sortCol.accessor(b) : b[column as keyof T];
+                const aValuesecondary: any = sortCol?.sortValue ? sortCol.sortValue(a) : sortCol?.accessor ? sortCol.accessor(a) : a[column as keyof T];
+                const bValuesecondary: any = sortCol?.sortValue ? sortCol.sortValue(b) : sortCol?.accessor ? sortCol.accessor(b) : b[column as keyof T];
 
-                return sortOrderSecondary * (aValueSecundary === bValueSecundary ? a.index - b.index : (aValueSecundary > bValueSecundary ? 1 : -1));
+                return sortOrderSecondary * (aValuesecondary === bValuesecondary ? a.index - b.index : (aValuesecondary > bValuesecondary ? 1 : -1));
             })
 
             return this;

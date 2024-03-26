@@ -29,14 +29,14 @@
         gap: var(--gc-footer-gap, 0.5rem);
         margin: var(--gc-footer-margin, 0.5rem 0);
         padding: var(--gc-footer-padding, 0.5rem 0.75rem);
-        border: var(--gc-footer-border, 1px solid #e5e7eb);
+        border: var(--gc-footer-border, 1px solid  var(--gc-main-color));
         border-radius: var(--gc-footer-border-radius, 0.25rem);
-        background-color: var(--gc-footer-bg-color, #f1f5f9);
+        background-color: var(--gc-footer-bg-color, var(--gc-secondary-color));
         font-size: var(--gc-footer-font-size, 0.875rem);
-        color: var(--gc-footer-color, #6b7280);
+        color: var(--gc-footer-color, var(--gc-text-color));
     }
 
-    :global(.dark) .gc-footer {
-        filter: var(--gc-table-filter, invert(1));
+    .gc-footer select {
+        background-color: transparent;
     }
 </style>

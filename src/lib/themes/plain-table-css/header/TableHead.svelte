@@ -4,6 +4,6 @@
 
 <style>
     thead {
-        background-color: var(--gc-table-header-bg-color, #eff1f3);
+        background-color: var(--gc-table-header-bg-color, var(--gc-secondary-color));
     }
 </style>

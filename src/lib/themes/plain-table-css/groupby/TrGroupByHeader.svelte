@@ -8,20 +8,21 @@
 
 <style>
     .gc-tr {
-        background-color: var(--gc-tr-groupby-bg-color, #e2e8f0);
-        border: var(--gc-tr-groupby-border, 1px solid #d1d5db);
+        background-color: var(--gc-tr-groupby-bg-color, var(--gc-main-color));
+        border: var(--gc-tr-groupby-border, 1px solid var(--gc-secondary-color));
         transition: var(--gc-transitions, all 0.2s ease-in-out);
     }
 
     .gc-tr:hover {
-        background-color: var(--gc-tr-groupby-bg-color-hover, #dee4ed);
+        filter: brightness(95%);
     }
     
-    .gc-tr__groupby-selected {
-        background-color: var(--gc-tr-groupby-selected-bg, #e2eef9);
+    .gc-tr.gc-tr__groupby-selected {
+        background-color: var(--gc-tr-groupby-selected-bg, var(--gc-color-selected));
+        filter: brightness(90%);
     }
 
-    .gc-tr__groupby-selected:hover {
-        background-color: var(--gc-tr-groupby-selected-bg-hover, #d7e6f4);
+    .gc-tr.gc-tr__groupby-selected:hover {
+        filter: brightness(85%);
     }
 </style>
