@@ -1,0 +1,122 @@
+.gc-table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.gc-table tbody {
+
+}
+
+.gc-table thead {
+
+}
+
+/* ---- Header ----  */
+
+.gc-header-tr {
+    
+}
+
+.gc-th {
+
+}
+
+.gc-th .gc-th__checkbox {}
+
+.gc-th .gc-th__checkbox label {}
+
+.gc-th .gc-th__checkbox input[type="checkbox"] {}
+
+/* ---- Row ----  */
+
+
+.gc-tr {
+
+}
+
+.gc-td {
+
+}
+
+.gc-td .gc-td__checkbox {
+
+}
+
+.gc-td .gc-td__checkbox label {
+    
+}
+
+.gc-td .gc-td__checkbox input[type="checkbox"] {
+    
+}
+
+.gc-td__content {
+
+}
+
+
+/* ---- GroupBy ----  */
+
+.gc-tr .gc-tr__groupby {
+   
+}
+
+.gc-td .gc-td__groupby {
+   
+}
+
+.gc-td .gc-td__content {
+
+}
+
+.gc-td .gc-td__groupby-count {
+   
+}
+
+.gc-td .gc-td__groupby .gc-td__groupby-checkbox {
+   
+}
+.gc-td .gc-td__groupby .gc-td__groupby-checkbox label {
+   
+}
+.gc-td .gc-td__groupby .gc-td__groupby-checkbox input[type="checkbox"] {
+   
+}
+
+/* ---- Footer ----  */
+.gc-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.gc-footer__results {
+
+}
+
+.gc-footer__results .gc-footer__results-total {
+
+}
+
+.gc-footer__page {
+
+}
+
+.gc-footer__page .gc-footer__page-current {
+
+}
+
+.gc-footer__page  .gc-footer__page-total {
+
+}
+
+/* ---- Paging ----  */
+
+.gc-paging {
+
+}
+
+
+.gc-paging button {
+    
+}

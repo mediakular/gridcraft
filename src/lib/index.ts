@@ -6,6 +6,7 @@ import GridPaging from './components/Paging.svelte';
 
 import PlainTableTheme from './themes/plain-table/index.js';
 import PrelineTheme from './themes/preline/index.js';
+import PlainTableCssTheme, { PlainTableCssStyle } from './themes/plain-table-css/index.js';
 
 import type { GridColumn, GridFilter, GridTheme, GroupHeader } from './types/index.js';
 
@@ -18,5 +19,7 @@ export {
     GroupHeader,
     GridTheme,
     PlainTableTheme,
-    PrelineTheme
+    PrelineTheme,
+    PlainTableCssTheme,
+    PlainTableCssStyle
 };

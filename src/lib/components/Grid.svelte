@@ -155,9 +155,9 @@
     <svelte:component this={theme.grid.body.container}>
         {#if groupBy}
             {#each groupHeaders as header, index (header.groupKey)}
-                <svelte:component this={theme.grid.groupby.container}>
+                {@const unpagedHeader = groupHeadersUnpaged.find(x => x.groupKey == header.groupKey)}
+                <svelte:component this={theme.grid.groupby.container} isSelected={showCheckboxes && unpagedHeader?.data.every(item => selectedRows.includes(item))}>
                     {#if showCheckboxes}
-                        {@const unpagedHeader = groupHeadersUnpaged.find(x => x.groupKey == header.groupKey)}
                         <svelte:component this={theme.grid.groupby.checkbox} checked={unpagedHeader?.data.every(item => selectedRows.includes(item))} onChange={() => { toggleGroupCheckbox(header); }} index={index} />
                     {/if}
                     <svelte:component this={theme.grid.groupby.cell} colspan={columns.length-1} onToggle={() => toggleGroup(header)} isExpanded={header.expanded}>
@@ -183,7 +183,7 @@
                 </svelte:component>
                 {#if header.expanded}
                     {#each header.data as row, index (row.id || generateUniqueKey())}
-                        <svelte:component this={theme.grid.body.row} isOdd={(index+1) % 2 == 1}>
+                        <svelte:component this={theme.grid.body.row} isOdd={(index + 1) % 2 == 1} isSelected="{selectedRows.indexOf(row) >= 0}">
                             {#if showCheckboxes}
                                 <svelte:component this={theme.grid.body.checkbox} value={row} index={index} bind:group={selectedRows} />
                             {/if}
@@ -211,7 +211,7 @@
             {/each}
         {:else}
             {#each gridData as row, index (row.id || generateUniqueKey())}
-                <svelte:component this={theme.grid.body.row} isOdd={(index+1) % 2 == 1}>
+                <svelte:component this={theme.grid.body.row} isOdd={(index+1) % 2 == 1} isSelected="{selectedRows.indexOf(row) >= 0}">
                     {#if showCheckboxes}
                         <svelte:component this={theme.grid.body.checkbox} value={row} bind:group={selectedRows} index={index} />
                     {/if}

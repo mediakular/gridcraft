@@ -1,7 +1,7 @@
 <script lang="ts">
-    export let content = "";
+    export let value = "";
 </script>
 
 <span>
-    {!content || content === "" ? "-" : content}
+    {!value || value === "" ? "-" : value}
 </span>
