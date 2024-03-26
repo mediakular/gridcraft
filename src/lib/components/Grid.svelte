@@ -1,5 +1,5 @@
 <script lang="ts">
-    import PlainTableTheme from "$lib/themes/plain-table/index.js";
+    import PlainTableCssTheme from "$lib/themes/plain-table/index.js";
 
 	import { GridFunctions } from "../GridFunctions.js";
     import type { GridColumn, GridFilter, GridTheme, GroupHeader } from "$lib/types/index.js";
@@ -23,7 +23,7 @@
     export let groupsExpandedDefault = true;
     export let selectedRows: T[] = [];
 
-    export let theme: GridTheme = PlainTableTheme;
+    export let theme: GridTheme = PlainTableCssTheme;
 
     $: theme;
 
