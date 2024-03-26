@@ -532,22 +532,22 @@ let columns: GridColumn<Client>[] = [
 
 ### Example With Customized Appearance 
 
-Currently, gridcraft comes with two pre-defined themes: `PlainTableTheme` and `PrelineTheme`.
-By default gridcraft uses `PlainTableTheme`. This theme is a very basic table, without any styles. 
-`PrelineTheme` is inspired by [preline tables](https://preline.co/docs/tables.html).
+Currently, gridcraft comes with three pre-defined themes: `PlainTableCssTheme`, `PlainTableTheme` and `PrelineTheme`.
+By default gridcraft uses `PlainTableCssTheme`. While `PlainTableCssTheme` is a fully styled theme and can be used as-is, `PlainTableTheme` theme is a very basic table, without any styles or classes and serves mostly as a template for your own theme. You can copy  `PlainTableTheme` into your own project and transform it to fit your needs.
+`PrelineTheme` is inspired by [preline](https://preline.co/).
 
-There are currently three components that can be themed: `Grid`, `GridFooter` and `GridPaging`. 
+There are currently three main components that can be themed: `Grid`, `GridFooter` and `GridPaging`. 
 On these components the `theme` property can be set.
 
 ```svelte
 <script lang="ts">
-import { Grid, type GridColumn, GridFooter, PrelineTheme, PlainTableTheme } from "@mediakular/gridcraft";
+import { Grid, type GridColumn, GridFooter, PrelineTheme, PlainTableCssTheme } from "@mediakular/gridcraft";
 
 export let data: PageData;
 let clients: Client[];
 $: ({ clients } = data);
 
-let theme = PlainTableTheme;
+let theme = PlainTableCssTheme;
 
 let columns: GridColumn<Client>[] = [
     ...
@@ -555,7 +555,7 @@ let columns: GridColumn<Client>[] = [
 </script>
 
 <!-- Only for demonstration purposes -->
-<button on:click={() => theme = PlainTableTheme}>Plain Theme</button>
+<button on:click={() => theme = PlainTableCssTheme}>Plain Css Theme</button>
 <button on:click={() => theme = PrelineTheme}>Preline Theme</button>
 <!-- End: Only for demonstration purposes -->
 
@@ -621,6 +621,8 @@ MyTableContainer.svelte
     </table>
 </div>
 ```
+
+Find [here](https://gridcraft.mediakular.com/docs/theming) the full documentation about theming.
 
 ## API Documentation
 
