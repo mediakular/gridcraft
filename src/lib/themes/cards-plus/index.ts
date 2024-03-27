@@ -1,3 +1,4 @@
+
 import Table from "./Table.svelte";
 import TableHead from "./header/TableHead.svelte";
 import TableBody from "./row/TableBody.svelte";
@@ -18,7 +19,7 @@ import Footer from "./footer/Footer.svelte";
 import Paging from "./paging/Paging.svelte";
 import type { GridTheme } from "$lib/types/index.js";
 
-const PlainTableCssTheme : GridTheme = {
+const CardsPlusTheme: GridTheme = {
     footer: Footer,
     paging: Paging,
     grid: {
@@ -47,4 +48,4 @@ const PlainTableCssTheme : GridTheme = {
     }
 }
 
-export default PlainTableCssTheme;
+export default CardsPlusTheme;

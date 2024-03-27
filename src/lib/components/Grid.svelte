@@ -32,9 +32,9 @@
 
     $: fulldata = Array.from(data);
 
-    $: columns, assignEmptyColumns();
+    $: columns, assignAutoColumns();
 
-    function assignEmptyColumns() {
+    function assignAutoColumns() {
         if (columns.length > 0 || fulldata.length == 0) {
             return;
         }
@@ -154,23 +154,24 @@
     </svelte:component>
     <svelte:component this={theme.grid.body.container}>
         {#if groupBy}
-            {#each groupHeaders as header, index (header.groupKey)}
+            {#each groupHeaders as header, groupIndex (header.groupKey)}
                 {@const unpagedHeader = groupHeadersUnpaged.find(x => x.groupKey == header.groupKey)}
                 <svelte:component this={theme.grid.groupby.container} isSelected={showCheckboxes && unpagedHeader?.data.every(item => selectedRows.includes(item))}>
                     {#if showCheckboxes}
-                        <svelte:component this={theme.grid.groupby.checkbox} checked={unpagedHeader?.data.every(item => selectedRows.includes(item))} onChange={() => { toggleGroupCheckbox(header); }} index={index} />
+                        <svelte:component this={theme.grid.groupby.checkbox} checked={unpagedHeader?.data.every(item => selectedRows.includes(item))} onChange={() => { toggleGroupCheckbox(header); }} index={groupIndex} />
                     {/if}
                     <svelte:component this={theme.grid.groupby.cell} colspan={columns.length-1} onToggle={() => toggleGroup(header)} isExpanded={header.expanded}>
                         {#each columns.filter(x => x.visible != false) as col (col.key)}
                             {#if groupBy == col.key}
                                 {#if col.renderComponent && col.accessor }
                                     {#if typeof header.titleData === 'object'}
-                                        <svelte:component this={col.renderComponent} {...header.titleData} />
+                                        <svelte:component this={col.renderComponent} {...header.titleData} isGroupByHeader={true} />
                                     {:else}
-                                        <svelte:component this={col.renderComponent} {...{value: header.titleData}} />
+                                        <svelte:component this={col.renderComponent} {...{value: header.titleData}} isGroupByHeader={true} />
                                     {/if}
                                 {:else if col.renderComponent}
-                                    <svelte:component this={col.renderComponent} {...{value: header.titleData}} />
+                                    <!-- TODO: Check if value={header.titleData} is not also working everywhere instead of {...{value: header.titleData}} -->
+                                    <svelte:component this={col.renderComponent} {...{value: header.titleData}} isGroupByHeader={true} /> 
                                 {:else}
                                     <svelte:component this={theme.grid.groupby.content} value={header.titleData} />
                                 {/if}
@@ -183,9 +184,9 @@
                 </svelte:component>
                 {#if header.expanded}
                     {#each header.data as row, index (row.id || generateUniqueKey())}
-                        <svelte:component this={theme.grid.body.row} isOdd={(index + 1) % 2 == 1} isSelected="{selectedRows.indexOf(row) >= 0}">
+                        <svelte:component this={theme.grid.body.row} isOdd={(index + 1) % 2 == 1} index={gridData.indexOf(row)} isSelected="{selectedRows.indexOf(row) >= 0}">
                             {#if showCheckboxes}
-                                <svelte:component this={theme.grid.body.checkbox} value={row} index={index} bind:group={selectedRows} />
+                                <svelte:component this={theme.grid.body.checkbox} value={row} index={gridData.indexOf(row)} bind:group={selectedRows} />
                             {/if}
                             {#each columns.filter(x => x.visible != false) as col (col.key)}
                                 {#if groupBy != col.key}
@@ -211,7 +212,7 @@
             {/each}
         {:else}
             {#each gridData as row, index (row.id || generateUniqueKey())}
-                <svelte:component this={theme.grid.body.row} isOdd={(index+1) % 2 == 1} isSelected="{selectedRows.indexOf(row) >= 0}">
+                <svelte:component this={theme.grid.body.row} isOdd={(index+1) % 2 == 1} {index} isSelected="{selectedRows.indexOf(row) >= 0}">
                     {#if showCheckboxes}
                         <svelte:component this={theme.grid.body.checkbox} value={row} bind:group={selectedRows} index={index} />
                     {/if}
