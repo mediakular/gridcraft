@@ -1,6 +1,6 @@
 {
   "name": "@mediakular/gridcraft",
-  "version": "0.0.19",
+  "version": "0.1.0",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
@@ -11,6 +11,9 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "publish": "npm publish --access public"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "exports": {
     ".": {

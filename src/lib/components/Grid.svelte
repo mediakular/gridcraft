@@ -161,25 +161,20 @@
                         <svelte:component this={theme.grid.groupby.checkbox} checked={unpagedHeader?.data.every(item => selectedRows.includes(item))} onChange={() => { toggleGroupCheckbox(header); }} index={groupIndex} />
                     {/if}
                     <svelte:component this={theme.grid.groupby.cell} colspan={columns.length-1} onToggle={() => toggleGroup(header)} isExpanded={header.expanded}>
-                        {#each columns.filter(x => x.visible != false) as col (col.key)}
-                            {#if groupBy == col.key}
-                                {#if col.renderComponent && col.accessor }
-                                    {#if typeof header.titleData === 'object'}
-                                        <svelte:component this={col.renderComponent} {...header.titleData} isGroupByHeader={true} />
-                                    {:else}
-                                        <svelte:component this={col.renderComponent} {...{value: header.titleData}} isGroupByHeader={true} />
-                                    {/if}
-                                {:else if col.renderComponent}
-                                    <!-- TODO: Check if value={header.titleData} is not also working everywhere instead of {...{value: header.titleData}} -->
-                                    <svelte:component this={col.renderComponent} {...{value: header.titleData}} isGroupByHeader={true} /> 
-                                {:else}
-                                    <svelte:component this={theme.grid.groupby.content} value={header.titleData} />
-                                {/if}
-                                
-                                {@const unpaged = groupHeadersUnpaged.find(x => x.groupKey == header.groupKey)}
-                                <svelte:component this={theme.grid.groupby.rowsCount} showing={header.data.length} total={unpaged?.data.length} />
+                        {@const col = columns.find(x => x.visible != false && x.key == groupBy)}
+                        {#if col}
+                            {@const value = header.titleData}
+                            {@const renderComponent = col.renderComponent ? col.renderComponent : theme.grid.groupby.content}
+    
+                            {#if typeof value === 'object'}
+                                <svelte:component this={renderComponent} {...value} isGroupByHeader={true} />
+                            {:else}
+                                <svelte:component this={renderComponent} {value} isGroupByHeader={true} />
                             {/if}
-                        {/each}
+                            
+                            {@const unpaged = groupHeadersUnpaged.find(x => x.groupKey == header.groupKey)}
+                            <svelte:component this={theme.grid.groupby.rowsCount} showing={header.data.length} total={unpaged?.data.length} />
+                        {/if}
                     </svelte:component>
                 </svelte:component>
                 {#if header.expanded}
@@ -188,23 +183,17 @@
                             {#if showCheckboxes}
                                 <svelte:component this={theme.grid.body.checkbox} value={row} index={gridData.indexOf(row)} bind:group={selectedRows} />
                             {/if}
-                            {#each columns.filter(x => x.visible != false) as col (col.key)}
-                                {#if groupBy != col.key}
-                                    <svelte:component this={theme.grid.body.cell}>
-                                        {#if col.renderComponent && col.accessor}
-                                            {#if typeof col.accessor(row) === 'object'}
-                                                <svelte:component this={col.renderComponent} {...col.accessor(row)} />
-                                            {:else}
-                                                <svelte:component this={col.renderComponent} {...{value: col.accessor(row)}} />
-                                            {/if}
-                                        {:else if col.renderComponent}
-                                            <svelte:component this={col.renderComponent} {...{value: row[col.key]}} />
-                                        {:else}
-                                            {@const value = col.accessor ? col.accessor(row) : row[col.key]}
-                                            <svelte:component this={theme.grid.body.content} value={value} />
-                                        {/if}
-                                    </svelte:component>
-                                {/if}
+                            {#each columns.filter(x => x.visible != false && x.key != groupBy) as col (col.key)}
+                                <svelte:component this={theme.grid.body.cell}>
+                                    {@const value = col.accessor ? col.accessor(row) : row[col.key]}
+                                    {@const renderComponent = col.renderComponent ? col.renderComponent : theme.grid.body.content}
+                
+                                    {#if typeof value === 'object'}
+                                        <svelte:component this={renderComponent} {...value}  />
+                                    {:else}
+                                        <svelte:component this={renderComponent} {value} />
+                                    {/if}
+                                </svelte:component>
                             {/each}
                         </svelte:component>
                     {/each}
@@ -217,22 +206,15 @@
                         <svelte:component this={theme.grid.body.checkbox} value={row} bind:group={selectedRows} index={index} />
                     {/if}
                     {#each columns.filter(x => x.visible != false) as col (col.key)}
-                        {#if groupBy != col.key}
-                            <svelte:component this={theme.grid.body.cell}>
-                                {#if col.renderComponent && col.accessor}
-                                    {#if typeof col.accessor(row) === 'object'}
-                                        <svelte:component this={col.renderComponent} {...col.accessor(row)} />
-                                    {:else}
-                                        <svelte:component this={col.renderComponent} {...{value: col.accessor(row)}} />
-                                    {/if}
-                                {:else if col.renderComponent}
-                                    <svelte:component this={col.renderComponent} {...{value: row[col.key]}} />
-                                {:else}
-                                    {@const value = col.accessor ? col.accessor(row) : row[col.key]}
-                                    <svelte:component this={theme.grid.body.content} value={value} />
-                                {/if}
-                            </svelte:component>
-                        {/if}
+                        <svelte:component this={theme.grid.body.cell}>
+                            {@const value = col.accessor ? col.accessor(row) : row[col.key]}
+                            {@const renderComponent = col.renderComponent ? col.renderComponent : theme.grid.body.content}
+                            {#if typeof value === 'object'}
+                                <svelte:component this={renderComponent} {...value}  />
+                            {:else}
+                                <svelte:component this={renderComponent} {value} />
+                            {/if}
+                        </svelte:component>
                     {/each}
                 </svelte:component>
             {/each}

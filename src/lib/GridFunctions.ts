@@ -8,12 +8,25 @@ export class GridFunctions<T> {
     public groupHeaders: GroupHeader<T>[] = [];
     public groupHeadersUnpaged: GroupHeader<T>[] = [];
 
+    /**
+     * Initializes the GridFunctions instance with the provided data array.
+     *
+     * @param {T[]} data - The data array to initialize the GridFunctions with.
+     * @return {GridFunctions<T>} The initialized GridFunctions instance.
+     */
     init(data: T[]) : GridFunctions<T> {
         this.data = data;
         this.dataLength = this.data.length;
         return this;
     }
 
+    /**
+     * Applies filters to the grid data.
+     *
+     * @param {GridFilter[]} filters - An array of grid filters.
+     * @param {GridColumn<T>[]} columns - An array of grid columns.
+     * @return {GridFunctions<T>} - The updated grid functions object.
+     */
     applyFilters(filters: GridFilter[], columns: GridColumn<T>[]) : GridFunctions<T> {
         if (filters.length == 0) {
             return this;
@@ -54,6 +67,16 @@ export class GridFunctions<T> {
         return this;
     }
 
+    /**
+     * Sorts the data in the grid by the specified column and order, and then by the specified groupBy column and secondary order if provided.
+     *
+     * @param {string} column - The column to sort by
+     * @param {number} sortOrder - The sort order for the primary column
+     * @param {string} groupby - The column to group by
+     * @param {number} sortOrderSecondary - The sort order for the secondary column
+     * @param {GridColumn<T>[]} columns - The columns to be used for sorting
+     * @return {GridFunctions<T>} This instance of GridFunctions for chaining purposes
+     */
     sortBy(column: string, sortOrder: number, groupby: string, sortOrderSecondary: number, columns: GridColumn<T>[]): GridFunctions<T> {
         if (groupby) { // always order by the groupBy column here, if the sortbyColumn is != groupby the sort will be done later
             this.data = this.data.sort((a, b) => {
@@ -95,6 +118,15 @@ export class GridFunctions<T> {
         return this;
     }
 
+    /**
+     * Processes paging for the data based on the current page, items per page, grouping, and columns.
+     *
+     * @param {number} currentPage - The current page number.
+     * @param {number} itemsPerPage - The number of items to display per page.
+     * @param {string} groupBy - The column to group the data by.
+     * @param {GridColumn<T>[]} columns - An array of grid columns.
+     * @return {GridFunctions<T>} The updated GridFunctions object.
+     */
     processPaging(currentPage: number, itemsPerPage: number, groupBy: string, columns: GridColumn<T>[]): GridFunctions<T> {
         this.dataUnpaged = [...this.data];
 
@@ -158,55 +190,69 @@ export class GridFunctions<T> {
         return this;
     }
 
-    groupBy(groupBy: string, expandedGroups: { [x: string]: boolean; }, groupsExpandedDefault: boolean, columns: GridColumn<T>[]): GridFunctions<T> {
-        if (!groupBy) {
+    /**
+     * Groups the data by the specified key and updates the group headers and data length.
+     *
+     * @param {string} groupByKey - The key to group the data by.
+     * @param {object} expandedGroups - An object containing the expanded groups.
+     * @param {boolean} groupsExpandedDefault - The default value for group expansion.
+     * @param {GridColumn<T>[]} columns - An array of columns.
+     * @return {GridFunctions<T>} The updated instance of GridFunctions.
+     */
+    groupBy(
+        groupByKey: string,
+        expandedGroups: { [key: string]: boolean },
+        groupsExpandedDefault: boolean,
+        columns: GridColumn<T>[]
+    ): GridFunctions<T> {
+        if (!groupByKey) {
             return this;
         }
 
-        let groupByDataLength = 0;
+        const groupColumn = columns.find((col) => col.key === groupByKey);
+        if (!groupColumn) {
+            return this;
+        }
 
-        const groupCol = columns.find((x) => x.key == groupBy);
+        const groupHeaders: GroupHeader<T>[] = [];
+        const groupDataLength = this.data.reduce((length, row) => {
+            const groupValue = groupColumn.accessor
+                ? groupColumn.accessor(row) || ''
+                : (row as Record<string, any>)[groupByKey] || '';
 
-        this.data.forEach((row: T) => {
-            const groupValue: object | string = groupCol?.accessor != undefined ? groupCol?.accessor(row) ?? '' : (row as { [key: string]: any })[groupBy] || '';
-            const existingHeader = this.groupHeaders.find((x) => x.titleData == groupValue);
+            const groupKey = hash(groupValue);
+            const isExpanded = groupsExpandedDefault
+                ? !expandedGroups[groupKey]
+                : expandedGroups[groupKey];
 
-            if (existingHeader) {
-                existingHeader.data.push(row);
-                if (existingHeader.expanded) {
-                    groupByDataLength++;
-                }
-            } else {
-                const groupKey = hash(groupValue);
-                const extistingGroup = this.groupHeaders.find(x => x.groupKey == groupKey);
-                const expanded = groupsExpandedDefault ? !expandedGroups[groupKey] : expandedGroups[groupKey];
-
-                if (!extistingGroup) {
-                    this.groupHeaders.push({
-                        selected: false,
-                        groupKey: groupKey,
-                        titleData: groupValue,
-                        expanded: expanded,
-                        data: [row],
-                    });
-                } else {
-                    extistingGroup.data.push(row);
-                }
-                if (expanded) {
-                    groupByDataLength++;
-                }
+            const existingGroup = groupHeaders.find(
+                (header) => header.groupKey === groupKey
+            );
+            if (existingGroup) {
+                existingGroup.data.push(row);
+                return isExpanded ? length + 1 : length;
             }
-        });
 
-        // deep clone group headers
+            groupHeaders.push({
+                selected: false,
+                groupKey,
+                titleData: groupValue,
+                expanded: isExpanded,
+                data: [row],
+            });
+            return isExpanded ? length + 1 : length;
+        }, 0);
+
+        this.groupHeaders = groupHeaders;
+
+        // deep clone group headers, we need to do this because the group headers are mutable
         this.groupHeaders.forEach(header => {
             const newHeader = {...header};
             newHeader.data = [...newHeader.data]
             this.groupHeadersUnpaged.push(newHeader);
         });
         
-
-        this.dataLength = groupByDataLength;
+        this.dataLength = groupDataLength;
 
         return this;
     }
