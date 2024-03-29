@@ -3,15 +3,18 @@
 [![npm version](https://badge.fury.io/js/@mediakular%2Fgridcraft.svg)](https://badge.fury.io/js/@mediakular%2Fgridcraft)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+### Demo
+
+[DEMOS](https://gridcraft.mediakular.com/)
+
 ## Comprehensive Data Grid for SvelteKit Apps 📊
 
 `@mediakular/gridcraft` is a powerful data grid package tailored for Sveltekit applications. It offers an array of features to elevate the presentation and interaction with tabular data.
 
-<img width="1148" alt="image" src="https://github.com/mediakular/gridcraft/assets/23722678/03a806a2-76bc-4513-86a8-05d0ff7bb5df">
-
-### Demo
-
-[DEMOS](https://gridcraft.mediakular.com/)
+<img width="400" alt="image" src="https://github.com/mediakular/gridcraft/assets/23722678/3b86921d-d13a-441b-b405-38daf6886c80"> 
+<img width="400" alt="image" src="https://github.com/mediakular/gridcraft/assets/23722678/622a0be9-452c-4b65-9bdf-fc7d0153a5a9">
+<img width="400" alt="image" src="https://github.com/mediakular/gridcraft/assets/23722678/11c574bf-7b53-4920-8b08-65977812b266">
+<img width="400" alt="image" src="https://github.com/mediakular/gridcraft/assets/23722678/c471b1ba-9eb4-4dc0-91d7-93553fb6ad6a">
 
 
 ### Exciting Features ✨
@@ -57,22 +60,13 @@ Most basic usage. In this example GridCraft will automatically detect the proper
 ```svelte
 <script lang="ts">
 import { Grid } from '@mediakular/gridcraft';
-
-interface Client {
-    id: string;
-    firstname: string;
-    lastname: string;
-    age: number;
-    birthdate: Date;
-}
-
-export let data: PageData;
-let clients: Client[];
-$: ({ clients } = data);
+import { clients } from './clients.js';
 </script>
 
-<Grid bind:data={clients} />
+<Grid data={clients} />
 ```
+
+[REPL Demo](https://svelte.dev/repl/e547543d6632426ca1a3cb1d39753342)
 
 ### Example With Column Definition
 
@@ -81,6 +75,7 @@ Here an example with a simple custom column definition.
 ```svelte
 <script lang="ts">
 import { Grid, type GridColumn } from "@mediakular/gridcraft";
+import { clients } from './clients.js';
 
 interface Client {
     id: string;
@@ -89,11 +84,6 @@ interface Client {
     age: number;
     birthdate: Date;
 }
-
-export let data: PageData;
-
-let clients: Client[];
-$: ({ clients } = data);
 
 let columns: GridColumn<Client>[] = [
     { 
@@ -120,6 +110,9 @@ let columns: GridColumn<Client>[] = [
     bind:columns />
 ```
 
+[REPL Demo](https://svelte.dev/repl/0fd87fbb2918419eb21161bd5293dd4a)
+
+
 #### Use custom components to render column cells
 
 GridCraft allows you to simply define your own custom svelte components to render column cells. 
@@ -129,6 +122,7 @@ The following example shows you how to define a custom `renderComponent`:
 ```svelte
 <script lang="ts">
 import { Grid, type GridColumn } from "@mediakular/gridcraft";
+import { clients } from './clients.js';
 
 import ClientCell from "$lib/components/grid/cells/ClientCell.svelte";
 import CurrencyCell from "$lib/components/grid/cells/CurrencyCell.svelte";
@@ -145,11 +139,6 @@ interface Client {
     amount: number;
     quantity: number;
 }
-
-export let data: PageData;
-
-let clients: Client[];
-$: ({ clients } = data);
 
 let columns: GridColumn<Client>[] = [
     { 
@@ -192,6 +181,9 @@ let columns: GridColumn<Client>[] = [
     bind:data={clients} 
     bind:columns />
 ```
+
+[REPL Demo](https://svelte.dev/repl/c308f5ca803f40ae9f405eadc5df0420)
+
 
 Here are the custom cell components used in the example above:
 
@@ -257,11 +249,7 @@ Here an example on how to integrate a column with custom row actions. This could
 <script lang="ts">
 import { Grid, type GridColumn } from "@mediakular/gridcraft";
 import ActionsCell from "$lib/components/grid/cells/ActionsCell.svelte";
-
-export let data: PageData;
-
-let clients: Client[];
-$: ({ clients } = data);
+import { clients } from './clients.js';
 
 let columns: GridColumn<Client>[] = [
     { 
@@ -343,11 +331,7 @@ Here a simple example with paging. Simply define and bind the necessary variable
 ```svelte
 <script lang="ts">
 import { Grid, GridFooter, type GridColumn } from "@mediakular/gridcraft";
-
-export let data: PageData;
-
-let clients: Client[];
-$: ({ clients } = data);
+import { clients } from './clients.js';
 
 let columns: GridColumn<Client>[] = [];
 
@@ -368,11 +352,16 @@ let totalResults = 0;
 <GridFooter bind:currentPage bind:totalPages bind:totalResults bind:itemsPerPage />
 ```
 
+[REPL Demo for simple paging](https://svelte.dev/repl/2e93a38d3a04433daeda7ab627d5968b)
+
+[REPL Demo for custom paging](https://svelte.dev/repl/092eac4cd6324b2aa8e3ff8343ee0231)
+
 ### Example With Grouping
 
 ```svelte
 <script lang="ts">
 import { Grid, type GridColumn } from "@mediakular/gridcraft";
+import { clients } from './clients.js';
 
 interface Client {
     id: string;
@@ -380,10 +369,6 @@ interface Client {
     lastname: string;
     age: number;
 }
-
-export let data: PageData;
-let clients: Client[];
-$: ({ clients } = data);
 
 let groupBy = "";
 
@@ -418,11 +403,15 @@ let columns: GridColumn<Client>[] = [
     bind:groupby />
 ```
 
+[REPL Demo](https://svelte.dev/repl/c893a56fa13349029cef87a5fa8459c4)
+
+
 ### Example With Rows Selection
 
 ```svelte
 <script lang="ts">
 import { Grid, type GridColumn } from "@mediakular/gridcraft";
+import { clients } from './clients.js';
 
 interface Client {
     id: string;
@@ -430,10 +419,6 @@ interface Client {
     lastname: string;
     age: number;
 }
-
-export let data: PageData;
-let clients: Client[];
-$: ({ clients } = data);
 
 let showCheckboxes = true;
 let selectedRows:Client[] = [];
@@ -479,6 +464,7 @@ let columns: GridColumn<Client>[] = [
 ```svelte
 <script lang="ts">
 import { Grid, type GridColumn, type GridFilter } from "@mediakular/gridcraft";
+import { clients } from './clients.js';
 
 interface Client {
     id: string;
@@ -486,10 +472,6 @@ interface Client {
     lastname: string;
     age: number;
 }
-
-export let data: PageData;
-let clients: Client[];
-$: ({ clients } = data);
 
 let textSearch = "";
 
@@ -542,10 +524,7 @@ On these components the `theme` property can be set.
 ```svelte
 <script lang="ts">
 import { Grid, type GridColumn, GridFooter, PrelineTheme, PlainTableCssTheme } from "@mediakular/gridcraft";
-
-export let data: PageData;
-let clients: Client[];
-$: ({ clients } = data);
+import { clients } from './clients.js';
 
 let theme = PlainTableCssTheme;
 
@@ -592,10 +571,7 @@ This can be usefull if you are satisfied with a certain theme, but you want to m
 <script lang="ts">
 import { Grid, type GridColumn, GridFooter, PrelineTheme, PlainTableTheme } from "@mediakular/gridcraft";
 import MyTableContainer from "$lib/components/grid/theme/MyTableContainer.svelte"
-
-export let data: PageData;
-let clients: Client[];
-$: ({ clients } = data);
+import { clients } from './clients.js';
 
 let theme = PlainTableTheme;
 theme.grid.container = MyTableContainer;
@@ -623,6 +599,35 @@ MyTableContainer.svelte
 ```
 
 Find [here](https://gridcraft.mediakular.com/docs/theming) the full documentation about theming.
+
+## Full Documentation
+
+[Here](https://gridcraft.mediakular.com/docs/) you can find the full documentation of GridCraft
+
+## Something Missing? 
+
+Request new examples, ideas or issues on [GitHub Issues](https://github.com/mediakular/gridcraft/issues)
+
+Or ask the community in our [Discord Channel](https://discord.gg/HhVet3FU2h)
+
+## 💚 Become A Sponsor
+
+Support the development of GridCraft by becoming a sponsor: 
+
+[Sponsor on GitHub](https://github.com/sponsors/mediakular)
+
+[Sponsor on Patreon](https://www.patreon.com/GridCraft_DataGrid)
+
+## Contribute & Become Part Of The Community
+
+Join the community in our [Discord Channel](https://discord.gg/HhVet3FU2h). 
+There you can ask everything to get started.
+
+Follow us on [Twitter](https://twitter.com/grid_craft)
+
+## Spread the Love 🤗💻
+
+Sharing is appreciated. Share our website [https://gridcraft.mediakular.com](https://gridcraft.mediakular.com)
 
 ## API Documentation
 
