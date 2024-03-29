@@ -167,7 +167,11 @@
                             {@const renderComponent = col.renderComponent ? col.renderComponent : theme.grid.groupby.content}
     
                             {#if typeof value === 'object'}
-                                <svelte:component this={renderComponent} {...value} isGroupByHeader={true} />
+                                {#if Object.keys(value).length > 0}
+                                    <svelte:component this={renderComponent} {...value} isGroupByHeader={true} />
+                                {:else}
+                                    <svelte:component this={renderComponent} {...{value: value}} isGroupByHeader={true} />
+                                {/if}
                             {:else}
                                 <svelte:component this={renderComponent} {value} isGroupByHeader={true} />
                             {/if}
@@ -189,7 +193,11 @@
                                     {@const renderComponent = col.renderComponent ? col.renderComponent : theme.grid.body.content}
                 
                                     {#if typeof value === 'object'}
-                                        <svelte:component this={renderComponent} {...value}  />
+                                        {#if Object.keys(value).length > 0}
+                                            <svelte:component this={renderComponent} {...value} />
+                                        {:else}
+                                            <svelte:component this={renderComponent} {...{value: value}} />
+                                        {/if}
                                     {:else}
                                         <svelte:component this={renderComponent} {value} />
                                     {/if}
@@ -209,8 +217,13 @@
                         <svelte:component this={theme.grid.body.cell}>
                             {@const value = col.accessor ? col.accessor(row) : row[col.key]}
                             {@const renderComponent = col.renderComponent ? col.renderComponent : theme.grid.body.content}
+
                             {#if typeof value === 'object'}
-                                <svelte:component this={renderComponent} {...value}  />
+                                {#if Object.keys(value).length > 0}
+                                    <svelte:component this={renderComponent} {...value} />
+                                {:else}
+                                    <svelte:component this={renderComponent} {...{value: value}} />
+                                {/if}
                             {:else}
                                 <svelte:component this={renderComponent} {value} />
                             {/if}
