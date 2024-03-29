@@ -627,7 +627,11 @@ Follow us on [Twitter](https://twitter.com/grid_craft)
 
 ## Spread the Love 🤗💻
 
-Sharing is appreciated. Share our website [https://gridcraft.mediakular.com](https://gridcraft.mediakular.com)
+Sharing is appreciated. 
+You've integrated GridCraft successfully in your project? - We would love to see it! 
+Twitter it with mentioning [@grid_craft](https://twitter.com/grid_craft) or send us an email to gridcraft @ mediakular.com
+
+Of course you can also share our website [https://gridcraft.mediakular.com](https://gridcraft.mediakular.com).
 
 ## API Documentation
 
