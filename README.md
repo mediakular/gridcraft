@@ -106,8 +106,8 @@ let columns: GridColumn<Client>[] = [
 </script>
 
 <Grid 
-    bind:data={clients} 
-    bind:columns />
+    data={clients} 
+    {columns} />
 ```
 
 [REPL Demo](https://svelte.dev/repl/0fd87fbb2918419eb21161bd5293dd4a)
@@ -178,7 +178,7 @@ let columns: GridColumn<Client>[] = [
 </script>
 
 <Grid 
-    bind:data={clients} 
+    data={clients} 
     bind:columns />
 ```
 
@@ -195,7 +195,7 @@ ClientCell.svelte
     export let lastname: string;
     export let email: string;
 
-    $: fullname = `${firstname} ${lastname}`;
+    let fullname = `${firstname} ${lastname}`;
 </script>
 
 <div class="my-client-cell">
@@ -213,9 +213,8 @@ DateCell.svelte
 ```svelte
 <script lang="ts">
   export let value: Date;
-  let dateStr: string;
 
-  $: dateStr = value ? (new Date(value)).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : "-";
+  let dateStr = value ? (new Date(value)).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : "-";
 </script>
 
 <div>{dateStr}</div>
@@ -225,17 +224,8 @@ CurrencyCell.svelte
 ```svelte
 <script lang="ts">
 	export let value: number;
-	let currency: string;
 
-	$: value, updateValue()
-
-	async function updateValue() {
-		const formatCurrency = (value: number, locale: string, currency: string, maximumFractionDigits: number) =>
-                new Intl.NumberFormat(locale, { currency: currency, style: 'currency',2,0
-        }).format(value);
-
-		currency = formatCurrency(value ? value : 0, "en-US", "USD", 2);
-	}
+	let currency = new Intl.NumberFormat("en-US", { currency: "USD", style: 'currency', 2, 0 }).format(value);
 </script>
 
 <div>{currency ? currency : '-'}</div>
@@ -277,7 +267,7 @@ let columns: GridColumn<Client>[] = [
                 deleteClicked: (row: Client) => {  
                    // Implement your delete function here. You can for example open a dialoge window here to confirm that the user wants to delete the row
                 },
-                somethingElseClicked: () => {
+                somethingElseClicked: (row: Client) => {
                     // ...
                 }
             }
@@ -288,8 +278,8 @@ let columns: GridColumn<Client>[] = [
 </script>
 
 <Grid 
-    bind:data={clients} 
-    bind:columns />
+    data={clients} 
+    {columns} />
 ```
 
 ActionsCell.svelte
@@ -343,8 +333,8 @@ let totalResults = 0;
 </script>
 
 <Grid 
-    bind:data={clients} 
-    bind:columns
+    data={clients} 
+    {columns}
     bind:currentPage 
     bind:itemsPerPage 
     bind:totalPages 
@@ -399,7 +389,7 @@ let columns: GridColumn<Client>[] = [
 
 <Grid 
     bind:data={clients} 
-    bind:columns
+    {columns}
     bind:groupby />
 ```
 
@@ -453,8 +443,8 @@ let columns: GridColumn<Client>[] = [
 <!-- End: Just for demonstration purposes -->
 
 <Grid 
-    bind:data={clients} 
-    bind:columns
+    data={clients} 
+    {columns}
     bind:selectedRows
     bind:showCheckboxes />
 ```
@@ -474,6 +464,7 @@ interface Client {
 }
 
 let textSearch = "";
+let clientData = clients;
 
 let filters: GridFilter[];
 $: filters = [
@@ -507,10 +498,16 @@ let columns: GridColumn<Client>[] = [
 <input type="text" placeholder="Enter Filter Term (Firstname, Lastname or Age)" bind:value={textSearch} />
 
 <Grid 
-    bind:data={clients} 
-    bind:columns
-    bind:filters />
+    data={clientData} 
+    {columns}
+    {filters} />
 ```
+
+[REPL Demo](https://svelte.dev/repl/29ecd2cbbdc64130b282c6f3888d674)
+
+Example with checkbox filter: 
+[REPL Demo](https://svelte.dev/repl/ce7c155890f647b0bb923c99a39f4bce)
+
 
 ### Example With Customized Appearance 
 
@@ -540,7 +537,7 @@ let columns: GridColumn<Client>[] = [
 
 <Grid 
     bind:data={clients} 
-    bind:columns
+    {columns}
     {theme} />
 
 <GridFooter ... {theme} />
@@ -552,7 +549,7 @@ When using `PrelineTheme` you need to install [tailwindcss](https://tailwindcss.
 export default {
   content: [
     ...
-    './node_modules/@mediakular/gridcraft/dist/themes/preline/*.svelte'
+    './node_modules/@mediakular/gridcraft/dist/themes/preline/**/*.svelte'
   ],
   theme: {
     extend: {},
@@ -583,7 +580,7 @@ let columns: GridColumn<Client>[] = [
 
 <Grid 
     bind:data={clients} 
-    bind:columns
+    {columns}
     {theme} />
 
 <GridFooter ... {theme} />
@@ -598,7 +595,7 @@ MyTableContainer.svelte
 </div>
 ```
 
-Find [here](https://gridcraft.mediakular.com/docs/theming) the full documentation about theming.
+Find [here](https://gridcraft.mediakular.com/docs/theming) the full theming documentation.
 
 ## Full Documentation
 
@@ -606,7 +603,11 @@ Find [here](https://gridcraft.mediakular.com/docs/theming) the full documentatio
 
 ## Something Missing? 
 
-Request new examples, ideas or issues on [GitHub Issues](https://github.com/mediakular/gridcraft/issues)
+Request new example codes which we can add in our documenatation: [GitHub Discussion](https://github.com/mediakular/gridcraft/discussions/new?category=examples)
+
+New ideas you can post here so we can discuss them: [GitHub Discussion](https://github.com/mediakular/gridcraft/discussions/new?category=ideas)
+
+Here you can let us know about issues or bugs: [GitHub Issues](https://github.com/mediakular/gridcraft/issues)
 
 Or ask the community in our [Discord Channel](https://discord.gg/HhVet3FU2h)
 
