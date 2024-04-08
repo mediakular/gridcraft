@@ -1,6 +1,6 @@
 import { hash } from "./helpers/hash-helper.js";
 import PagingStore from "./stores/PagingStore.js";
-import type { GridColumn, GridFilter, GroupHeader, IPagingData } from "./types/index.js";
+import type { GridColumn, GridFilter, GroupHeader, PagingData } from "./types/index.js";
 
 export class GridFunctions<T> {
     public data: T[] = [];
@@ -19,7 +19,7 @@ export class GridFunctions<T> {
         this.data = data;
         this.dataLength = this.data.length;
 
-        PagingStore.update((value:IPagingData) => {
+        PagingStore.update((value: PagingData) => {
             value.totalResults = this.dataLength;
             return value;
         });
@@ -141,7 +141,7 @@ export class GridFunctions<T> {
 
             this.data = this.data.slice(startIndex, endIndex);
 
-            PagingStore.update((value:IPagingData) => {
+            PagingStore.update((value: PagingData) => {
                 value.totalPages = Math.max(1, Math.ceil(value.totalResults / Math.max(1, value.itemsPerPage)));
                 return value;
             });
@@ -265,7 +265,7 @@ export class GridFunctions<T> {
         
         this.dataLength = groupDataLength;
 
-        PagingStore.update((value:IPagingData) => {
+        PagingStore.update((value: PagingData) => {
             value.totalResults = this.dataLength;
             value.totalPages = Math.max(1, Math.ceil(value.totalResults / Math.max(1, value.itemsPerPage)));
             return value;

@@ -1,11 +1,11 @@
 <script lang="ts">
     import PagingStore from "$lib/stores/PagingStore.js";
-    import type { IPagingData } from "$lib/types/index.js";
+    import type { PagingData } from "$lib/types/index.js";
 
     $: paging = $PagingStore;
 
     function nextPage() {
-        PagingStore.update((value:IPagingData) => {
+        PagingStore.update((value:PagingData) => {
             return {
                 ...value,
                 currentPage: value.currentPage += 1
@@ -14,7 +14,7 @@
     }
 
     function prevPage() {
-        PagingStore.update((value:IPagingData) => {
+        PagingStore.update((value:PagingData) => {
             return {
                 ...value,
                 currentPage: value.currentPage -= 1

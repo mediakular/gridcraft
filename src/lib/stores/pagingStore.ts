@@ -1,7 +1,7 @@
-import type { IPagingData } from '$lib/types/index.js';
+import type { PagingData } from '$lib/types/index.js';
 import { writable } from 'svelte/store';
  
-const PagingStore = writable<IPagingData>({
+const PagingStore = writable<PagingData>({
     currentPage: 1,
     totalPages: 1,
     totalResults: 0,

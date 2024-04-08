@@ -1,11 +1,11 @@
 <script lang="ts">
     import PagingStore from "$lib/stores/PagingStore.js";
-    import type { IPagingData } from "$lib/types/index.js";
+    import type { PagingData } from "$lib/types/index.js";
 
     $: paging = $PagingStore;
 
     function handleItemsPerPageChange() {
-        PagingStore.update((value:IPagingData) => {
+        PagingStore.update((value: PagingData) => {
             
             const totalPages = Math.max(1, Math.ceil(paging.totalResults / Math.max(1, paging.itemsPerPage)));
             const currentPage = Math.max(1, Math.min(paging.currentPage, totalPages));
