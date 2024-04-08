@@ -125,6 +125,9 @@
 
 <svelte:component this={theme.grid.container}>
     <colgroup>
+        {#if showCheckboxes}
+            <col span="1">
+        {/if}
         {#each columns.filter(x => x.visible != false) as col (col.key)}
             {#if groupBy != col.key}
                 <col span="1" style="{col.width ? "width:" + (Number.isInteger(col.width) ? `${col.width}px` : col.width) : ""}">
