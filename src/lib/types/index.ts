@@ -55,7 +55,7 @@ export type GridTheme = {
     paging: ComponentType;
 }
 
-export interface IPagingData {
+export type PagingData = {
     currentPage: number;
     totalPages: number;
     totalResults: number;
