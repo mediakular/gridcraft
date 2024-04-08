@@ -1,22 +1,34 @@
 <script lang="ts">
-    export let currentPage = 1;
-    export let totalPages = 1;
-    export let totalResults = 0;
-    export let itemsPerPage = 10;
-    export let itemsPerPageOptions = [10, 20, 50, 100];
-</script>
+    import PagingStore from "$lib/stores/PagingStore.js";
+    import type { IPagingData } from "$lib/types/index.js";
 
+    $: paging = $PagingStore;
+
+    function handleItemsPerPageChange() {
+        PagingStore.update((value:IPagingData) => {
+            const totalPages = Math.max(1, Math.ceil(paging.totalResults / Math.max(1, paging.itemsPerPage)));
+            const currentPage = Math.max(1, Math.min(paging.currentPage, totalPages));
+
+            return {
+                ...value, 
+                currentPage: currentPage,
+                totalPages: totalPages, 
+                itemsPerPage: paging.itemsPerPage
+            }; 
+        });
+    }
+</script>
 
 <div class="gc-footer">
     <span>Rows per page</span>
 
-    <select bind:value={itemsPerPage}>
-        {#each itemsPerPageOptions as option (option)}                
-            <option value="{option}" selected={option == itemsPerPage}>{option}</option>
+    <select bind:value={paging.itemsPerPage} on:change={handleItemsPerPageChange}>
+        {#each paging.itemsPerPageOptions as option (option)}                
+            <option value="{option}" selected={option == paging.itemsPerPage}>{option}</option>
         {/each}
     </select>
 
-    <span>{currentPage * itemsPerPage - itemsPerPage + 1} - {currentPage * itemsPerPage}  of {totalResults}</span>
+    <span>{paging.currentPage * paging.itemsPerPage - paging.itemsPerPage + 1} - {paging.currentPage * paging.itemsPerPage} of {paging.totalResults}</span>
 
     <slot />
 </div>

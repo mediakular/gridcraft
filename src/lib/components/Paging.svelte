@@ -1,11 +1,7 @@
 <script lang="ts">
-    import PlainTableTheme from "$lib/themes/plain-table/index.js";
-    import type { GridTheme } from "$lib/types/index.js";
+    import ThemeStore from '$lib/stores/ThemeStore.js';
 
-    export let theme: GridTheme = PlainTableTheme;
-
-    export let currentPage = 1;
-    export let totalPages = 1;
+    $: theme = $ThemeStore;
 </script>
 
-<svelte:component this={theme.paging} bind:currentPage={currentPage} bind:totalPages={totalPages} />
+<svelte:component this={theme.paging} />

@@ -1,8 +1,9 @@
 <script lang="ts">
-    import PlainTableCssTheme from "$lib/themes/plain-table/index.js";
+    import PagingStore from '$lib/stores/PagingStore.js';
+    import ThemeStore from '$lib/stores/ThemeStore.js';
 
 	import { GridFunctions } from "../GridFunctions.js";
-    import type { GridColumn, GridFilter, GridTheme, GroupHeader } from "$lib/types/index.js";
+    import type { GridColumn, GridFilter, GroupHeader } from "$lib/types/index.js";
 
     type T = $$Generic<any>;
     type ExpandedGroups = { [value:string] : boolean };
@@ -14,24 +15,19 @@
 
     export let groupBy = ""; // Default grouping column
     export let sortByColumn = "";
-    export let itemsPerPage = 10;
     export let sortOrder = 1; // 1 for ascending, -1 for descending
-    export let currentPage = 1;
-    export let totalPages = 0;
-    export let totalResults = 0;
+
     export let showCheckboxes = false;
     export let groupsExpandedDefault = true;
     export let selectedRows: T[] = [];
 
-    export let theme: GridTheme = PlainTableCssTheme;
-
-    $: theme;
+    $: paging = $PagingStore;
+    $: theme = $ThemeStore;
 
     let sortOrderSecondary = 1; // 1 for ascending, -1 for descending
     let expandedGroups: ExpandedGroups = {};
 
     $: fulldata = Array.from(data);
-
     $: columns, assignAutoColumns();
 
     function assignAutoColumns() {
@@ -54,19 +50,19 @@
             col.visible = true;
         }
     })
+
     $: grid = new GridFunctions<T>()
         .init(fulldata)
         .applyFilters(filters, columns)
         .sortBy(sortByColumn, sortOrder, groupBy, sortOrderSecondary, columns)
         .groupBy(groupBy, expandedGroups, groupsExpandedDefault, columns)
-        .processPaging(currentPage, itemsPerPage, groupBy, columns);
+        .processPaging(paging.currentPage, paging.itemsPerPage, groupBy, columns);
     $: gridData = grid.data;
     $: dataUnpaged = grid.dataUnpaged;
-    $: totalResults = grid.dataLength;
+
     $: groupHeaders = grid.groupHeaders;
     $: groupHeadersUnpaged = grid.groupHeadersUnpaged;
-    $: totalPages = Math.max(1, Math.ceil(totalResults / Math.max(1, itemsPerPage)));
-
+    
     function handleSort(column: string) {
         if (groupBy) {
             if (column === sortByColumn) {

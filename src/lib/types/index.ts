@@ -54,3 +54,11 @@ export type GridTheme = {
     footer: ComponentType;
     paging: ComponentType;
 }
+
+export interface IPagingData {
+    currentPage: number;
+    totalPages: number;
+    totalResults: number;
+    itemsPerPage: number;
+    itemsPerPageOptions: number[];
+}
