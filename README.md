@@ -320,26 +320,22 @@ Here a simple example with paging. Simply define and bind the necessary variable
 
 ```svelte
 <script lang="ts">
-import { Grid, GridFooter, type GridColumn } from "@mediakular/gridcraft";
+import { Grid, GridFooter, PagingStore, type GridColumn, type PagingData } from "@mediakular/gridcraft";
 import { clients } from './clients.js';
 
 let columns: GridColumn<Client>[] = [];
 
-// Define paging variables
-let itemsPerPage = 10;
-let currentPage = 1;
-let totalPages = 1;
-let totalResults = 0;
+// Define paging variables if needed
+PagingStore.set({
+    itemsPerPage: 10,
+    currentPage: 1,
+    itemsPerPageOptions: [10, 20, 50, 100]
+} as PagingData
+);
 </script>
 
-<Grid 
-    data={clients} 
-    {columns}
-    bind:currentPage 
-    bind:itemsPerPage 
-    bind:totalPages 
-    bind:totalResults />
-<GridFooter bind:currentPage bind:totalPages bind:totalResults bind:itemsPerPage />
+<Grid data={clients} {columns} />
+<GridFooter />
 ```
 
 [REPL Demo for simple paging](https://svelte.dev/repl/2e93a38d3a04433daeda7ab627d5968b)
@@ -516,14 +512,14 @@ By default gridcraft uses `PlainTableCssTheme`. While `PlainTableCssTheme` is a 
 `PrelineTheme` is inspired by [preline](https://preline.co/).
 
 There are currently three main components that can be themed: `Grid`, `GridFooter` and `GridPaging`. 
-On these components the `theme` property can be set.
+These components will be affected by the chosen theme.
 
 ```svelte
 <script lang="ts">
-import { Grid, type GridColumn, GridFooter, PrelineTheme, PlainTableCssTheme } from "@mediakular/gridcraft";
+import { Grid, ThemeStore, type GridColumn, GridFooter, PrelineTheme, PlainTableCssTheme } from "@mediakular/gridcraft";
 import { clients } from './clients.js';
 
-let theme = PlainTableCssTheme;
+ThemeStore.set(PlainTableCssTheme);
 
 let columns: GridColumn<Client>[] = [
     ...
@@ -531,16 +527,15 @@ let columns: GridColumn<Client>[] = [
 </script>
 
 <!-- Only for demonstration purposes -->
-<button on:click={() => theme = PlainTableCssTheme}>Plain Css Theme</button>
-<button on:click={() => theme = PrelineTheme}>Preline Theme</button>
+<button on:click={() => ThemeStore.set(PlainTableCssTheme)}>Plain Css Theme</button>
+<button on:click={() => ThemeStore.set(PrelineTheme)}>Preline Theme</button>
 <!-- End: Only for demonstration purposes -->
 
 <Grid 
     bind:data={clients} 
-    {columns}
-    {theme} />
+    {columns} />
 
-<GridFooter ... {theme} />
+<GridFooter />
 ```
 
 When using `PrelineTheme` you need to install [tailwindcss](https://tailwindcss.com/docs/guides/sveltekit) and make sure to add this in your `tailwind.config.js`:
@@ -566,12 +561,13 @@ This can be usefull if you are satisfied with a certain theme, but you want to m
 
 ```svelte
 <script lang="ts">
-import { Grid, type GridColumn, GridFooter, PrelineTheme, PlainTableTheme } from "@mediakular/gridcraft";
+import { Grid, ThemeStore, type GridColumn, GridFooter, PrelineTheme, PlainTableTheme } from "@mediakular/gridcraft";
 import MyTableContainer from "$lib/components/grid/theme/MyTableContainer.svelte"
 import { clients } from './clients.js';
 
 let theme = PlainTableTheme;
 theme.grid.container = MyTableContainer;
+ThemeStore.set(theme);
 
 let columns: GridColumn<Client>[] = [
     ...
@@ -580,10 +576,9 @@ let columns: GridColumn<Client>[] = [
 
 <Grid 
     bind:data={clients} 
-    {columns}
-    {theme} />
+    {columns} />
 
-<GridFooter ... {theme} />
+<GridFooter />
 ```
 
 MyTableContainer.svelte
