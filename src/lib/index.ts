@@ -4,6 +4,10 @@ import Grid from './components/Grid.svelte';
 import GridFooter from './components/Footer.svelte';
 import GridPaging from './components/Paging.svelte';
 
+import PagingStore from "./stores/PagingStore.js";
+import ThemeStore from "./stores/ThemeStore.js";
+import type { PagingData } from "./types/index.js";
+
 import PlainTableTheme from './themes/plain-table/index.js';
 import PrelineTheme from './themes/preline/index.js';
 import PlainTableCssTheme from './themes/plain-table-css/index.js';
@@ -19,6 +23,9 @@ export {
     GridFilter, 
     GroupHeader,
     GridTheme,
+    PagingData,
+    ThemeStore,
+    PagingStore,
     PlainTableTheme,
     PrelineTheme,
     PlainTableCssTheme,
