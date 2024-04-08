@@ -55,7 +55,7 @@ export class GridFunctions<T> {
                         }
                     }
                 } else {
-                    for (const col of columns.filter((x) => x.visible)) {
+                    for (const col of columns) {
                         if (filter.columns === "all" || (Array.isArray(filter.columns) && filter.columns.some(x => x == col.key))) {
                             const rowValue = col.accessor ? col.accessor(row) : row[col.key as keyof T];
                             if (filter.filter(rowValue, col.key)) {
@@ -63,7 +63,7 @@ export class GridFunctions<T> {
                             }
                         }
                     }
-                    return false
+                    return false;
                 }
             }
             return true;
