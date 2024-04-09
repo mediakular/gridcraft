@@ -66,7 +66,8 @@ import { clients } from './clients.js';
 <Grid data={clients} />
 ```
 
-[REPL Demo](https://svelte.dev/repl/e547543d6632426ca1a3cb1d39753342)
+[![Open in SvelteLab](https://docs.sveltelab.dev/button/dark_short.svg)](https://sveltelab.dev/t10g8lrrvonvfpe)
+
 
 ### Example With Column Definition
 
@@ -110,7 +111,7 @@ let columns: GridColumn<Client>[] = [
     {columns} />
 ```
 
-[REPL Demo](https://svelte.dev/repl/0fd87fbb2918419eb21161bd5293dd4a)
+[![Open in SvelteLab](https://docs.sveltelab.dev/button/dark_short.svg)](https://sveltelab.dev/wrgknj4kkh9u2rp)
 
 
 #### Use custom components to render column cells
@@ -182,7 +183,8 @@ let columns: GridColumn<Client>[] = [
     bind:columns />
 ```
 
-[REPL Demo](https://svelte.dev/repl/c308f5ca803f40ae9f405eadc5df0420)
+[![Open in SvelteLab](https://docs.sveltelab.dev/button/dark_short.svg)](https://sveltelab.dev/k37a6yc96pr3dg6)
+
 
 
 Here are the custom cell components used in the example above:
@@ -314,6 +316,9 @@ ActionsCell.svelte
 </a>
 ```
 
+[![Open in SvelteLab](https://docs.sveltelab.dev/button/dark_short.svg)](https://sveltelab.dev/nz5ldvron8kudnf)
+
+
 ### Example With Paging
 
 Here a simple example with paging. If you are okay with the default values, there is nothing to do. If you want to overwrite the defaults simply set them in the `PagingStore`:
@@ -340,9 +345,11 @@ PagingStore.set({
 <GridFooter />
 ```
 
-[REPL Demo for simple paging](https://svelte.dev/repl/2e93a38d3a04433daeda7ab627d5968b)
+Simple paging example:
+[![Open in SvelteLab](https://docs.sveltelab.dev/button/dark_short.svg)](https://sveltelab.dev/jj9lpokeuet9223)
 
-[REPL Demo for custom paging](https://svelte.dev/repl/092eac4cd6324b2aa8e3ff8343ee0231)
+Custom paging example:
+[![Open in SvelteLab](https://docs.sveltelab.dev/button/dark_short.svg)](https://sveltelab.dev/dl77tkzvr65ustm)
 
 ### Example With Grouping
 
@@ -391,7 +398,7 @@ let columns: GridColumn<Client>[] = [
     bind:groupby />
 ```
 
-[REPL Demo](https://svelte.dev/repl/c893a56fa13349029cef87a5fa8459c4)
+[![Open in SvelteLab](https://docs.sveltelab.dev/button/dark_short.svg)](https://sveltelab.dev/y67tv9j37b8hqac)
 
 
 ### Example With Rows Selection
@@ -429,8 +436,7 @@ let columns: GridColumn<Client>[] = [
 
 <!-- Just for demonstration purposes -->
 <label for="showCheckboxes">
-    <input type="checkbox" checked={showCheckboxes == true} on:change={() => showCheckboxes = !showCheckboxes} id="showCheckboxes">
-    &nbsp;Show checkboxes
+    <input type="checkbox" bind:checked={showCheckboxes} id="showCheckboxes"> Show checkboxes
 </label>
 {#if showCheckboxes}
     Selected Rows:
@@ -443,9 +449,11 @@ let columns: GridColumn<Client>[] = [
 <Grid 
     data={clients} 
     {columns}
-    bind:selectedRows
-    bind:showCheckboxes />
+    {showCheckboxes} 
+    bind:selectedRows />
 ```
+
+[![Open in SvelteLab](https://docs.sveltelab.dev/button/dark_short.svg)](https://sveltelab.dev/r88lu8v36jtn9mu)
 
 ### Example With Text Filter
 
@@ -501,10 +509,11 @@ let columns: GridColumn<Client>[] = [
     {filters} />
 ```
 
-[REPL Demo](https://svelte.dev/repl/29ecd2cbbdc64130b282c6f3888d674)
+Example with text filter: 
+[![Open in SvelteLab](https://docs.sveltelab.dev/button/dark_short.svg)](https://sveltelab.dev/2bc946qi8itq93u)
 
 Example with checkbox filter: 
-[REPL Demo](https://svelte.dev/repl/ce7c155890f647b0bb923c99a39f4bce)
+[![Open in SvelteLab](https://docs.sveltelab.dev/button/dark_short.svg)](https://sveltelab.dev/vfg9ulxnijog4xy)
 
 
 ### Example With Customized Appearance 
@@ -530,8 +539,8 @@ let columns: GridColumn<Client>[] = [
 </script>
 
 <!-- Only for demonstration purposes -->
-<button on:click={() => ThemeStore.set(PlainTableCssTheme)>Plain Css Theme</button>
-<button on:click={() => ThemeStore.set(PrelineTheme)>Preline Theme</button>
+<button on:click={() => ThemeStore.set(PlainTableCssTheme)}>Plain Css Theme</button>
+<button on:click={() => ThemeStore.set(PrelineTheme)}>Preline Theme</button>
 <!-- End: Only for demonstration purposes -->
 
 <Grid bind:data={clients} {columns} />
@@ -555,6 +564,9 @@ export default {
   ],
 }
 ```
+
+[![Open in SvelteLab](https://docs.sveltelab.dev/button/dark_short.svg)](https://sveltelab.dev/rkd4wvyi7nvmrfe)
+
 
 #### Overwriting an existing theme
 
