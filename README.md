@@ -316,7 +316,7 @@ ActionsCell.svelte
 
 ### Example With Paging
 
-Here a simple example with paging. Simply define and bind the necessary variables to the `Grid` component and to the `GridFooter` component. 
+Here a simple example with paging. If you are okay with the default values, there is nothing to do. If you want to overwrite the defaults simply set them in the `PagingStore`:
 
 ```svelte
 <script lang="ts">
