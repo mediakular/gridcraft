@@ -69,6 +69,14 @@ export class GridFunctions<T> {
             return true;
         })
 
+        this.dataLength = this.data.length;
+
+        PagingStore.update((value: PagingData) => {
+            value.totalResults = this.dataLength;
+            value.totalPages = Math.max(1, Math.ceil(value.totalResults / Math.max(1, value.itemsPerPage)));
+            return value;
+        });
+        
         return this;
     }
 
