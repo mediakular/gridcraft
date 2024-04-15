@@ -1,6 +1,5 @@
 import { hash } from "./helpers/hash-helper.js";
-import PagingStore from "./stores/PagingStore.js";
-import type { GridColumn, GridFilter, GroupHeader, PagingData } from "./types/index.js";
+import type { GridColumn, GridFilter, GroupHeader, PagingData, PagingDataInternal } from "./types/index.js";
 
 export class GridFunctions<T> {
     public data: T[] = [];
@@ -8,6 +7,18 @@ export class GridFunctions<T> {
     public dataLength = 0;
     public groupHeaders: GroupHeader<T>[] = [];
     public groupHeadersUnpaged: GroupHeader<T>[] = [];
+    public pagingData: PagingData = {
+        currentPage: 1,
+        totalPages: 0,
+        totalResults: 0,
+        itemsPerPage: 10,
+        itemsPerPageOptions: [10, 25, 50, 100]
+    };
+
+    private updatePagingData() {
+        (this.pagingData as PagingDataInternal).totalResults = this.dataLength;
+        (this.pagingData as PagingDataInternal).totalPages = Math.max(1, Math.ceil(this.dataLength / Math.max(1, this.pagingData.itemsPerPage)));
+    }
 
     /**
      * Initializes the GridFunctions instance with the provided data array.
@@ -15,15 +26,14 @@ export class GridFunctions<T> {
      * @param {T[]} data - The data array to initialize the GridFunctions with.
      * @return {GridFunctions<T>} The initialized GridFunctions instance.
      */
-    init(data: T[]) : GridFunctions<T> {
+    init(data: T[], pagingData: PagingData) : GridFunctions<T> {
         this.data = data;
         this.dataLength = this.data.length;
 
-        PagingStore.update((value: PagingData) => {
-            value.totalResults = this.dataLength;
-            return value;
-        });
+        this.pagingData = pagingData;
 
+        this.updatePagingData();
+       
         return this;
     }
 
@@ -71,12 +81,8 @@ export class GridFunctions<T> {
 
         this.dataLength = this.data.length;
 
-        PagingStore.update((value: PagingData) => {
-            value.totalResults = this.dataLength;
-            value.totalPages = Math.max(1, Math.ceil(value.totalResults / Math.max(1, value.itemsPerPage)));
-            return value;
-        });
-        
+        this.updatePagingData();
+
         return this;
     }
 
@@ -140,19 +146,17 @@ export class GridFunctions<T> {
      * @param {GridColumn<T>[]} columns - An array of grid columns.
      * @return {GridFunctions<T>} The updated GridFunctions object.
      */
-    processPaging(currentPage: number, itemsPerPage: number, groupBy: string, columns: GridColumn<T>[]): GridFunctions<T> {
+    processPaging(groupBy: string, columns: GridColumn<T>[]): GridFunctions<T> {
         this.dataUnpaged = [...this.data];
+
+        const currentPage = this.pagingData.currentPage;
+        const itemsPerPage = this.pagingData.itemsPerPage;
 
         if (!groupBy) {
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
 
             this.data = this.data.slice(startIndex, endIndex);
-
-            PagingStore.update((value: PagingData) => {
-                value.totalPages = Math.max(1, Math.ceil(value.totalResults / Math.max(1, value.itemsPerPage)));
-                return value;
-            });
             
             return this;
         }
@@ -273,11 +277,7 @@ export class GridFunctions<T> {
         
         this.dataLength = groupDataLength;
 
-        PagingStore.update((value: PagingData) => {
-            value.totalResults = this.dataLength;
-            value.totalPages = Math.max(1, Math.ceil(value.totalResults / Math.max(1, value.itemsPerPage)));
-            return value;
-        });
+        this.updatePagingData();
 
         return this;
     }

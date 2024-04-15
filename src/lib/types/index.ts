@@ -57,8 +57,14 @@ export type GridTheme = {
 
 export type PagingData = {
     currentPage: number;
-    totalPages: number;
-    totalResults: number;
     itemsPerPage: number;
     itemsPerPageOptions: number[];
+    readonly totalPages: number;
+    readonly totalResults: number;
+}
+
+
+export type PagingDataInternal = PagingData & {
+    totalPages: number;
+    totalResults: number;
 }

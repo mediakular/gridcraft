@@ -321,28 +321,32 @@ ActionsCell.svelte
 
 ### Example With Paging
 
-Here a simple example with paging. If you are okay with the default values, there is nothing to do. If you want to overwrite the defaults simply set them in the `PagingStore`:
+Here a simple example with paging. If you are okay with the default values, you only need to define a variable of type `PagingData`, which you need to set as attributes for the `Grid` and `GridFooter` components. 
+If you want to overwrite the defaults simply define them in the paging variable:
 
 ```svelte
 <script lang="ts">
-import { Grid, PagingStore, type PagingData, GridFooter, type GridColumn } from "@mediakular/gridcraft";
+import { Grid, type PagingData, GridFooter, type GridColumn } from "@mediakular/gridcraft";
 import { clients } from './clients.js';
 
 let columns: GridColumn<Client>[] = [];
 
 // Define paging variables, if you want to overwrite the default
-PagingStore.set({
+let paging = {
     itemsPerPage: 5,
     currentPage: 1,
     itemsPerPageOptions: [5, 10, 20]
-} as PagingData);
+} as PagingData;
+// Or: let paging:PagingData;
 
 </script>
 
 <Grid 
     data={clients} 
-    {columns} />
-<GridFooter />
+    {columns}
+    {paging} />
+
+<GridFooter bind:paging />
 ```
 
 Simple paging example:
@@ -526,12 +530,10 @@ There are currently three main components that can be themed: `Grid`, `GridFoote
 
 ```svelte
 <script lang="ts">
-import { Grid, ThemeStore, type GridColumn, GridFooter, PrelineTheme, PlainTableCssTheme } from "@mediakular/gridcraft";
+import { Grid, type GridColumn, GridFooter, PrelineTheme, PlainTableCssTheme } from "@mediakular/gridcraft";
 import { clients } from './clients.js';
 
 let theme = PlainTableCssTheme;
-
-ThemeStore.set(theme);
 
 let columns: GridColumn<Client>[] = [
     ...
@@ -539,13 +541,13 @@ let columns: GridColumn<Client>[] = [
 </script>
 
 <!-- Only for demonstration purposes -->
-<button on:click={() => ThemeStore.set(PlainTableCssTheme)}>Plain Css Theme</button>
-<button on:click={() => ThemeStore.set(PrelineTheme)}>Preline Theme</button>
+<button on:click={() => theme = PlainTableCssTheme}>Plain Css Theme</button>
+<button on:click={() => theme = PrelineTheme}>Preline Theme</button>
 <!-- End: Only for demonstration purposes -->
 
-<Grid bind:data={clients} {columns} />
+<Grid bind:data={clients} {columns} {theme} />
 
-<GridFooter />
+<GridFooter {theme}/>
 ```
 
 When using `PrelineTheme` you need to install [tailwindcss](https://tailwindcss.com/docs/guides/sveltekit) and make sure to add this in your `tailwind.config.js`:
@@ -580,7 +582,6 @@ import { clients } from './clients.js';
 
 let theme = PlainTableTheme;
 theme.grid.container = MyTableContainer;
-ThemeStore.set(theme);
 
 let columns: GridColumn<Client>[] = [
     ...
@@ -589,9 +590,10 @@ let columns: GridColumn<Client>[] = [
 
 <Grid 
     bind:data={clients} 
-    {columns}/>
+    {columns}
+    {theme} />
 
-<GridFooter />
+<GridFooter {theme} />
 ```
 
 MyTableContainer.svelte

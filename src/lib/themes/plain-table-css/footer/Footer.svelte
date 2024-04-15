@@ -1,21 +1,18 @@
 <script lang="ts">
-    import PagingStore from "$lib/stores/PagingStore.js";
     import type { PagingData } from "$lib/types/index.js";
 
-    $: paging = $PagingStore;
+    export let paging: PagingData;
 
     function handleItemsPerPageChange() {
-        PagingStore.update((value: PagingData) => {
-            const totalPages = Math.max(1, Math.ceil(paging.totalResults / Math.max(1, paging.itemsPerPage)));
-            const currentPage = Math.max(1, Math.min(paging.currentPage, totalPages));
+        const totalPages = Math.max(1, Math.ceil(paging.totalResults / Math.max(1, paging.itemsPerPage)));
+        const currentPage = Math.max(1, Math.min(paging.currentPage, totalPages));
 
-            return {
-                ...value, 
-                currentPage: currentPage,
-                totalPages: totalPages, 
-                itemsPerPage: paging.itemsPerPage
-            }; 
-        });
+        paging = {
+            ...paging, 
+            currentPage: currentPage,
+            totalPages: totalPages, 
+            itemsPerPage: paging.itemsPerPage
+        };
     }
 </script>
 

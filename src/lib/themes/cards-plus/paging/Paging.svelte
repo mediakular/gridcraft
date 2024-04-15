@@ -1,25 +1,14 @@
 <script lang="ts">
-    import PagingStore from "$lib/stores/PagingStore.js";
     import type { PagingData } from "$lib/types/index.js";
-
-    $: paging = $PagingStore;
+    
+    export let paging: PagingData;
 
     function nextPage() {
-        PagingStore.update((value: PagingData) => {
-            return {
-                ...value,
-                currentPage: value.currentPage += 1
-            };
-        })
+        paging.currentPage += 1;
     }
 
     function prevPage() {
-        PagingStore.update((value: PagingData) => {
-            return {
-                ...value,
-                currentPage: value.currentPage -= 1
-            };
-        })
+        paging.currentPage -= 1;
     }
 </script>
 

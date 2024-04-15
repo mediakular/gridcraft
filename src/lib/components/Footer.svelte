@@ -1,9 +1,16 @@
 <script lang="ts">
-    import ThemeStore from '$lib/stores/ThemeStore.js';
+    import { PlainTableCssTheme, type GridTheme, type PagingData } from '$lib/index.js';
 
-    $: theme = $ThemeStore;
+    export let theme:GridTheme = PlainTableCssTheme;
+    export let paging:PagingData = {
+        currentPage: 1,
+        itemsPerPage: 10,
+        itemsPerPageOptions: [10, 25, 50, 100],
+        totalPages: 1,
+        totalResults: 0,
+    } as PagingData;
 </script>
 
-<svelte:component this={theme.footer}>
-    <svelte:component this={theme.paging}/>
+<svelte:component this={theme.footer} bind:paging >
+    <svelte:component this={theme.paging} bind:paging />
 </svelte:component>

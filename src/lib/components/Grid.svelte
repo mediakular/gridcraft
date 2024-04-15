@@ -1,9 +1,10 @@
 <script lang="ts">
-    import PagingStore from '$lib/stores/PagingStore.js';
-    import ThemeStore from '$lib/stores/ThemeStore.js';
+  import Paging from './Paging.svelte';
+
+    import { PlainTableCssTheme } from '$lib/index.js';
 
 	import { GridFunctions } from "../GridFunctions.js";
-    import type { GridColumn, GridFilter, GroupHeader } from "$lib/types/index.js";
+    import type { GridColumn, GridFilter, GridTheme, GroupHeader, PagingData } from "$lib/types/index.js";
 
     type T = $$Generic<any>;
     type ExpandedGroups = { [value:string] : boolean };
@@ -21,8 +22,14 @@
     export let groupsExpandedDefault = true;
     export let selectedRows: T[] = [];
 
-    $: paging = $PagingStore;
-    $: theme = $ThemeStore;
+    export let theme: GridTheme = PlainTableCssTheme;
+    export let paging: PagingData = {
+        currentPage: 1,
+        itemsPerPage: 10,
+        itemsPerPageOptions: [10, 25, 50, 100],
+        totalPages: 1,
+        totalResults: 0,
+    } as PagingData;
 
     let sortOrderSecondary = 1; // 1 for ascending, -1 for descending
     let expandedGroups: ExpandedGroups = {};
@@ -52,11 +59,11 @@
     })
 
     $: grid = new GridFunctions<T>()
-        .init(fulldata)
+        .init(fulldata, paging)
         .applyFilters(filters, columns)
         .sortBy(sortByColumn, sortOrder, groupBy, sortOrderSecondary, columns)
         .groupBy(groupBy, expandedGroups, groupsExpandedDefault, columns)
-        .processPaging(paging.currentPage, paging.itemsPerPage, groupBy, columns);
+        .processPaging(groupBy, columns);
     $: gridData = grid.data;
     $: dataUnpaged = grid.dataUnpaged;
 
