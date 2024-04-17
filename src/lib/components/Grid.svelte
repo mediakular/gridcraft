@@ -1,11 +1,8 @@
 <script lang="ts">
-  import Paging from './Paging.svelte';
-
     import { PlainTableCssTheme } from '$lib/index.js';
-
 	import { GridFunctions } from "../GridFunctions.js";
     import type { GridColumn, GridFilter, GridTheme, GroupHeader, PagingData } from "$lib/types/index.js";
-
+    
     type T = $$Generic<any>;
     type ExpandedGroups = { [value:string] : boolean };
 
@@ -188,7 +185,7 @@
                     </svelte:component>
                 </svelte:component>
                 {#if header.expanded}
-                    {#each header.data as row, index (row.id || generateUniqueKey())}
+                    {#each header.data as row, index (row.id?.toString() || generateUniqueKey())}
                         <svelte:component this={theme.grid.body.row} isOdd={(index + 1) % 2 == 1} index={gridData.indexOf(row)} isSelected="{selectedRows.indexOf(row) >= 0}">
                             {#if showCheckboxes}
                                 <svelte:component this={theme.grid.body.checkbox} value={row} index={gridData.indexOf(row)} bind:group={selectedRows} />
@@ -214,7 +211,7 @@
                 {/if}
             {/each}
         {:else}
-            {#each gridData as row, index (row.id || generateUniqueKey())}
+            {#each gridData as row, index (row.id?.toString() || generateUniqueKey())}
                 <svelte:component this={theme.grid.body.row} isOdd={(index+1) % 2 == 1} {index} isSelected="{selectedRows.indexOf(row) >= 0}">
                     {#if showCheckboxes}
                         <svelte:component this={theme.grid.body.checkbox} value={row} bind:group={selectedRows} index={index} />
