@@ -3,7 +3,7 @@
 	import { GridFunctions } from "../GridFunctions.js";
     import type { GridColumn, GridFilter, GridTheme, GroupHeader, PagingData } from "$lib/types/index.js";
     
-    type T = $$Generic<any>;
+    interface T { [key: string]: any }
     type ExpandedGroups = { [value:string] : boolean };
 
     export let data: Iterable<T> | ArrayLike<T> = [];
@@ -33,6 +33,15 @@
 
     $: fulldata = Array.from(data);
     $: columns, assignAutoColumns();
+
+    let uniqueRowIds: {row: T, id: string}[] = [];
+    $: uniqueRowIds = fulldata.map((row) => {
+        const id = Math.random().toString(36).substr(2, 9);
+        return { row: row, id: id  };
+    }), resetSelectedRows();
+    function resetSelectedRows() {
+        selectedRows = []; // resetting the selected rows when fulldata changes
+    }
 
     function assignAutoColumns() {
         if (columns.length > 0 || fulldata.length == 0) {
@@ -97,8 +106,8 @@
         groupHeader.expanded = !groupHeader.expanded;
     }
 
-    function generateUniqueKey() {
-        return Math.random().toString(36).substr(2, 9); // Generate a random unique key
+    function getUniqueKey(row: T) {
+        return uniqueRowIds.find(x => x.row == row)?.id;
     }
 
     function toggleHeaderCheckbox() {
@@ -185,7 +194,7 @@
                     </svelte:component>
                 </svelte:component>
                 {#if header.expanded}
-                    {#each header.data as row, index (row.id?.toString() || generateUniqueKey())}
+                    {#each header.data as row, index (getUniqueKey(row))}
                         <svelte:component this={theme.grid.body.row} isOdd={(index + 1) % 2 == 1} index={gridData.indexOf(row)} isSelected="{selectedRows.indexOf(row) >= 0}">
                             {#if showCheckboxes}
                                 <svelte:component this={theme.grid.body.checkbox} value={row} index={gridData.indexOf(row)} bind:group={selectedRows} />
@@ -211,7 +220,7 @@
                 {/if}
             {/each}
         {:else}
-            {#each gridData as row, index (row.id?.toString() || generateUniqueKey())}
+            {#each gridData as row, index (getUniqueKey(row))}
                 <svelte:component this={theme.grid.body.row} isOdd={(index+1) % 2 == 1} {index} isSelected="{selectedRows.indexOf(row) >= 0}">
                     {#if showCheckboxes}
                         <svelte:component this={theme.grid.body.checkbox} value={row} bind:group={selectedRows} index={index} />
