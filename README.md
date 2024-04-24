@@ -326,33 +326,31 @@ If you want to overwrite the defaults simply define them in the paging variable:
 
 ```svelte
 <script lang="ts">
-import { Grid, type PagingData, GridFooter, type GridColumn } from "@mediakular/gridcraft";
+import { Grid, PagingData, GridFooter, type GridColumn } from "@mediakular/gridcraft";
 import { clients } from './clients.js';
 
 let columns: GridColumn<Client>[] = [];
 
 // Define paging variables, if you want to overwrite the default
-let paging = {
-    itemsPerPage: 5,
-    currentPage: 1,
-    itemsPerPageOptions: [5, 10, 20]
-} as PagingData;
-// Or: let paging:PagingData;
+let paging = new PagingData(1, 5, [5, 10, 20]);
+// Or: let paging = new PagingData();
 
 </script>
 
 <Grid 
     data={clients} 
     {columns}
-    {paging} />
+    bind:paging />
 
 <GridFooter bind:paging />
 ```
 
 Simple paging example:
+
 [![Open in SvelteLab](https://docs.sveltelab.dev/button/dark_short.svg)](https://sveltelab.dev/jj9lpokeuet9223)
 
 Custom paging example:
+
 [![Open in SvelteLab](https://docs.sveltelab.dev/button/dark_short.svg)](https://sveltelab.dev/dl77tkzvr65ustm)
 
 ### Example With Grouping
@@ -514,9 +512,11 @@ let columns: GridColumn<Client>[] = [
 ```
 
 Example with text filter: 
+
 [![Open in SvelteLab](https://docs.sveltelab.dev/button/dark_short.svg)](https://sveltelab.dev/2bc946qi8itq93u)
 
 Example with checkbox filter: 
+
 [![Open in SvelteLab](https://docs.sveltelab.dev/button/dark_short.svg)](https://sveltelab.dev/vfg9ulxnijog4xy)
 
 
@@ -630,6 +630,8 @@ Support the development of GridCraft by becoming a sponsor:
 [Sponsor on Patreon](https://www.patreon.com/GridCraft_DataGrid)
 
 ## Contribute & Become Part Of The Community
+
+Everyone is welcome to contribute to this project. Feel free to open an issue if you have question or found a bug.
 
 Join the community in our [Discord Channel](https://discord.gg/HhVet3FU2h). 
 There you can ask everything to get started.
