@@ -55,14 +55,26 @@ export type GridTheme = {
     paging: ComponentType;
 }
 
-export type PagingData = {
+export class PagingData {
     currentPage: number;
     itemsPerPage: number;
     itemsPerPageOptions: number[];
+
     readonly totalPages: number;
     readonly totalResults: number;
-}
 
+    constructor(
+        currentPage: number = 1,
+        itemsPerPage: number = 10,
+        itemsPerPageOptions: number[] = [10, 25, 50, 100]
+    ) {
+        this.currentPage = currentPage;
+        this.itemsPerPage = itemsPerPage;
+        this.itemsPerPageOptions = itemsPerPageOptions;
+        this.totalPages = 0;
+        this.totalResults = 0;
+    }
+}
 
 export type PagingDataInternal = PagingData & {
     totalPages: number;

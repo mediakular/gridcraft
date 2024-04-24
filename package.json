@@ -1,6 +1,6 @@
 {
   "name": "@mediakular/gridcraft",
-  "version": "0.2.6-beta",
+  "version": "0.2.7-beta",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
@@ -56,7 +56,7 @@
     "grid"
   ],
   "author": "Stefan Lessle",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/mediakular/gridcraft/issues"
   },

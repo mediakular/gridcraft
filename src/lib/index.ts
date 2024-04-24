@@ -4,7 +4,7 @@ import Grid from './components/Grid.svelte';
 import GridFooter from './components/Footer.svelte';
 import GridPaging from './components/Paging.svelte';
 
-import type { PagingData } from "./types/index.js";
+import { PagingData } from "./types/index.js";
 
 import PlainTableTheme from './themes/plain-table/index.js';
 import PrelineTheme from './themes/preline/index.js';

@@ -1,9 +1,10 @@
 <script lang="ts">
     import { PlainTableCssTheme } from '$lib/index.js';
 	import { GridFunctions } from "../GridFunctions.js";
-    import type { GridColumn, GridFilter, GridTheme, GroupHeader, PagingData } from "$lib/types/index.js";
-    
-    interface T { [key: string]: any }
+    import type { GridColumn, GridFilter, GridTheme, GroupHeader, PagingDataInternal } from "$lib/types/index.js";
+    import { PagingData } from "$lib/types/index.js";
+
+    type T = $$Generic<any>;
     type ExpandedGroups = { [value:string] : boolean };
 
     export let data: Iterable<T> | ArrayLike<T> = [];
@@ -20,29 +21,16 @@
     export let selectedRows: T[] = [];
 
     export let theme: GridTheme = PlainTableCssTheme;
-    export let paging: PagingData = {
-        currentPage: 1,
-        itemsPerPage: 10,
-        itemsPerPageOptions: [10, 25, 50, 100],
-        totalPages: 1,
-        totalResults: 0,
-    } as PagingData;
+    export let paging = new PagingData();
 
     let sortOrderSecondary = 1; // 1 for ascending, -1 for descending
     let expandedGroups: ExpandedGroups = {};
+    let gridData: T[] = [];
+    let groupHeaders: GroupHeader<T>[] = [];
+    let groupHeadersUnpaged: GroupHeader<T>[] = [];
 
     $: fulldata = Array.from(data);
     $: columns, assignAutoColumns();
-
-    let uniqueRowIds: {row: T, id: string}[] = [];
-    $: uniqueRowIds = fulldata.map((row) => {
-        const id = Math.random().toString(36).substr(2, 9);
-        return { row: row, id: id  };
-    }), resetSelectedRows();
-    function resetSelectedRows() {
-        selectedRows = []; // resetting the selected rows when fulldata changes
-    }
-
     function assignAutoColumns() {
         if (columns.length > 0 || fulldata.length == 0) {
             return;
@@ -58,6 +46,15 @@
         });
     }
 
+    let uniqueRowIds: {row: T, id: string}[] = [];
+    $: uniqueRowIds = fulldata.map((row) => {
+        const id = Math.random().toString(36).substr(2, 9);
+        return { row: row, id: id  };
+    }), resetSelectedRows();
+    function resetSelectedRows() {
+        selectedRows = []; // resetting the selected rows when fulldata changes
+    }
+    
     $: columns.forEach((col) => {
         if (col.visible === undefined) {
             col.visible = true;
@@ -65,16 +62,25 @@
     })
 
     $: grid = new GridFunctions<T>()
-        .init(fulldata, paging)
+        .init(fulldata)
         .applyFilters(filters, columns)
         .sortBy(sortByColumn, sortOrder, groupBy, sortOrderSecondary, columns)
-        .groupBy(groupBy, expandedGroups, groupsExpandedDefault, columns)
-        .processPaging(groupBy, columns);
-    $: gridData = grid.data;
-    $: dataUnpaged = grid.dataUnpaged;
+        .groupBy(groupBy,expandedGroups, groupsExpandedDefault, columns)
+        .processPaging(groupBy, paging.currentPage, paging.itemsPerPage);
 
-    $: groupHeaders = grid.groupHeaders;
-    $: groupHeadersUnpaged = grid.groupHeadersUnpaged;
+    $: {
+        gridData = grid.data;
+        dataUnpaged = grid.dataUnpaged;
+        groupHeaders = grid.groupHeaders;
+        groupHeadersUnpaged = grid.groupHeadersUnpaged;
+        updatePaging();
+    }
+
+    function updatePaging() {
+        (paging as PagingDataInternal).totalResults = grid.dataUnpaged.length;
+        (paging as PagingDataInternal).totalPages = Math.max(1, Math.ceil(paging.totalResults / Math.max(1, paging.itemsPerPage)));
+        paging.currentPage = Math.max(1, Math.min(paging.currentPage, paging.totalPages));
+    }
     
     function handleSort(column: string) {
         if (groupBy) {
