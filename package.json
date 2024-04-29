@@ -1,6 +1,6 @@
 {
   "name": "@mediakular/gridcraft",
-  "version": "0.2.7-beta",
+  "version": "0.2.8",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
