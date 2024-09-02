@@ -1,5 +1,5 @@
 import { hash } from "./helpers/hash-helper.js";
-import type { GridColumn, GridFilter, GroupHeader, PagingData, PagingDataInternal } from "./types/index.js";
+import type { GridColumn, GridFilter, GroupHeader } from "./types/index.js";
 
 export class GridFunctions<T> {
     public data: T[] = [];
@@ -7,18 +7,6 @@ export class GridFunctions<T> {
     public dataLength = 0;
     public groupHeaders: GroupHeader<T>[] = [];
     public groupHeadersUnpaged: GroupHeader<T>[] = [];
-    public pagingData: PagingData = {
-        currentPage: 1,
-        totalPages: 0,
-        totalResults: 0,
-        itemsPerPage: 10,
-        itemsPerPageOptions: [10, 25, 50, 100]
-    };
-
-    private updatePagingData() {
-        (this.pagingData as PagingDataInternal).totalResults = this.dataLength;
-        (this.pagingData as PagingDataInternal).totalPages = Math.max(1, Math.ceil(this.dataLength / Math.max(1, this.pagingData.itemsPerPage)));
-    }
 
     /**
      * Initializes the GridFunctions instance with the provided data array.
@@ -26,14 +14,10 @@ export class GridFunctions<T> {
      * @param {T[]} data - The data array to initialize the GridFunctions with.
      * @return {GridFunctions<T>} The initialized GridFunctions instance.
      */
-    init(data: T[], pagingData: PagingData) : GridFunctions<T> {
+    init(data: T[]): GridFunctions<T> {
         this.data = data;
         this.dataLength = this.data.length;
 
-        this.pagingData = pagingData;
-
-        this.updatePagingData();
-       
         return this;
     }
 
@@ -44,7 +28,7 @@ export class GridFunctions<T> {
      * @param {GridColumn<T>[]} columns - An array of grid columns.
      * @return {GridFunctions<T>} - The updated grid functions object.
      */
-    applyFilters(filters: GridFilter[], columns: GridColumn<T>[]) : GridFunctions<T> {
+    applyFilters(filters: GridFilter[], columns: GridColumn<T>[]): GridFunctions<T> {
         if (filters.length == 0) {
             return this;
         }
@@ -55,13 +39,13 @@ export class GridFunctions<T> {
             if (activeFilters.length == 0) {
                 return true;
             }
-            for (const filter of activeFilters) {
+            return activeFilters.every((filter) => {
                 if ((typeof filter.columns === 'string' || filter.columns instanceof String) && filter.columns != "all") {
                     const filterCol = columns.find((col) => col.key == filter.columns);
                     if (filterCol) {
                         const rowValue = filterCol.accessor ? filterCol.accessor(row) : row[filterCol.key as keyof T];
-                        if (!filter.filter(rowValue, filterCol.key)) {
-                            return false;
+                        if (filter.filter(rowValue, filterCol.key)) {
+                            return true;
                         }
                     }
                 } else {
@@ -73,15 +57,12 @@ export class GridFunctions<T> {
                             }
                         }
                     }
-                    return false;
                 }
-            }
-            return true;
+                return false;
+            });
         })
 
         this.dataLength = this.data.length;
-
-        this.updatePagingData();
 
         return this;
     }
@@ -99,7 +80,6 @@ export class GridFunctions<T> {
     sortBy(column: string, sortOrder: number, groupby: string, sortOrderSecondary: number, columns: GridColumn<T>[]): GridFunctions<T> {
         if (groupby) { // always order by the groupBy column here, if the sortbyColumn is != groupby the sort will be done later
             this.data = this.data.sort((a, b) => {
-                
                 const groupByCol = columns.find(x => x.key == groupby);
 
                 const aValue: any = groupByCol?.sortValue ? groupByCol.sortValue(a) : groupByCol?.accessor ? groupByCol.accessor(a) : a[groupby as keyof T];
@@ -137,27 +117,28 @@ export class GridFunctions<T> {
         return this;
     }
 
+
     /**
-     * Processes paging for the data based on the current page, items per page, grouping, and columns.
+     * Processes paging for the grid based on the provided groupBy, currentPage, and itemsPerPage.
+     * If groupBy is not provided, it processes paging for the entire grid.
      *
+     * @param {string} groupBy - The key of the column to group the data by.
      * @param {number} currentPage - The current page number.
      * @param {number} itemsPerPage - The number of items to display per page.
-     * @param {string} groupBy - The column to group the data by.
-     * @param {GridColumn<T>[]} columns - An array of grid columns.
-     * @return {GridFunctions<T>} The updated GridFunctions object.
+     * @return {GridFunctions<T>} The updated GridFunctions instance.
      */
-    processPaging(groupBy: string, columns: GridColumn<T>[]): GridFunctions<T> {
+    processPaging(
+        groupBy: string,
+        currentPage: number,
+        itemsPerPage: number): GridFunctions<T> {
         this.dataUnpaged = [...this.data];
-
-        const currentPage = this.pagingData.currentPage;
-        const itemsPerPage = this.pagingData.itemsPerPage;
 
         if (!groupBy) {
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
 
             this.data = this.data.slice(startIndex, endIndex);
-            
+
             return this;
         }
 
@@ -166,7 +147,7 @@ export class GridFunctions<T> {
         let rest = -1;
         let skippedCount = 0;
 
-        const newGroupHeaders:GroupHeader<T>[] = [];
+        const newGroupHeaders: GroupHeader<T>[] = [];
 
         for (const groupHeader of this.groupHeaders) {
             if (rest == 0) {
@@ -183,19 +164,19 @@ export class GridFunctions<T> {
                 groupHeader.data = [];
 
                 continue;
-            }  else if (rest == -1) { // this is for the first group header we will be adding
+            } else if (rest == -1) { // this is for the first group header we will be adding
                 const start = startIndex - skippedCount;
                 const end = Math.min(start + itemsPerPage, groupHeader.data.length);
                 const initialLength = groupHeader.data.length;
 
                 newGroupHeaders.push(groupHeader);
-               
+
                 groupHeader.data = groupHeader.data.slice(start, end);
 
                 rest = Math.max(0, start + itemsPerPage - initialLength);
-                
+
                 skippedCount += initialLength;
-            } else  { // this for the rest of the group headers we need to display (all after the first one)
+            } else { // this for the rest of the group headers we need to display (all after the first one)
                 newGroupHeaders.push(groupHeader);
                 const initialLength = groupHeader.data.length;
 
@@ -270,14 +251,12 @@ export class GridFunctions<T> {
 
         // deep clone group headers, we need to do this because the group headers are mutable
         this.groupHeaders.forEach(header => {
-            const newHeader = {...header};
+            const newHeader = { ...header };
             newHeader.data = [...newHeader.data]
             this.groupHeadersUnpaged.push(newHeader);
         });
-        
-        this.dataLength = groupDataLength;
 
-        this.updatePagingData();
+        this.dataLength = groupDataLength;
 
         return this;
     }

@@ -4,13 +4,8 @@
     export let paging: PagingData;
 
     function handleItemsPerPageChange() {
-        const totalPages = Math.max(1, Math.ceil(paging.totalResults / Math.max(1, paging.itemsPerPage)));
-        const currentPage = Math.max(1, Math.min(paging.currentPage, totalPages));
-
         paging = {
             ...paging, 
-            currentPage: currentPage,
-            totalPages: totalPages, 
             itemsPerPage: paging.itemsPerPage
         };
     }
@@ -25,7 +20,7 @@
         {/each}
     </select>
 
-    <span>{paging.currentPage * paging.itemsPerPage - paging.itemsPerPage + 1} - {paging.currentPage * paging.itemsPerPage} of {paging.totalResults}</span>
+    <span>{paging.currentPage * paging.itemsPerPage - paging.itemsPerPage + 1} - {Math.min(paging.currentPage * paging.itemsPerPage, paging.totalResults)} of {paging.totalResults}</span>
 
     <slot />
 </div>

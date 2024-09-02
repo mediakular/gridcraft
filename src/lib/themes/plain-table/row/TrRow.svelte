@@ -1,6 +1,7 @@
 <script lang="ts">
-    // export let isOdd = false;
-    // export let isSelected = false;
+    export let index;
+    export let isOdd = false;
+    export let isSelected = false;
 </script>
 
 <tr>
