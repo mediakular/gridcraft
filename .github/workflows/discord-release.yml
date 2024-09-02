@@ -1,3 +1,4 @@
+name: 💬 Discord Release Notes
 on:
   release:
     types: [published]
