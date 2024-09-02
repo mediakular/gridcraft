@@ -61,6 +61,8 @@
         }
     })
 
+    $: activeFilters = filters.filter(x => x.active);
+
     $: grid = new GridFunctions<T>()
         .init(fulldata)
         .applyFilters(filters, columns)
@@ -117,11 +119,13 @@
     }
 
     function toggleHeaderCheckbox() {
-        const isHeaderSelected = fulldata.every(item => selectedRows.includes(item));
+        const dataView = activeFilters.length == 0 ? fulldata : dataUnpaged as T[];
+        const isHeaderSelected = dataView.every(item => selectedRows.includes(item));
+        
         if (isHeaderSelected) {
-            selectedRows = selectedRows.filter(item => !fulldata.includes(item));
+            selectedRows = [];
         } else {
-            const toAdd: T[] = fulldata.filter(item => !selectedRows.includes(item));
+            const toAdd: T[] = dataView.filter(item => !selectedRows.includes(item));
             selectedRows = [...selectedRows, ...toAdd];
         }
     }
@@ -156,7 +160,7 @@
     <svelte:component this={theme.grid.header.container}>
         <svelte:component this={theme.grid.header.row}>
             {#if showCheckboxes}
-                <svelte:component this={theme.grid.header.checkbox} checked={fulldata.every(item => selectedRows.includes(item))} onChange={() => {toggleHeaderCheckbox()}} />
+                <svelte:component this={theme.grid.header.checkbox} checked={activeFilters.length == 0 ? fulldata.every(item => selectedRows.includes(item)) : Array.from(dataUnpaged).every(item => selectedRows.includes(item))} onChange={() => {toggleHeaderCheckbox()}} />
             {/if}
             {#each columns.filter(x => x.visible != false) as col (col.key)}
                 {#if groupBy != col.key}
