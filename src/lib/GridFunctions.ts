@@ -39,13 +39,13 @@ export class GridFunctions<T> {
             if (activeFilters.length == 0) {
                 return true;
             }
-            for (const filter of activeFilters) {
+            return activeFilters.every((filter) => {
                 if ((typeof filter.columns === 'string' || filter.columns instanceof String) && filter.columns != "all") {
                     const filterCol = columns.find((col) => col.key == filter.columns);
                     if (filterCol) {
                         const rowValue = filterCol.accessor ? filterCol.accessor(row) : row[filterCol.key as keyof T];
-                        if (!filter.filter(rowValue, filterCol.key)) {
-                            return false;
+                        if (filter.filter(rowValue, filterCol.key)) {
+                            return true;
                         }
                     }
                 } else {
@@ -57,10 +57,9 @@ export class GridFunctions<T> {
                             }
                         }
                     }
-                    return false;
                 }
-            }
-            return true;
+                return false;
+            });
         })
 
         this.dataLength = this.data.length;
