@@ -1,15 +1,29 @@
-# GridCraft: Svelte Data Grid
+# GridCraft: Headless Svelte Data Grid
 
 [![npm version](https://badge.fury.io/js/@mediakular%2Fgridcraft.svg)](https://badge.fury.io/js/@mediakular%2Fgridcraft)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-### Demo
+## Demo
 
-[DEMOS](https://gridcraft.mediakular.com/)
+[Visit Website With Demos](https://gridcraft.mediakular.com/)
 
-## Comprehensive Data Grid for SvelteKit Apps 📊
+## Documentation
 
-`@mediakular/gridcraft` is a powerful data grid package tailored for Sveltekit applications. It offers an array of features to elevate the presentation and interaction with tabular data.
+[Full Documentation](https://gridcraft.mediakular.com/docs)
+
+[Quickstart](https://gridcraft.mediakular.com/docs/quickstart)
+
+## Comprehensive & Headless Data Grid for SvelteKit Apps
+
+`@mediakular/gridcraft` is a powerful data grid package made for Svelte applications.
+
+We focus on making GridCraft as easy to use and customize as possible for developers, while still providing all the features a modern grid requires.
+
+The Grid can be used in a variety of ways - from very simple tables to feature-rich grids with **grouping**, **selecting**, **sorting**, **custom columns** and **more**. It was important to us to keep the number of dependencies as well as the file size to a minimum. That's why GridCraft feels easy to use and doesn't interfere with your code.
+
+The component is lightning fast and integrates into your project super quickly.
+
+Here are some screenshots of the default themes. **These themes are fully customizable and you can also create your own themes in a snap.**
 
 <img width="400" alt="image" src="https://github.com/mediakular/gridcraft/assets/23722678/3b86921d-d13a-441b-b405-38daf6886c80"> 
 <img width="400" alt="image" src="https://github.com/mediakular/gridcraft/assets/23722678/622a0be9-452c-4b65-9bdf-fc7d0153a5a9">
@@ -17,17 +31,17 @@
 <img width="400" alt="image" src="https://github.com/mediakular/gridcraft/assets/23722678/c471b1ba-9eb4-4dc0-91d7-93553fb6ad6a">
 
 
-### Exciting Features ✨
+### Features ✨
 
-- **Paging**: Navigate through large datasets effortlessly.
-- **Sorting**: Arrange data in ascending or descending order with ease.
-- **Custom Filtering**: Tailor data views to your specific needs.
-- **Grouping**: Organize related data into logical groups.
-- **Row Selection**: Select and manipulate individual or multiple rows.
-- **Custom Row edit**: Integrate any custom or third-party components to edit your data.
-- **Customizable Output**: Personalize grid appearance to match your style guide.
-- **Typesafe**: Stay typesafe and use the types from your own business model.
-- **Tailwind CSS ready**: Completely compatible with tailwind CSS and any other framework.
+- [x] **Paging**: Use the default paging component or create your own.
+- [x] **Sorting**: Use default sorting, set specific sorting value or implement your own custom sorting function.
+- [x] **Filtering**: Implement your own filters - quick and simple.
+- [x] **Grouping**: It's never been easier to set up grouping functionality for your grid.
+- [x] **Row Selection**: Row selection made easy - juist activate it and access selected rows.
+- [x] **Custom Row edit**: Simply create your own column with with your own actions/functions. You can also integrate any third-party components to edit your data.
+- [x] **Theming**: Personalize grid appearance to match your style guide. Overwrite existing default themes or create your own. There are endless possibilities and we tried to make it as easy as possible for you.
+- [x] **Typesafe**: Stay typesafe and use the types from your own business model.
+- [x] **Tailwind CSS Ready**: Completely compatible with Tailwind CSS and any other CSS framework.
 
 ## Installation
 
@@ -60,7 +74,7 @@ Most basic usage. In this example GridCraft will automatically detect the proper
 ```svelte
 <script lang="ts">
 import { Grid } from '@mediakular/gridcraft';
-import { clients } from './clients.js';
+import { clients } from './clients.js'; // [{name: ..., age: ..., ...}, {}, {}]
 </script>
 
 <Grid data={clients} />
@@ -556,10 +570,10 @@ When using `PrelineTheme` you need to install [tailwindcss](https://tailwindcss.
 export default {
   content: [
     ...
-    './node_modules/@mediakular/gridcraft/dist/themes/preline/**/*.svelte'
+    './node_modules/@mediakular/gridcraft/dist/themes/preline/**/*.svelte' // add this line
   ],
   theme: {
-    extend: {},
+    ...
   },
   plugins: [
     ...
@@ -572,7 +586,7 @@ export default {
 
 #### Overwriting an existing theme
 
-This can be usefull if you are satisfied with a certain theme, but you want to make only a few changes instead of creating a new custom theme.
+This can be useful if you are satisfied with a certain theme, but you want to make only a few changes instead of creating a new custom theme.
 
 ```svelte
 <script lang="ts">
