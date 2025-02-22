@@ -1,10 +1,14 @@
 <script lang="ts">
-    export let checked = false;
-    export let onChange = () => {};
+    interface Props {
+        checked?: boolean;
+        onChange?: any;
+    }
+
+    let { checked = false, onChange = () => {} }: Props = $props();
 </script>
 
 <th scope="col">
     <label>
-        <input type="checkbox" checked={checked} on:change={onChange}>
+        <input type="checkbox" checked={checked} onchange={onChange}>
     </label>
 </th>

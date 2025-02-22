@@ -1,7 +1,12 @@
 <script lang="ts">
     import type { PagingData } from "$lib/types/index.js";
 
-    export let paging: PagingData;
+    interface Props {
+        paging: PagingData;
+        children?: import('svelte').Snippet;
+    }
+
+    let { paging = $bindable(), children }: Props = $props();
 
     function handleItemsPerPageChange() {
         const totalPages = Math.max(1, Math.ceil(paging.totalResults / Math.max(1, paging.itemsPerPage)));
@@ -17,7 +22,7 @@
 </script>
 
 <div>
-    <select bind:value={paging.itemsPerPage} on:change={handleItemsPerPageChange}>
+    <select bind:value={paging.itemsPerPage} onchange={handleItemsPerPageChange}>
         {#each paging.itemsPerPageOptions as option (option)}                
             <option value="{option}" selected={option == paging.itemsPerPage}>{option}</option>
         {/each}
@@ -26,5 +31,5 @@
 
     <span>Page {paging.currentPage} of {paging.totalPages}</span>
 
-    <slot />
+    {@render children?.()}
 </div>

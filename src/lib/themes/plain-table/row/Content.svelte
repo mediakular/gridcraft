@@ -1,5 +1,9 @@
 <script lang="ts">
-    export let value = "";
+    interface Props {
+        value?: string;
+    }
+
+    let { value = "" }: Props = $props();
 </script>
 <span>
     {!value || value === "" ? "-" : value}

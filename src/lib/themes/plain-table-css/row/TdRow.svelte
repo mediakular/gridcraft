@@ -1,5 +1,10 @@
+<script>
+    /** @type {{children?: import('svelte').Snippet}} */
+    let { children } = $props();
+</script>
+
 <td class="gc-td">
-    <slot />
+    {@render children?.()}
 </td>
 
 <style>

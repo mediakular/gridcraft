@@ -1,11 +1,21 @@
 <script lang="ts">
-    export let index;
-    export let isOdd = false;
-    export let isSelected = false;
+    interface Props {
+        index: any;
+        isOdd?: boolean;
+        isSelected?: boolean;
+        children?: import('svelte').Snippet;
+    }
+
+    let {
+        index,
+        isOdd = false,
+        isSelected = false,
+        children
+    }: Props = $props();
 </script>
 
 <tr class="gc-tr {isOdd ? 'gc-tr__odd' : ''} {isSelected ? 'gc-tr__selected' : ''}">
-    <slot />
+    {@render children?.()}
 </tr>
 
 <style>
