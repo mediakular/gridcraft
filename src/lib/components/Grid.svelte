@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { run } from 'svelte/legacy';
 
     import { PlainTableCssTheme } from '$lib/index.js';
 	import { GridFunctions } from "../GridFunctions.js";
@@ -139,16 +138,19 @@
         }
     }
     let fulldata = $derived(Array.from(data));
-    run(() => {
+
+    $effect(() => {
         columns, assignAutoColumns();
     });
-    run(() => {
+
+    $effect(() => {
         uniqueRowIds = fulldata.map((row) => {
             const id = Math.random().toString(36).substr(2, 9);
             return { row: row, id: id  };
         }), resetSelectedRows();
     });
-    run(() => {
+
+    $effect(() => {
         columns.forEach((col) => {
             if (col.visible === undefined) {
                 col.visible = true;
@@ -162,7 +164,8 @@
         .sortBy(sortByColumn, sortOrder, groupBy, sortOrderSecondary, columns)
         .groupBy(groupBy,expandedGroups, groupsExpandedDefault, columns)
         .processPaging(groupBy, paging.currentPage, paging.itemsPerPage));
-    run(() => {
+        
+        $effect(() => {
         gridData = grid.data;
         dataUnpaged = grid.dataUnpaged;
         groupHeaders = grid.groupHeaders;

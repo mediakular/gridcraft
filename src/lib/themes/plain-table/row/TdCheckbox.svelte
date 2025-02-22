@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	interface Props {
 		index?: any;
 		group?: any;
@@ -36,10 +34,10 @@
 	}
     //https://github.com/sveltejs/svelte/issues/2308
 
-	run(() => {
+	$effect(() => {
 		updateCheckbox(group)
 	});
-	run(() => {
+	$effect(() => {
 		updateGroup(checked)
 	});
 </script>
