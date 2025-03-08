@@ -1,7 +1,12 @@
 <script lang="ts">
     import type { PagingData } from "$lib/types/index.js";
 
-    export let paging: PagingData;
+    interface Props {
+        paging: PagingData;
+        children?: import('svelte').Snippet;
+    }
+
+    let { paging = $bindable(), children }: Props = $props();
 
     function handleItemsPerPageChange() {
         paging = {
@@ -14,7 +19,7 @@
 <div class="gc-footer">
     <span>Rows per page</span>
 
-    <select bind:value={paging.itemsPerPage} on:change={handleItemsPerPageChange}>
+    <select bind:value={paging.itemsPerPage} onchange={handleItemsPerPageChange}>
         {#each paging.itemsPerPageOptions as option (option)}                
             <option value="{option}" selected={option == paging.itemsPerPage}>{option}</option>
         {/each}
@@ -22,7 +27,7 @@
 
     <span>{paging.currentPage * paging.itemsPerPage - paging.itemsPerPage + 1} - {Math.min(paging.currentPage * paging.itemsPerPage, paging.totalResults)} of {paging.totalResults}</span>
 
-    <slot />
+    {@render children?.()}
 </div>
 
 <style>

@@ -1,6 +1,10 @@
 <script lang="ts">
-    export let showing = 0;
-    export let total = 0;
+    interface Props {
+        showing?: number;
+        total?: number;
+    }
+
+    let { showing = 0, total = 0 }: Props = $props();
 </script>
 
 <small class="gc-td__groupby-count">{showing} / {total}</small>

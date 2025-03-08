@@ -1,12 +1,16 @@
 <script>
-    export let colspan = 1;
-    export let onToggle = () => {};
-    export let isExpanded = false;
+    /** @type {{colspan?: number, onToggle?: any, isExpanded?: boolean, children?: import('svelte').Snippet}} */
+    let {
+        colspan = 1,
+        onToggle = () => {},
+        isExpanded = false,
+        children
+    } = $props();
 </script>
 
 <td class="gc-td gc-td__groupby" colspan={colspan}>
     <div class="gc-td__groupby-container">
-        <button on:click={onToggle}>
+        <button onclick={onToggle}>
             {#if isExpanded}
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
             {:else}
@@ -14,7 +18,7 @@
             {/if}
         </button>
         <div class="gc-td__groupby-content">
-            <slot />
+            {@render children?.()}
         </div>
     </div>
 </td>

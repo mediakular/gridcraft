@@ -1,6 +1,10 @@
 <script lang="ts">
-    export let isSorted = false;
-    export let isDescending = false;
+    interface Props {
+        isSorted?: boolean;
+        isDescending?: boolean;
+    }
+
+    let { isSorted = false, isDescending = false }: Props = $props();
 </script>
 
 <div class="shrink-0 w-4 h-4">

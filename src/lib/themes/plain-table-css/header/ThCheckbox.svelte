@@ -1,11 +1,15 @@
 <script lang="ts">
-    export let checked = false;
-    export let onChange = () => {};
+    interface Props {
+        checked?: boolean;
+        onChange?: any;
+    }
+
+    let { checked = false, onChange = () => {} }: Props = $props();
 </script>
 
 <th class="gc-th gc-th__checkbox" scope="col">
     <label>
-        <input type="checkbox" checked={checked} on:change={onChange}>
+        <input type="checkbox" checked={checked} onchange={onChange}>
     </label>
 </th>
 

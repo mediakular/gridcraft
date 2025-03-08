@@ -1,9 +1,19 @@
 <script lang="ts">
-    export let index;
-    export let isOdd = false;
-    export let isSelected = false;
+    interface Props {
+        index: any;
+        isOdd?: boolean;
+        isSelected?: boolean;
+        children?: import('svelte').Snippet;
+    }
+
+    let {
+        index,
+        isOdd = false,
+        isSelected = false,
+        children
+    }: Props = $props();
 </script>
 
 <tr>
-    <slot />
+    {@render children?.()}
 </tr>

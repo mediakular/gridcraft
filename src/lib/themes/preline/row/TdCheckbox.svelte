@@ -1,13 +1,18 @@
 <script lang="ts">
-    export let index = -1;
-    export let group:any = undefined;
-	export let value:any = undefined;
-	export let checked = false;
+	interface Props {
+		index?: any;
+		group?: any;
+		value?: any;
+		checked?: boolean;
+	}
 
-    //https://github.com/sveltejs/svelte/issues/2308
+	let {
+		index = -1,
+		group = $bindable(undefined),
+		value = undefined,
+		checked = $bindable(false)
+	}: Props = $props();
 
-	$: updateCheckbox(group)
-	$: updateGroup(checked)
 	
 	function updateCheckbox(group:any) {
 		checked = group.indexOf(value) >= 0
@@ -27,6 +32,14 @@
 			}
 		}
 	}
+    //https://github.com/sveltejs/svelte/issues/2308
+
+	$effect(() => {
+		updateCheckbox(group)
+	});
+	$effect(() => {
+		updateGroup(checked)
+	});
 </script>
 
 <td class="h-px w-px whitespace-nowrap">

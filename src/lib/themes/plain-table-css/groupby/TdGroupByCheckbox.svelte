@@ -1,12 +1,16 @@
 <script lang="ts">
-    export let index = 0;
-    export let checked = false;
-    export let onChange = () => {};
+    interface Props {
+        index?: number;
+        checked?: boolean;
+        onChange?: any;
+    }
+
+    let { index = 0, checked = false, onChange = () => {} }: Props = $props();
 </script>
 
 <td class="gc-td gc-td__groupby gc-td__groupby-checkbox">
     <label for="checkbox-groupby-{index}">
-        <input type="checkbox" checked={checked} on:change={onChange} id="checkbox-groupby-{index}">
+        <input type="checkbox" checked={checked} onchange={onChange} id="checkbox-groupby-{index}">
     </label>
 </td>
 
