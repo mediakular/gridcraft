@@ -1,17 +1,12 @@
 <script lang="ts">
-    interface Props {
-        isOdd?: boolean;
-        isSelected?: boolean;
-        index?: any;
-        children?: import('svelte').Snippet;
-    }
+    import type { GridBodyRowProps } from '$lib/index.js';
 
     let {
         isOdd = false,
         isSelected = false,
         index = -1,
         children
-    }: Props = $props();
+    }: GridBodyRowProps = $props();
 </script>
 
 <!-- Card Wrapper -->

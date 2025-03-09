@@ -1,6 +1,7 @@
-<script>
-    /** @type {{children?: import('svelte').Snippet}} */
-    let { children } = $props();
+<script lang="ts">
+    import type { GridContainerProps } from '$lib/index.js';
+
+    let { children } : GridContainerProps = $props();
 </script>
 
 <div class="max-w-full min-w-full">

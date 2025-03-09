@@ -1,12 +1,7 @@
 <script lang="ts">
-    import type { PagingData } from "$lib/types/index.js";
+    import type { GridFooterProps } from "$lib/index.js";
 
-    interface Props {
-        paging: PagingData;
-        children?: import('svelte').Snippet;
-    }
-
-    let { paging = $bindable(), children }: Props = $props();
+    let { paging = $bindable(), children }: GridFooterProps = $props();
 
     function handleItemsPerPageChange() {
         paging = {

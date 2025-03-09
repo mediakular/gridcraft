@@ -1,6 +1,7 @@
-<script>
-    /** @type {{children?: import('svelte').Snippet}} */
-    let { children } = $props();
+<script lang="ts">
+    import type { GridHeaderContainerProps } from "$lib/index.js";
+
+    let { children } : GridHeaderContainerProps = $props();
 </script>
 
 <thead>

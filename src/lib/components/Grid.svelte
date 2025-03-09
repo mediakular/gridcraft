@@ -140,7 +140,8 @@
     let fulldata = $derived(Array.from(data));
 
     $effect(() => {
-        columns, assignAutoColumns();
+        columns; 
+        assignAutoColumns();
     });
 
     $effect(() => {
@@ -206,7 +207,7 @@
         {#if groupBy}
             {#each groupHeaders as header, groupIndex (header.groupKey)}
                 {@const unpagedHeader = groupHeadersUnpaged.find(x => x.groupKey == header.groupKey)}
-                <theme.grid.groupby.container isSelected={showCheckboxes && unpagedHeader?.data.every(item => selectedRows.includes(item))}>
+                <theme.grid.groupby.container isSelected={(showCheckboxes && unpagedHeader?.data.every(item => selectedRows.includes(item))) || false}>
                     {#if showCheckboxes}
                         <theme.grid.groupby.checkbox checked={unpagedHeader?.data.every(item => selectedRows.includes(item))} onChange={() => { toggleGroupCheckbox(header); }} index={groupIndex} />
                     {/if}
@@ -215,18 +216,16 @@
                         {#if col}
                             {@const value = header.titleData}
                             {@const renderComponent = col.renderComponent ? col.renderComponent : theme.grid.groupby.content}
+                            {@const GridGroupByContent = renderComponent}
     
                             {#if typeof value === 'object'}
                                 {#if Object.keys(value).length > 0}
-                                    {@const SvelteComponent = renderComponent}
-                                    <SvelteComponent {...value} isGroupByHeader={true} />
+                                    <GridGroupByContent {...value} isGroupByHeader={true} />
                                 {:else}
-                                    {@const SvelteComponent_1 = renderComponent}
-                                    <SvelteComponent_1 {...{value: value}} isGroupByHeader={true} />
+                                    <GridGroupByContent {...{value: value}} isGroupByHeader={true} />
                                 {/if}
                             {:else}
-                                {@const SvelteComponent_2 = renderComponent}
-                                <SvelteComponent_2 {value} isGroupByHeader={true} />
+                                <GridGroupByContent {value} isGroupByHeader={true} />
                             {/if}
                             
                             {@const unpaged = groupHeadersUnpaged.find(x => x.groupKey == header.groupKey)}
@@ -236,26 +235,24 @@
                 </theme.grid.groupby.container>
                 {#if header.expanded}
                     {#each header.data as row, index (getUniqueKey(row))}
-                        <theme.grid.body.row isOdd={(index + 1) % 2 == 1} index={gridData.indexOf(row)} isSelected="{selectedRows.indexOf(row) >= 0}">
+                        <theme.grid.body.row isOdd={(index + 1) % 2 == 1} index={gridData.indexOf(row)} isSelected={selectedRows.indexOf(row) >= 0}>
                             {#if showCheckboxes}
                                 <theme.grid.body.checkbox value={row} index={gridData.indexOf(row)} bind:group={selectedRows} />
                             {/if}
                             {#each columns.filter(x => x.visible != false && x.key != groupBy) as col (col.key)}
                                 <theme.grid.body.cell>
-                                    {@const value = col.accessor ? col.accessor(row) : row[col.key]}
+                                    {@const value = col.accessor ? col.accessor(row) : (row as any)[col.key]}
                                     {@const renderComponent = col.renderComponent ? col.renderComponent : theme.grid.body.content}
+                                    {@const GridBodyContent = renderComponent}
                 
                                     {#if typeof value === 'object'}
                                         {#if Object.keys(value).length > 0}
-                                            {@const SvelteComponent_3 = renderComponent}
-                                            <SvelteComponent_3 {...value} />
+                                            <GridBodyContent {...value} />
                                         {:else}
-                                            {@const SvelteComponent_4 = renderComponent}
-                                            <SvelteComponent_4 {...{value: value}} />
+                                            <GridBodyContent {...{value: value}} />
                                         {/if}
                                     {:else}
-                                        {@const SvelteComponent_5 = renderComponent}
-                                        <SvelteComponent_5 {value} />
+                                        <GridBodyContent {value} />
                                     {/if}
                                 </theme.grid.body.cell>
                             {/each}
@@ -265,26 +262,23 @@
             {/each}
         {:else}
             {#each gridData as row, index (getUniqueKey(row))}
-                <theme.grid.body.row isOdd={(index+1) % 2 == 1} {index} isSelected="{selectedRows.indexOf(row) >= 0}">
+                <theme.grid.body.row isOdd={(index+1) % 2 == 1} {index} isSelected={selectedRows.indexOf(row) >= 0}>
                     {#if showCheckboxes}
                         <theme.grid.body.checkbox value={row} bind:group={selectedRows} index={index} />
                     {/if}
                     {#each columns.filter(x => x.visible != false) as col (col.key)}
                         <theme.grid.body.cell>
-                            {@const value = col.accessor ? col.accessor(row) : row[col.key]}
+                            {@const value = col.accessor ? col.accessor(row) : (row as any)[col.key]}
                             {@const renderComponent = col.renderComponent ? col.renderComponent : theme.grid.body.content}
-
+                            {@const GridBodyContent = renderComponent}
                             {#if typeof value === 'object'}
                                 {#if Object.keys(value).length > 0}
-                                    {@const SvelteComponent_6 = renderComponent}
-                                    <SvelteComponent_6 {...value} />
+                                    <GridBodyContent {...value} />
                                 {:else}
-                                    {@const SvelteComponent_7 = renderComponent}
-                                    <SvelteComponent_7 {...{value: value}} />
+                                    <GridBodyContent {...{value: value}} />
                                 {/if}
                             {:else}
-                                {@const SvelteComponent_8 = renderComponent}
-                                <SvelteComponent_8 {value} />
+                                <GridBodyContent {value} />
                             {/if}
                         </theme.grid.body.cell>
                     {/each}

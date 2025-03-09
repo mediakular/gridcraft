@@ -1,17 +1,12 @@
 <script lang="ts">
-    interface Props {
-        index: any;
-        isOdd?: boolean;
-        isSelected?: boolean;
-        children?: import('svelte').Snippet;
-    }
-
+    import type { GridBodyRowProps } from "$lib/index.js";
+    
     let {
         index,
         isOdd = false,
         isSelected = false,
         children
-    }: Props = $props();
+    }: GridBodyRowProps = $props();
 </script>
 
 <tr class="gc-tr {isOdd ? 'gc-tr__odd' : ''} {isSelected ? 'gc-tr__selected' : ''}">

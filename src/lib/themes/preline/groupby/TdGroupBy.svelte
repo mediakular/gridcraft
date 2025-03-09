@@ -1,17 +1,12 @@
 <script lang="ts">
-    interface Props {
-        colspan?: number;
-        onToggle?: any;
-        isExpanded?: boolean;
-        children?: import('svelte').Snippet;
-    }
+    import type { GridGroupByCellProps } from "$lib/index.js";
 
     let {
         colspan = 1,
         onToggle = () => {},
         isExpanded = false,
         children
-    }: Props = $props();
+    }: GridGroupByCellProps = $props();
 </script>
 
 <td colspan={colspan} class="h-px w-72 whitespace-nowrap" >

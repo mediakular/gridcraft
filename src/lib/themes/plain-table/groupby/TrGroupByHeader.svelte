@@ -1,7 +1,7 @@
-<script>
-    /** @type {{children?: import('svelte').Snippet}} */
-    let { children } = $props();
-    // export let isSelected = false;
+<script lang="ts">
+    import type { GridGroupByContainerProps } from "$lib/index.js";
+
+    let { children } : GridGroupByContainerProps = $props();
 </script>
 
 <tr>

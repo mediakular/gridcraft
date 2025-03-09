@@ -1,6 +1,7 @@
-<script>
-    /** @type {{children?: import('svelte').Snippet}} */
-    let { children } = $props();
+<script lang="ts">
+    import type { GridBodyCellProps } from "$lib/index.js";
+
+    let { children } : GridBodyCellProps = $props();
 </script>
 
 <td class="h-px whitespace-nowrap">

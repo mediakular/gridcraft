@@ -1,10 +1,7 @@
 <script lang="ts">
-    interface Props {
-        checked?: boolean;
-        onChange?: any;
-    }
+    import type { GridHeaderCheckboxProps } from "$lib/index.js";
 
-    let { checked = false, onChange = () => {} }: Props = $props();
+    let { checked = false, onChange = () => {} }: GridHeaderCheckboxProps = $props();
 </script>
 
 <th scope="col">

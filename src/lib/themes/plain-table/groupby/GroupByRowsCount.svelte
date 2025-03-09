@@ -1,10 +1,7 @@
 <script lang="ts">
-    interface Props {
-        showing?: number;
-        total?: number;
-    }
+    import type { GridGroupByRowsCountProps } from "$lib/index.js";
 
-    let { showing = 0, total = 0 }: Props = $props();
+    let { showing = 0, total = 0 }: GridGroupByRowsCountProps = $props();
 </script>
 
 <small>{showing} / {total}</small>

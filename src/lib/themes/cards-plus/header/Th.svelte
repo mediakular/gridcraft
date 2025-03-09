@@ -1,17 +1,12 @@
 <script lang="ts">
-    interface Props {
-        title?: string;
-        onClick?: any;
-        sortable?: boolean;
-        children?: import('svelte').Snippet;
-    }
+    import type { GridHeaderContentProps } from "$lib/index.js";
 
     let {
         title = "",
         onClick = () => {},
         sortable = false,
         children
-    }: Props = $props();
+    }: GridHeaderContentProps = $props();
 </script>
 
 <th scope="col" class="px-6 py-3 text-left {sortable ? "hover:bg-slate-200 dark:hover:bg-slate-700/20 cursor-pointer transition-colors": ""}" onclick={onClick}>

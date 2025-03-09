@@ -1,9 +1,7 @@
 <script lang="ts">
-    interface Props {
-        value?: string;
-    }
+    import type { GridBodyContentProps } from "$lib/index.js";
 
-    let { value = "" }: Props = $props();
+    let { value = "" }: GridBodyContentProps = $props();
 </script>
 
 <span class="gc-td__content">
