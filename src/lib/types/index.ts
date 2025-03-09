@@ -1,5 +1,5 @@
 import type { Component } from "svelte";
-import type { GridBodyCellProps, GridBodyCheckboxProps, GridBodyContainerProps, GridBodyContentProps, GridBodyRowProps, GridContainerProps, GridFooterProps, GridGroupByCellProps, GridGroupByCheckboxProps, GridGroupByContainerProps, GridGroupByContentProps, GridGroupByRowsCountProps, GridHeaderCheckboxProps, GridHeaderContainerProps, GridHeaderContentProps, GridHeaderIndicatorProps, GridHeaderRowProps, GridPagingProps } from "./props.js";
+import type { GridBodyCellProps, GridBodyCheckboxProps, GridBodyContainerProps, GridBodyContentProps, GridBodyRowProps, GridColumnComponentProps, GridContainerProps, GridFooterProps, GridGroupByCellProps, GridGroupByCheckboxProps, GridGroupByContainerProps, GridGroupByContentProps, GridGroupByRowsCountProps, GridHeaderCheckboxProps, GridHeaderContainerProps, GridHeaderContentProps, GridHeaderIndicatorProps, GridHeaderRowProps, GridPagingProps } from "./props.js";
 
 export declare type GridContainer = Component<GridContainerProps>;
 export declare type GridFooter = Component<GridFooterProps>;
@@ -20,13 +20,15 @@ export declare type GridBodyCell = Component<GridBodyCellProps>;
 export declare type GridBodyCheckbox = Component<GridBodyCheckboxProps>;
 export declare type GridBodyContent = Component<GridBodyContentProps>;
 
+export declare type GridColumnComponent = Component<GridColumnComponentProps>;
+
 export type GridColumn<T> = {
     key: string,
     title: string,
     visible?: boolean,
     sortable?: boolean,
     width?: number | string,
-    renderComponent?: Component,
+    renderComponent?: GridColumnComponent,
     accessor?: (row: T) => unknown,
     sortValue?: (row: T) => string | number | Date | undefined
 }

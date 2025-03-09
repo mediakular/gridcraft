@@ -1,6 +1,11 @@
 import type { Snippet } from "svelte"
 import type { PagingData } from "./index.js"
 
+
+export interface GridColumnComponentProps {
+    [key: string]: any;
+}
+
 export interface GridContainerProps {
     children: Snippet<[]> | undefined
 }

@@ -12,7 +12,7 @@ import PlainTableCssTheme from './themes/plain-table-css/index.js';
 import CardsPlusTheme from './themes/cards-plus/index.js';
 
 import type { GridColumn, GridFilter, GridTheme, GroupHeader } from './types/index.js';
-import type { GridBodyCellProps, GridBodyCheckboxProps, GridBodyContainerProps, GridBodyContentProps, GridBodyRowProps, GridContainerProps, GridFooterProps, GridGroupByCellProps, GridGroupByCheckboxProps, GridGroupByContainerProps, GridGroupByContentProps, GridGroupByRowsCountProps, GridHeaderCheckboxProps, GridHeaderContainerProps, GridHeaderContentProps, GridHeaderIndicatorProps, GridHeaderRowProps, GridPagingProps } from './types/props.js';
+import type { GridBodyCellProps, GridBodyCheckboxProps, GridBodyContainerProps, GridBodyContentProps, GridBodyRowProps, GridColumnComponentProps, GridContainerProps, GridFooterProps, GridGroupByCellProps, GridGroupByCheckboxProps, GridGroupByContainerProps, GridGroupByContentProps, GridGroupByRowsCountProps, GridHeaderCheckboxProps, GridHeaderContainerProps, GridHeaderContentProps, GridHeaderIndicatorProps, GridHeaderRowProps, GridPagingProps } from './types/props.js';
 
 // main components
 export { 
@@ -25,6 +25,7 @@ export {
 // types
 export {
     type GridColumn,
+    type GridColumnComponentProps,
     type GridFilter,
     type GroupHeader,
     type GridTheme,
