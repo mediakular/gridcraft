@@ -1,4 +1,4 @@
-import type { ComponentType } from "svelte";
+import type { Component } from "svelte";
 
 export type GridColumn<T> = {
     key: string,
@@ -6,7 +6,7 @@ export type GridColumn<T> = {
     visible?: boolean,
     sortable?: boolean,
     width?: number | string,
-    renderComponent?: ComponentType,
+    renderComponent?: Component,
     accessor?: (row: T) => unknown,
     sortValue?: (row: T) => string | number | Date | undefined
 }
@@ -28,31 +28,31 @@ export type GroupHeader<T> = {
 
 export type GridTheme = {
     grid: {
-        container: ComponentType;
+        container: Component;
         header: {
-            container: ComponentType,
-            row: ComponentType,
-            content: ComponentType,
-            checkbox: ComponentType,
-            sortIndicator: ComponentType,
+            container: Component,
+            row: Component,
+            content: Component,
+            checkbox: Component,
+            sortIndicator: Component,
         },
         groupby: {
-            container: ComponentType,
-            checkbox: ComponentType,
-            cell: ComponentType,
-            content: ComponentType,
-            rowsCount: ComponentType,
+            container: Component,
+            checkbox: Component,
+            cell: Component,
+            content: Component,
+            rowsCount: Component,
         },
         body: {
-            container: ComponentType,
-            row: ComponentType,
-            cell: ComponentType,
-            checkbox: ComponentType,
-            content: ComponentType
+            container: Component,
+            row: Component,
+            cell: Component,
+            checkbox: Component,
+            content: Component
         }
     }
-    footer: ComponentType;
-    paging: ComponentType;
+    footer: Component;
+    paging: Component;
 }
 
 export class PagingData {
