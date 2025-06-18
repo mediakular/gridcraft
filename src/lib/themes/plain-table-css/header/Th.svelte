@@ -1,17 +1,12 @@
 <script lang="ts">
-    interface Props {
-        title?: string;
-        onClick?: any;
-        sortable?: boolean;
-        children?: import('svelte').Snippet;
-    }
+    import type { GridHeaderContentProps } from "$lib/index.js";
 
     let {
         title = "",
         onClick = () => {},
         sortable = false,
         children
-    }: Props = $props();
+    }: GridHeaderContentProps = $props();
 </script>
 
 <th class="gc-th {sortable ? 'gc-th--sortable' : ''}" scope="col" onclick={onClick}>

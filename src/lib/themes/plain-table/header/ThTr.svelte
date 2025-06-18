@@ -1,6 +1,7 @@
-<script>
-    /** @type {{children?: import('svelte').Snippet}} */
-    let { children } = $props();
+<script lang="ts">
+    import type { GridHeaderRowProps } from "$lib/index.js";
+
+    let { children }: GridHeaderRowProps = $props();
 </script>
 
 <tr>

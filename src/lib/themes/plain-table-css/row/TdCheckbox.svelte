@@ -1,24 +1,18 @@
 <script lang="ts">
-	interface Props {
-		index?: any;
-		group?: any;
-		value?: any;
-		checked?: boolean;
-	}
+  import type { GridBodyCheckboxProps } from "$lib/index.js";
 
 	let {
 		index = -1,
 		group = $bindable(undefined),
 		value = undefined,
 		checked = $bindable(false)
-	}: Props = $props();
-
+	}: GridBodyCheckboxProps = $props();
 	
-	function updateCheckbox(group) {
+	function updateCheckbox(group: string | any[]) {
 		checked = group.indexOf(value) >= 0
 	}
 	
-	function updateGroup(checked) {
+	function updateGroup(checked: boolean) {
 		const index = group.indexOf(value)
 		if (checked) {
 			if (index < 0) {

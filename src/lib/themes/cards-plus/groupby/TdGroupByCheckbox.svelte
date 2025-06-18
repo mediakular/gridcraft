@@ -1,11 +1,7 @@
 <script lang="ts">
-    interface Props {
-        index?: number;
-        checked?: boolean;
-        onChange?: any;
-    }
+    import type { GridGroupByCheckboxProps } from "$lib/index.js";
 
-    let { index = 0, checked = false, onChange = () => {} }: Props = $props();
+    let { index = 0, checked = false, onChange = () => {} }: GridGroupByCheckboxProps = $props();
 </script>
 
 <div class="ps-6 py-3">

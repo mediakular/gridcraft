@@ -1,11 +1,7 @@
 <script lang="ts">
-    import type { PagingData } from "$lib/types/index.js";
+    import type { GridPagingProps } from "$lib/index.js";
 
-    interface Props {
-        paging: PagingData;
-    }
-
-    let { paging = $bindable() }: Props = $props();
+    let { paging = $bindable() }: GridPagingProps = $props();
 
     function nextPage() {
         paging.currentPage += 1;

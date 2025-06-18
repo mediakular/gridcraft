@@ -1,4 +1,26 @@
-import type { ComponentType } from "svelte";
+import type { Component } from "svelte";
+import type { GridBodyCellProps, GridBodyCheckboxProps, GridBodyContainerProps, GridBodyContentProps, GridBodyRowProps, GridColumnComponentProps, GridContainerProps, GridFooterProps, GridGroupByCellProps, GridGroupByCheckboxProps, GridGroupByContainerProps, GridGroupByContentProps, GridGroupByRowsCountProps, GridHeaderCheckboxProps, GridHeaderContainerProps, GridHeaderContentProps, GridHeaderIndicatorProps, GridHeaderRowProps, GridPagingProps } from "./props.js";
+
+export declare type GridContainer = Component<GridContainerProps>;
+export declare type GridFooter = Component<GridFooterProps>;
+export declare type GridPaging = Component<GridPagingProps>;
+export declare type GridHeaderContainer = Component<GridHeaderContainerProps>;
+export declare type GridHeaderRow = Component<GridHeaderRowProps>;
+export declare type GridHeaderContent = Component<GridHeaderContentProps>;
+export declare type GridHeaderCheckbox = Component<GridHeaderCheckboxProps>;
+export declare type GridHeaderIndicator = Component<GridHeaderIndicatorProps>;
+export declare type GridGroupByContainer = Component<GridGroupByContainerProps>;
+export declare type GridGroupByCheckbox = Component<GridGroupByCheckboxProps>;
+export declare type GridGroupByCell = Component<GridGroupByCellProps>;
+export declare type GridGroupByContent = Component<GridGroupByContentProps>;
+export declare type GridGroupByRowsCount = Component<GridGroupByRowsCountProps>;
+export declare type GridBodyContainer = Component<GridBodyContainerProps>;
+export declare type GridBodyRow = Component<GridBodyRowProps>;
+export declare type GridBodyCell = Component<GridBodyCellProps>;
+export declare type GridBodyCheckbox = Component<GridBodyCheckboxProps>;
+export declare type GridBodyContent = Component<GridBodyContentProps>;
+
+export declare type GridColumnComponent = Component<GridColumnComponentProps>;
 
 export type GridColumn<T> = {
     key: string,
@@ -6,7 +28,7 @@ export type GridColumn<T> = {
     visible?: boolean,
     sortable?: boolean,
     width?: number | string,
-    renderComponent?: ComponentType,
+    renderComponent?: GridColumnComponent,
     accessor?: (row: T) => unknown,
     sortValue?: (row: T) => string | number | Date | undefined
 }
@@ -28,31 +50,31 @@ export type GroupHeader<T> = {
 
 export type GridTheme = {
     grid: {
-        container: ComponentType;
+        container: GridContainer;
         header: {
-            container: ComponentType,
-            row: ComponentType,
-            content: ComponentType,
-            checkbox: ComponentType,
-            sortIndicator: ComponentType,
+            container: GridHeaderContainer,
+            row: GridHeaderRow,
+            content: GridHeaderContent,
+            checkbox: GridHeaderCheckbox,
+            sortIndicator: GridHeaderIndicator,
         },
         groupby: {
-            container: ComponentType,
-            checkbox: ComponentType,
-            cell: ComponentType,
-            content: ComponentType,
-            rowsCount: ComponentType,
+            container: GridGroupByContainer,
+            checkbox: GridGroupByCheckbox,
+            cell: GridGroupByCell,
+            content: GridGroupByContent,
+            rowsCount: GridGroupByRowsCount,
         },
         body: {
-            container: ComponentType,
-            row: ComponentType,
-            cell: ComponentType,
-            checkbox: ComponentType,
-            content: ComponentType
+            container: GridBodyContainer,
+            row: GridBodyRow,
+            cell: GridBodyCell,
+            checkbox: GridBodyCheckbox,
+            content: GridBodyContent
         }
     }
-    footer: ComponentType;
-    paging: ComponentType;
+    footer: GridFooter;
+    paging: GridPaging;
 }
 
 export class PagingData {

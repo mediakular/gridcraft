@@ -79,7 +79,7 @@ export class GridFunctions<T> {
      */
     sortBy(column: string, sortOrder: number, groupby: string, sortOrderSecondary: number, columns: GridColumn<T>[]): GridFunctions<T> {
         if (groupby) { // always order by the groupBy column here, if the sortbyColumn is != groupby the sort will be done later
-            this.data = this.data.sort((a, b) => {
+            this.data = this.data.sort((a: T & any, b: T & any) => {
                 const groupByCol = columns.find(x => x.key == groupby);
 
                 const aValue: any = groupByCol?.sortValue ? groupByCol.sortValue(a) : groupByCol?.accessor ? groupByCol.accessor(a) : a[groupby as keyof T];
@@ -107,7 +107,7 @@ export class GridFunctions<T> {
 
         const sortCol = columns.find(x => x.key == column);
 
-        this.data.sort((a, b) => {
+        this.data.sort((a: T & any, b: T & any) => {
             const aValue: any = sortCol?.sortValue ? sortCol.sortValue(a) : sortCol?.accessor ? sortCol.accessor(a) : a[column as keyof T];
             const bValue: any = sortCol?.sortValue ? sortCol.sortValue(b) : sortCol?.accessor ? sortCol.accessor(b) : b[column as keyof T];
 

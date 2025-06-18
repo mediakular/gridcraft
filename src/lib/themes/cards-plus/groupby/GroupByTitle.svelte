@@ -1,9 +1,7 @@
 <script lang="ts">
-    interface Props {
-        value?: string;
-    }
+    import type { GridGroupByContentProps } from "$lib/index.js";
 
-    let { value = "" }: Props = $props();
+    let { value = "" }: GridGroupByContentProps = $props();
 </script>
 
 <span class="block text-sm text-gray-700 dark:text-gray-200">

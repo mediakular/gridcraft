@@ -1,6 +1,7 @@
-<script>
-    /** @type {{isSelected?: boolean, children?: import('svelte').Snippet}} */
-    let { isSelected = false, children } = $props();
+<script lang="ts">
+    import type { GridGroupByContainerProps } from "$lib/index.js";
+
+    let { isSelected = false, children } : GridGroupByContainerProps = $props();
 </script>
 
 <tr class="gc-tr gc-tr__groupby {isSelected ? 'gc-tr__groupby-selected' : ''}">

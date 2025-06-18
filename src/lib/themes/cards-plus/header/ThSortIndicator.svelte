@@ -1,10 +1,7 @@
 <script lang="ts">
-    interface Props {
-        isSorted?: boolean;
-        isDescending?: boolean;
-    }
+    import type { GridHeaderIndicatorProps } from "$lib/index.js";
 
-    let { isSorted = false, isDescending = false }: Props = $props();
+    let { isSorted = false, isDescending = false }: GridHeaderIndicatorProps = $props();
 </script>
 
 <div class="shrink-0 w-4 h-4">
