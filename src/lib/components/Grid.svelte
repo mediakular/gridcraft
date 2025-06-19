@@ -27,7 +27,7 @@
     }
 
     let {
-        data = [],
+        data = $bindable([]),
         dataUnpaged = $bindable([]),
         columns = $bindable([]),
         filters = [],
@@ -107,8 +107,8 @@
         groupHeader.expanded = !groupHeader.expanded;
     }
 
-    function getUniqueKey(row: T) {
-        return uniqueRowIds.find(x => x.row == row)?.id;
+    function getUniqueKey(row: T, index: number) {
+        return uniqueRowIds.find(x => x.row == row)?.id ?? index;
     }
 
     function toggleHeaderCheckbox() {
@@ -140,9 +140,11 @@
     let fulldata = $derived(Array.from(data));
 
     $effect(() => {
-        columns; 
+        if (columns) {
         assignAutoColumns();
-    });
+    } 
+   });
+
 
     $effect(() => {
         uniqueRowIds = fulldata.map((row) => {
@@ -173,6 +175,7 @@
         groupHeadersUnpaged = grid.groupHeadersUnpaged;
         updatePaging();
     });
+    console.log('Columns:', $state.snapshot(columns) ,fulldata, gridData);
 </script>
 
 <theme.grid.container>
@@ -234,14 +237,16 @@
                     </theme.grid.groupby.cell>
                 </theme.grid.groupby.container>
                 {#if header.expanded}
-                    {#each header.data as row, index (getUniqueKey(row))}
+                    {#each header.data as row, index (getUniqueKey(row, index))}
+
                         <theme.grid.body.row isOdd={(index + 1) % 2 == 1} index={gridData.indexOf(row)} isSelected={selectedRows.indexOf(row) >= 0}>
                             {#if showCheckboxes}
                                 <theme.grid.body.checkbox value={row} index={gridData.indexOf(row)} bind:group={selectedRows} />
                             {/if}
                             {#each columns.filter(x => x.visible != false && x.key != groupBy) as col (col.key)}
                                 <theme.grid.body.cell>
-                                    {@const value = col.accessor ? col.accessor(row) : (row as any)[col.key]}
+                                    {@const value = col.accessor ? col.accessor(row) : (row as Record<string, any>)[col.key]}
+
                                     {@const renderComponent = col.renderComponent ? col.renderComponent : theme.grid.body.content}
                                     {@const GridBodyContent = renderComponent}
                 
@@ -261,14 +266,16 @@
                 {/if}
             {/each}
         {:else}
-            {#each gridData as row, index (getUniqueKey(row))}
+            {#each gridData as row, index (getUniqueKey(row, index))}
+
                 <theme.grid.body.row isOdd={(index+1) % 2 == 1} {index} isSelected={selectedRows.indexOf(row) >= 0}>
                     {#if showCheckboxes}
                         <theme.grid.body.checkbox value={row} bind:group={selectedRows} index={index} />
                     {/if}
                     {#each columns.filter(x => x.visible != false) as col (col.key)}
                         <theme.grid.body.cell>
-                            {@const value = col.accessor ? col.accessor(row) : (row as any)[col.key]}
+                            {@const value = col.accessor ? col.accessor(row) : (row as Record<string, any>)[col.key]}
+
                             {@const renderComponent = col.renderComponent ? col.renderComponent : theme.grid.body.content}
                             {@const GridBodyContent = renderComponent}
                             {#if typeof value === 'object'}
