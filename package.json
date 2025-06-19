@@ -1,5 +1,5 @@
 {
-  "name": "@mediakular/gridcraft",
+  "name": "@avitest/gridcraft",
   "version": "1.0.0-beta",
   "scripts": {
     "dev": "vite dev",
@@ -48,7 +48,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mediakular/gridcraft.git"
+    "url": "git+https://github.com/Avi-ADAM/gridcraft.git"
   },
   "keywords": [
     "datagrid",
