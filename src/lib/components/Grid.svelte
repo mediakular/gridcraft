@@ -8,9 +8,6 @@
     type T = $$Generic<any>;
     type ExpandedGroups = { [value:string] : boolean };
 
-
-
-
     interface Props {
         data?: Iterable<T> | ArrayLike<T>;
         dataUnpaged?: Iterable<T> | ArrayLike<T>;
@@ -134,7 +131,7 @@
             selectedRows = [...selectedRows, ...toAdd];
         }
     }
-    let fulldata = $derived(Array.from(data));
+    let fulldata = $derived(Array.from(data ?? []));
 
     $effect(() => {
         columns; 
