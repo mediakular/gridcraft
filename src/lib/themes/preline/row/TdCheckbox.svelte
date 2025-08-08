@@ -9,11 +9,12 @@
 	}: GridBodyCheckboxProps = $props();
 	
 	function updateCheckbox(group:any) {
-		checked = group.indexOf(value) >= 0
+		checked = group.findIndex((x:any) => x.id === value.id) >= 0
 	}
 	
 	function updateGroup(checked:any) {
-		const index = group.indexOf(value)
+		const index = group.findIndex((x:any) => x.id === value.id);
+
 		if (checked) {
 			if (index < 0) {
 				group.push(value)
@@ -26,13 +27,13 @@
 			}
 		}
 	}
-    //https://github.com/sveltejs/svelte/issues/2308
+  //https://github.com/sveltejs/svelte/issues/2308
 
 	$effect(() => {
-		updateCheckbox(group)
+		updateCheckbox(group);
 	});
 	$effect(() => {
-		updateGroup(checked)
+		updateGroup(checked);
 	});
 </script>
 

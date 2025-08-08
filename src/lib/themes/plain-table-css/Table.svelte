@@ -12,7 +12,7 @@
 
 <style lang="css">
     .gc-table-wrapper {
-        overflow-x: scroll;
+        overflow-x: auto;
         border-radius: var(--gc-table-radius, 2px);
     }
 

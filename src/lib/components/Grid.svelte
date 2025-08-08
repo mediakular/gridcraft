@@ -66,10 +66,6 @@
     function resetSelectedRows() {
         selectedRows = []; // resetting the selected rows when fulldata changes
     }
-    
-
-
-
 
     function updatePaging() {
         (paging as PagingDataInternal).totalResults = grid.dataUnpaged.length;
@@ -108,17 +104,18 @@
     }
 
     function getUniqueKey(row: T) {
-        return uniqueRowIds.find(x => x.row == row)?.id;
+        return uniqueRowIds.find(x => (x.row as any).id === (row as any).id)?.id;
     }
 
     function toggleHeaderCheckbox() {
-        const dataView = activeFilters.length == 0 ? fulldata : dataUnpaged as T[];
-        const isHeaderSelected = dataView.every(item => selectedRows.includes(item));
+        const dataView = activeFilters.length == 0 ? fulldata : grid.dataUnpaged;
+        const isHeaderSelected = dataView.every(item => selectedRows.findIndex((x:any) => x.id == (item as any).id) >= 0);
         
         if (isHeaderSelected) {
-            selectedRows = [];
+            selectedRows = selectedRows.filter(item => selectedRows.findIndex((x:any) => x.id == (item as any).id) < 0);
         } else {
-            const toAdd: T[] = dataView.filter(item => !selectedRows.includes(item));
+            // Select all items in the current view that aren't already selected
+            const toAdd: T[] = dataView.filter(item => selectedRows.findIndex((x:any) => x.id == (item as any).id) < 0);
             selectedRows = [...selectedRows, ...toAdd];
         }
     }
@@ -128,12 +125,12 @@
 
         const dataItems = actualHeader?.data ?? [];
         const isGroupSelected = dataItems
-            .every(item => selectedRows.includes(item));
+            .every(item => selectedRows.findIndex((x:any) => x.id == (item as any).id) >= 0);
 
         if (isGroupSelected) {
-            selectedRows = selectedRows.filter(item => !dataItems.includes(item));
+            selectedRows = selectedRows.filter(item => dataItems.findIndex((x:any) => x.id == (item as any).id) < 0);
         } else {
-            const toAdd: T[] = dataItems.filter(item => !selectedRows.includes(item));
+            const toAdd: T[] = dataItems.filter(item => selectedRows.findIndex((x:any) => x.id == (item as any).id) < 0);
             selectedRows = [...selectedRows, ...toAdd];
         }
     }
@@ -148,7 +145,13 @@
         uniqueRowIds = fulldata.map((row) => {
             const id = Math.random().toString(36).substr(2, 9);
             return { row: row, id: id  };
-        }), resetSelectedRows();
+        });
+    });
+
+    // Reset selected rows only when the actual data source changes
+    $effect(() => {
+        data;
+        resetSelectedRows();
     });
 
     $effect(() => {
@@ -165,8 +168,25 @@
         .sortBy(sortByColumn, sortOrder, groupBy, sortOrderSecondary, columns)
         .groupBy(groupBy,expandedGroups, groupsExpandedDefault, columns)
         .processPaging(groupBy, paging.currentPage, paging.itemsPerPage));
+    
+    // Derived value for header checkbox checked state
+    let headerCheckboxChecked = $derived(
+        activeFilters.length == 0
+            ? fulldata.every(item =>
+                selectedRows.some((x: any) => x.id === (item as any).id)
+            )
+            : grid.dataUnpaged.every(item =>
+                selectedRows.some((x: any) => x.id === (item as any).id)
+            )
+    );
+    
+    // Helper function to get group checkbox checked state
+    function getGroupCheckboxChecked(header: GroupHeader<T>) {
+        const unpagedHeader = groupHeadersUnpaged.find(x => x.groupKey == header.groupKey);
+        return unpagedHeader?.data.every(item => selectedRows.some((x: any) => x.id === (item as any).id)) ?? false;
+    }
         
-        $effect(() => {
+    $effect(() => {
         gridData = grid.data;
         dataUnpaged = grid.dataUnpaged;
         groupHeaders = grid.groupHeaders;
@@ -189,7 +209,7 @@
     <theme.grid.header.container>
         <theme.grid.header.row>
             {#if showCheckboxes}
-                <theme.grid.header.checkbox checked={activeFilters.length == 0 ? fulldata.every(item => selectedRows.includes(item)) : Array.from(dataUnpaged).every(item => selectedRows.includes(item))} onChange={() => {toggleHeaderCheckbox()}} />
+                <theme.grid.header.checkbox checked={headerCheckboxChecked} onChange={() => {toggleHeaderCheckbox()}} />
             {/if}
             {#each columns.filter(x => x.visible != false) as col (col.key)}
                 {#if groupBy != col.key}
@@ -207,9 +227,9 @@
         {#if groupBy}
             {#each groupHeaders as header, groupIndex (header.groupKey)}
                 {@const unpagedHeader = groupHeadersUnpaged.find(x => x.groupKey == header.groupKey)}
-                <theme.grid.groupby.container isSelected={(showCheckboxes && unpagedHeader?.data.every(item => selectedRows.includes(item))) || false}>
+                <theme.grid.groupby.container isSelected={(showCheckboxes && unpagedHeader?.data.every(item => selectedRows.some((x:any) => x.id === (item as any).id))) || false}>
                     {#if showCheckboxes}
-                        <theme.grid.groupby.checkbox checked={unpagedHeader?.data.every(item => selectedRows.includes(item))} onChange={() => { toggleGroupCheckbox(header); }} index={groupIndex} />
+                        <theme.grid.groupby.checkbox checked={getGroupCheckboxChecked(header)} onChange={() => { toggleGroupCheckbox(header); }} index={groupIndex} />
                     {/if}
                     <theme.grid.groupby.cell colspan={columns.length-1} onToggle={() => toggleGroup(header)} isExpanded={header.expanded}>
                         {@const col = columns.find(x => x.visible != false && x.key == groupBy)}
@@ -235,7 +255,7 @@
                 </theme.grid.groupby.container>
                 {#if header.expanded}
                     {#each header.data as row, index (getUniqueKey(row))}
-                        <theme.grid.body.row isOdd={(index + 1) % 2 == 1} index={gridData.indexOf(row)} isSelected={selectedRows.indexOf(row) >= 0}>
+                        <theme.grid.body.row isOdd={(index + 1) % 2 == 1} index={gridData.indexOf(row)} isSelected={selectedRows.some((x:any) => x.id === (row as any).id)}>
                             {#if showCheckboxes}
                                 <theme.grid.body.checkbox value={row} index={gridData.indexOf(row)} bind:group={selectedRows} />
                             {/if}
@@ -262,7 +282,7 @@
             {/each}
         {:else}
             {#each gridData as row, index (getUniqueKey(row))}
-                <theme.grid.body.row isOdd={(index+1) % 2 == 1} {index} isSelected={selectedRows.indexOf(row) >= 0}>
+                <theme.grid.body.row isOdd={(index+1) % 2 == 1} {index} isSelected={selectedRows.findIndex((x:any) => x.id === (row as any).id) >= 0}>
                     {#if showCheckboxes}
                         <theme.grid.body.checkbox value={row} bind:group={selectedRows} index={index} />
                     {/if}

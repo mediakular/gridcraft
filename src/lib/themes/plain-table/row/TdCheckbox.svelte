@@ -8,12 +8,12 @@
 		checked = $bindable(false)
 	}: GridBodyCheckboxProps = $props();
 	
-	function updateCheckbox(group: string | any[]) {
-		checked = group.indexOf(value) >= 0
+	function updateCheckbox(group: any) {
+		checked = group.findIndex((x:any) => x.id === value.id) >= 0
 	}
 	
 	function updateGroup(checked: boolean) {
-		const index = group.indexOf(value)
+		const index = group.findIndex((x:any) => x.id === value.id);
 		if (checked) {
 			if (index < 0) {
 				group.push(value)

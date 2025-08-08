@@ -4,7 +4,7 @@
     let { children } : GridContainerProps = $props();
 </script>
 
-<div class="overflow-x-scroll">
+<div class="overflow-x-auto">
     <table class="max-w-full min-w-full divide-y divide-gray-200 dark:divide-gray-700">
         {@render children?.()}
     </table>
