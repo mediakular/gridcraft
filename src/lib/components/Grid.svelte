@@ -101,7 +101,7 @@
     }
 
     function getUniqueKey(row: T) {
-        return uniqueRowIds.find(x => (x.row as any).id === (row as any).id)?.id;
+        return uniqueRowIds.find(x => (x.row as any).id === (row as any).id)?.id ?? (row as any)?.id ?? row;
     }
 
     function toggleHeaderCheckbox() {
